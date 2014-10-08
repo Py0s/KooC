@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+@import "muf.kh"
+@import "muf.kh"
+
+@implementation Test
+{
+}
+
+@implementation Gun
+{
+  void shoot(int tutu, float tata)
+  {
+    printf("%d %f\n", tutu, [Gun.test]);
+  }
+
+  void toto()
+  {
+    printf("test\n");
+  }
+}
+
+
+int main()
+{
+  printf("%s %d\n", [Test.id], [Test.id]);
+  [Test.id] = 3;
+  int tutu;
+  tutu;
+  [Test.id];
+  toto(4, 3.2);
+  tutu();
+  [Gun shoot :(int)4 :(float)3.2];
+  Gushoot(4, Totoro(4, 3.2));
+  [Aun shoot :(int)4 :Totoro(4, 3.2)];
+  [Bun shoot :(int)4 :[Cun shoot :(int)4 :Totoro(4, 3.2)]];
+  Gushoot(4, Tatara());
+  [Dun shoot :(int)4 :[Ea tara]];
+  [Gun toto];
+  (int)tata;
+  return (0);
+}

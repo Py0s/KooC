@@ -1,0 +1,30 @@
+@module nia
+{
+  int    a = 42;
+}
+
+@module fu
+{
+}
+
+@module bla
+{
+  int a = 666;
+}
+
+@module blu
+{
+  int a = 999;
+}
+
+@module Test
+{
+  int id = 42;
+  char *id = "quarante deux";
+}
+
+@module Gun
+{
+  int test = 2;
+  void shoot(int tutu, float tata);
+}

@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+from cnorm.passes import to_c
+import KoocFile
+
+# get entry filename
+
+koocFileName = sys.argv[1]
+fileName, fileExtension = os.path.splitext(koocFileName)
+try:
+	KoocFile.includePath = os.path.dirname(os.path.abspath(koocFileName))
+except Exception:
+	print("fail tu cut path")
+	pass
+
+# out file creation
+
+if fileExtension == ".kc":
+    fout = open(fileName + ".c", "w")
+elif fileExtension == ".kh":
+    fout = open(fileName + ".h", "w")
+else:
+    print("Kooc Error : Unknow file extension")
+    exit()
+
+# kooc !
+
+ast = KoocFile.kooc_a_file(koocFileName)
+
+# to_c call
+
+result = str(ast.to_c())
+
+# writing result
+
+fout.write(result)
+fout.close()

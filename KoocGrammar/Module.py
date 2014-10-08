@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+from pyrser.grammar import Grammar
+from pyrser import meta
+from cnorm import nodes
+from KoocGrammar.KC_Statement import KC_Statement
+
+class   Module(Grammar, KC_Statement):
+    entry = 'Module'
+    grammar = """
+                module = [ "@module" Module.Name:name KC_Statement.kc_statement:body #Mod(current_block, name, body) ]
+
+                Name = [ [['a'..'z']|['A'..'Z']]+ ]
+              """
+
+
+@meta.hook(Module)
+def Mod(self, ast, name, body):
+    if hasattr(body, "body") and body.body:
+        for item in body.body:
+            if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
+                item._ctype._storage = nodes.Storages.STATIC
+                ast.ref.body.append(item)
+    return True

@@ -1,0 +1,23 @@
+
+@import "test_import.kh"
+@import "test_import.kh"
+@import "test_import.kh"
+@import "muf.kh"
+
+int main(int ac, char **av)
+{
+	test *test;
+	char my_buf[MAXBUF]; 
+	char fmt[13];
+	
+	test = test_new("KOOC rulez\n");
+	test_print(test);
+	free(test);
+//	printf("blu %d\n", @!(int)[blu.a]);
+	printf("Tape un truc (c-D pour finir):");
+	sprintf(fmt, "%%%ds", MAXBUF);
+	scanf(fmt, my_buf);
+	test = test_new(my_buf);
+	test_print(test);
+	free(test);
+}
