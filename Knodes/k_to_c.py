@@ -15,4 +15,4 @@ def to_c(self):
     return fmt.end("\n\n", fmt.tab(fmt.sep("\n", lsbody)))
 
 def k_to_c(ast):
-	return ast.to_c()
+    return ast.to_c()
