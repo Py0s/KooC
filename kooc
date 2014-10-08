@@ -2,8 +2,8 @@
 
 import sys
 import os
-from cnorm.passes import to_c
 import KoocFile
+from Knodes import k_to_c
 
 # get entry filename
 
@@ -31,7 +31,7 @@ ast = KoocFile.kooc_a_file(koocFileName)
 
 # to_c call
 
-result = str(ast.to_c())
+result = str(k_to_c.k_to_c(ast))
 
 # writing result
 

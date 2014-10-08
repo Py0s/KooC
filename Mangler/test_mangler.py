@@ -23,13 +23,16 @@ class Unittest_Mangler(unittest.TestCase):
     #     self.assertEquals(res, "funcName_il")
 
     def test_VarMangling(self):
-        res = Mangle.var("varName", typ = "int")
-        res = Mangle.var("varName", typ = "long")
-        res = Mangle.var("varName", typ = "short")
-        res = Mangle.var("varName", typ = "char")
-        res = Mangle.var("varName", typ = "long long")
-        res = Mangle.var("varName", typ = "int", sign = S['UNSIGNED'])
-        res = Mangle.var("varName", typ = "int")
+        res = Mangle.var('varName', typ = 'char')
+        self.assertEqual(res, 'c7varName')
+        res = Mangle.var('varName', typ = 'signed char')
+        self.assertEqual(res, 'Sc7varName')
+        res = Mangle.var('varName', typ = 'int')
+        self.assertEqual(res, 'i7varName')
+        res = Mangle.var('varName', typ = 'int', sign = S['UNSIGNED'])
+        self.assertEqual(res, 'Ui7varName')
+        
+        self.assertRaises(IndexError, Mangle.var, 'tuturu', typ = 'unknown')
 
 if __name__ == "__main__":
     unittest.main()
