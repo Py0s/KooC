@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
 import unittest
-from __init__ import Import
+from KoocGrammar import Import
+import KoocFile
 
-class Unittest_Import(unittest.TestCase):
-    """
-        Doc: https://docs.python.org/3/library/unittest.html
-    """
+class UnittestImport(unittest.TestCase):
 
-    def test_funciton_mangling(self):
-        res = Import.function("functionName", params = "int", params = "long")
-        res = Import.function("functionName", namespace = "className", params = "int", params = "long")
-        res = Import.function("functionName", qual = "const", params = "int", params = "long")
-        res = Import.function("functionName", qual = "const", namespace = "className", params = "int", params = "long")
+	def setUp(self):
+		KoocFile.includePath = "./test/import_test"
+
+	def test_import_infini(self):
+		self.assertTrue(KoocFile.kooc_a_file("import_infini.kh"))
+#import infini, multiple
+#appeler kooc_a_file sur les fichiers de test
 
 if __name__ == "__main__":
     unittest.main()
