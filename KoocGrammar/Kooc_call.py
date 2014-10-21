@@ -13,10 +13,10 @@ class   Kooc_call(Grammar):
                                     module_id:module
                                     [[ function_id:func list_parameter:params #create_func_symbol(_, module, type, func, params)]
                                     |
-                                    '.' variable_id:var #create_var_symbol(_, module, var) ]
+                                    '.' variable_id:var #create_var_symbol(_, module, type, var) ]
                                 ']'
                              ]
-    kooc_type              = [ Base.id ]
+    kooc_type              = [ ['a'..'z'|'A'..'Z'|'*']* ]
     module_id              = [ Base.id ]
     function_id            = [ Base.id ]
     list_parameter         = [ #create_params(_) [':' ["(" kooc_type:type ")"]? assmt_expr_overide:param #save_param(_, type, param)]* ]
@@ -60,6 +60,6 @@ def create_func_symbol(self, ast, module, typo, func, params):
     return True
 
 @meta.hook(Kooc_call)
-def create_var_symbol(self, ast, module, var):
-    ast.set(nodes.Id(self.value(module) + "_" + self.value(var)))
+def create_var_symbol(self, ast, module, typo, var):
+    ast.set(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(var)))
     return True
