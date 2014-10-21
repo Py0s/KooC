@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 import unittest
-from unittests import test_simple_mangling as sm
 
-def suite():
-    test_suite = unittest.TestSuite()
-    #add your test here
-    test_suite.addTest(unittest.makeSuite(sm.UnittestSimpleMangling))
-    return test_suite
+#Add your test here
+tests = [
+    'unittests.test_simple_mangling'
+]
 
-mySuit = suite()
-runner = unittest.TextTestRunner()
-runner.run(mySuit)
+def main():
+    suite = unittest.TestSuite()
+    for test in tests:
+        suite.addTest(unittest.defaultTestLoader.loadTestsFromName(test))
+    unittest.TextTestRunner().run(suite)
+
+if __name__ == '__main__':
+    main()

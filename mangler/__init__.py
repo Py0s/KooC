@@ -1,6 +1,6 @@
 from pyrser import meta
 import Knodes
-import Mangler.simple_mangling as sm
+import mangler.simple_mangling as sm
 
 @meta.add_method(Knodes.Class)
 def mangle(self):

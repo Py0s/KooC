@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
-import Mangler.simple_mangling as sm
+import mangler.simple_mangling as sm
 
 class UnittestSimpleMangling(unittest.TestCase):
     """
