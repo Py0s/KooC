@@ -53,7 +53,7 @@ def type(ident: str, typ: str, qual: str = None, sign = S['SIGNED']):
   res = ''
   if sign == S['UNSIGNED']:
      res = 'U'
-  res += VARS[typ] + Mangle.ident(ident)
+  res += VARS[typ] + identifier(ident)
   return res
 
 def qualifier():

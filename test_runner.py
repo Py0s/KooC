@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-from unittests import unittest_simple_mangling as sm
+from unittests import test_simple_mangling as sm
 
 def suite():
     test_suite = unittest.TestSuite()
