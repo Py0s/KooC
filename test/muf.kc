@@ -23,17 +23,17 @@
 
 int main()
 {
-  printf("%s %d\n", [Test.id], [Test.id]);
-  @!(int)[Test.id] = 3;
+  printf("%s %d\n", @!(char)[Test.id], [Test.id]);
+  @!(int*)[Test.id] = 3;
   int tutu;
   tutu;
   [Test.id];
   toto(4, 3.2);
   tutu();
-  @!(void)[Gun shoot :(int)4 :(float)3.2];
+  @!(void*)[Gun shoot :(int)4 :(float)3.2];
   Gushoot(4, Totoro(4, 3.2));
   [Aun shoot :(int)4 :Totoro(4, 3.2)];
-  @!(float)[Bun shoot :(int)4 :@!(void)[Gun shoot :(int)4 :Totoro(4, 3.2)]];
+  @!(float*)[Bun shoot :(int)4 :@!(void)[Gun shoot :(int*)4 :Totoro(4, 3.2)]];
   Gushoot(4, Tatara());
   [Dun shoot :(int)4 :[Ea tara]];
   [Gun toto];

@@ -5,6 +5,7 @@
 
 @module fu
 {
+  int	a;
 }
 
 @module bla
@@ -21,6 +22,7 @@
 {
   int id = 42;
   char *id = "quarante deux";
+  char id[];
 }
 
 @module Gun
