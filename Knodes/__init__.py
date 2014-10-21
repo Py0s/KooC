@@ -24,3 +24,7 @@ class ImportNode(nodes.BlockStmt):
         self.name = KoocFile.includePath + "/" + self.name[1:]
         self.fileName, fileExtension = os.path.splitext(self.name)
         self.fileNameMacro = (self.fileName.upper() + "_H_").replace("\\", "_").replace(".", "_").replace("/", "_")
+
+class Class(nodes.ComposedType):
+    def __init__(self, identifier: str):
+        super().__init__(identifier);
