@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
 
 import unittest
-from __init__ import Mangle, S as S
+from ..Mangler import simple_mangling as sm
 
 class Unittest_Mangler(unittest.TestCase):
     """
         Doc: https://docs.python.org/3/library/unittest.html
     """
 
+    def test_IdentMangling(self):
+        ident = 'MyName'
+        self.assertEqual(sm.identifier(ident), str(len(ident)) + ident)
+
     def test_VarMangling(self):
-        res = Mangle.var('varName', typ = 'char')
+        res = sm.var('varName', typ = 'char')
         self.assertEqual(res, 'c7varName')
-        res = Mangle.var('varName', typ = 'signed char')
+        res = sm.var('varName', typ = 'signed char')
         self.assertEqual(res, 'Sc7varName')
-        res = Mangle.var('varName', typ = 'int')
+        res = sm.var('varName', typ = 'int')
         self.assertEqual(res, 'i7varName')
-        res = Mangle.var('varName', typ = 'int', sign = S['UNSIGNED'])
+        res = sm.var('varName', typ = 'int', sign = sm.S['UNSIGNED'])
         self.assertEqual(res, 'Ui7varName')
         
-        self.assertRaises(IndexError, Mangle.var, 'tuturu', typ = 'unknown')
+        self.assertRaises(IndexError, sm.var, 'tuturu', typ = 'unknown')
 
     # def test_funciton_mangling(self):
     #     params = ["int", "long"]

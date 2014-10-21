@@ -47,7 +47,7 @@ QUAL = {
 def identifier(ident: str):
      return str(len(ident)) + ident
 
-def var(ident: str, typ: str, qual: str, sign = S['SIGNED']):
+def type(ident: str, typ: str, qual: str = None, sign = S['SIGNED']):
   if typ not in VARS:
      raise IndexError('Mangling type not recognised')
   res = ''
@@ -55,6 +55,9 @@ def var(ident: str, typ: str, qual: str, sign = S['SIGNED']):
      res = 'U'
   res += VARS[typ] + Mangle.ident(ident)
   return res
+
+def qualifier():
+    pass
 
 def function(ident: str, scope: str = '', qual: str = '', params: list = None):
    return  '__' + qual + self.ident(ident) + ''.join(params)

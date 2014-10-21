@@ -25,6 +25,9 @@ class ImportNode(nodes.BlockStmt):
         self.fileName, fileExtension = os.path.splitext(self.name)
         self.fileNameMacro = (self.fileName.upper() + "_H_").replace("\\", "_").replace(".", "_").replace("/", "_")
 
+class Module():
+    pass
+
 class Class(nodes.ComposedType):
     def __init__(self, identifier: str):
         super().__init__(identifier);

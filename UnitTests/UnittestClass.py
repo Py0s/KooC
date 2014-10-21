@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
-import Knodes, Mangler
+from .. import Knodes
 
 class Unittest_Class(unittest.TestCase):
     """
