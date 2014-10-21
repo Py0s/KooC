@@ -1,6 +1,6 @@
 
 from cnorm import nodes
-from pyrser import fmt
+from pyrser import fmt, parsing
 import KoocFile
 import os
 
@@ -25,8 +25,15 @@ class ImportNode(nodes.BlockStmt):
         self.fileName, fileExtension = os.path.splitext(self.name)
         self.fileNameMacro = (self.fileName.upper() + "_H_").replace("\\", "_").replace(".", "_").replace("/", "_")
 
-class Module():
-    pass
+class Module(parsing.Node):
+    def __init__(self):
+        self.declarations = []
+
+    def to_c(self):
+        res = fmt.sep("", [])
+        for elem in self.declarations:
+            res.lsdata.append(elem.to_c())
+        return res
 
 class Class(nodes.ComposedType):
     def __init__(self, identifier: str):
