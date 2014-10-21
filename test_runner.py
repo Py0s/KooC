@@ -4,7 +4,9 @@ import unittest
 
 #Add your test here
 tests = [
-    'unittests.test_simple_mangling'
+    'unittests.test_simple_mangling',
+    'unittests.test_kooc_file',
+    'unittests.test_import',
 ]
 
 def main():
