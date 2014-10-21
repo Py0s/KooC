@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import unittest
-from ..Mangler import simple_mangling as sm
+import Mangler.simple_mangling as sm
 
-class Unittest_Mangler(unittest.TestCase):
+class UnittestSimpleMangling(unittest.TestCase):
     """
         Doc: https://docs.python.org/3/library/unittest.html
     """
