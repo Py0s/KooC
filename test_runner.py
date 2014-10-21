@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import unittest
 
 #Add your test here
@@ -8,8 +9,14 @@ tests = [
 
 def main():
     suite = unittest.TestSuite()
-    for test in tests:
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName(test))
+    if len(sys.argv) > 1:
+        for test in sys.argv[1:]:
+            test = test.replace('.py', '')
+            test = test.replace('/', '.')
+            suite.addTest(unittest.defaultTestLoader.loadTestsFromName(test))
+    else:
+        for test in tests:
+            suite.addTest(unittest.defaultTestLoader.loadTestsFromName(test))
     unittest.TextTestRunner().run(suite)
 
 if __name__ == '__main__':
