@@ -9,8 +9,8 @@ import Knodes
 class   Class(Grammar, KC_Statement):
     entry = 'class'
     grammar = """
-    class = [ #echo("tuturu~") "@class" Class.Name:classe_name
-               classe_kc_statement:>_
+    class = [ "@class" Class.Name:classe_name #echo("tuturu~")
+               classe_kc_statement:body
                #add_classe(current_block, classe_name, body)    ]
 
     classe_kc_statement = [ Statement.single_statement:>_ | classe_k_statement:>_ ]
@@ -32,11 +32,14 @@ class   Class(Grammar, KC_Statement):
               "@member"
               KC_Statement.kc_statement:body
              ]
+
+    Name = [ [['a'..'z']|['A'..'Z']]+ ]
               """
 
 
 @meta.hook(Class)
 def add_classe(self, ast, classe_name, body):
+    print(body)
     if hasattr(body, "body") and body.body:
         classe = Knodes.Class()
         for item in body.body:
