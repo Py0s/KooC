@@ -7,13 +7,31 @@ from KoocGrammar.KC_Statement import KC_Statement
 import Knodes
 
 class   Class(Grammar, KC_Statement):
-    entry = 'Class'
+    entry = 'class'
     grammar = """
-                classe = [ "@classe" Class.Name:classe_name
-                            KC_Statement.kc_statement:body
-                            #add_classe(current_block, classe_name, body) ]
+    class = [ #echo("tuturu~") "@class" Class.Name:classe_name
+               classe_kc_statement:body
+               #add_classe(current_block, classe_name, body)    ]
 
-                Name = [ [['a'..'z']|['A'..'Z']]+ ]
+    classe_kc_statement = [ Statement.single_statement:>_ | classe_k_statement:>_ ]
+    classe_k_statement = [ classe_kc_expression:>_ ]
+    classe_kc_expression = [ classe_expression:>_ ]
+    classe_expression = [
+                as_member_expression:>_
+                [
+                ',':op #new_raw(op, op)
+                as_member_expression:param
+                #new_binary(_, op, param)
+                ]*
+              ]
+
+    as_member_expression = [ member | assignement_expression ]
+
+
+    member = [
+              "@member"
+              KC_Statement.kc_statement:body
+             ]
               """
 
 
