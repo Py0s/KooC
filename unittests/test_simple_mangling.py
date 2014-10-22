@@ -27,4 +27,5 @@ class UnittestSimpleMangling(unittest.TestCase):
     def test_qual_mangling(self):
         res = sm.qual_m('const')
         self.assertEqual(res, 'C_')
-        self.assertRaises(IndexError, sm.qual_m, '')
+        res = sm.qual_m('')
+        self.assertEqual(res, '')
