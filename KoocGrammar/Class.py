@@ -10,7 +10,7 @@ class   Class(Grammar, KC_Statement):
     entry = 'class'
     grammar = """
     class = [ #echo("tuturu~") "@class" Class.Name:classe_name
-               classe_kc_statement:body
+               classe_kc_statement:>_
                #add_classe(current_block, classe_name, body)    ]
 
     classe_kc_statement = [ Statement.single_statement:>_ | classe_k_statement:>_ ]
