@@ -8,7 +8,7 @@ tests = [
     'unittests.test_kooc_file',
     'unittests.test_import',
     'unittests.test_module',
-    'unittests.test_classe',
+    'unittests.test_class',
 ]
 
 def main():
