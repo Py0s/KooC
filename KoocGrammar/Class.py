@@ -34,7 +34,7 @@ class   Class(Grammar, KC_Statement):
                 ]
               |
               [ "@member" "{"
-                [ classe_kc_statement>_ ]*
+                [ classe_kc_statement:>_ ]*
                 "}" ]
              ]
 
