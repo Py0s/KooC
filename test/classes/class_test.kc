@@ -1,0 +1,19 @@
+
+@import "class_test.kh"
+
+@implementation Kyouma
+{
+}
+
+@implementation Titor
+{
+}
+
+int main()
+{
+	Titor t;
+	t.year = 2036;
+	printf("%d\n", t.year);
+	t.send_dmail("Watashi ha mad scientist !");
+	char * mail = t.get_dmail();
+}

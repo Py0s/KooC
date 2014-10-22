@@ -29,8 +29,13 @@ class   Class(Grammar, KC_Statement):
 
 
     member = [
-              "@member"
-              KC_Statement.kc_statement:body
+              [ "@member"
+                KC_Statement.kc_statement:body
+                ]
+              |
+              [ "@member" "{"
+                [ classe_kc_statement>_ ]*
+                "}" ]
              ]
 
     Name = [ [['a'..'z']|['A'..'Z']]+ ]
