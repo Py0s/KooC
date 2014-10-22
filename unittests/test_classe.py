@@ -2,6 +2,7 @@
 
 import unittest
 from KoocGrammar import KoocG
+from cnorm.passes import to_c
 
 class Unittest_Classe(unittest.TestCase):
     """
@@ -9,16 +10,18 @@ class Unittest_Classe(unittest.TestCase):
     """
 
     def setUp(self):
-    	self.kooc_g = KoocG()
+        self.kooc_g = KoocG()
 
     def test_ClasseEmpty(self):
-    	self.assertEqual((self.kooc_g.parse("""
-    		struct Kyouma
-    		{}
-    		""")).to_c(), (self.kooc_g.parse("""
-    		struct Kyouma
-    		{}
-    		""")).to_c())
+        ast = self.kooc_g.parse("""
+            @class Kyouma
+            {}
+            """)
+        print(ast)
+        self.assertEqual(ast.to_c(), (self.kooc_g.parse("""
+            struct ~~~Kyouma~~~
+            {}Kyouma;
+            """)).to_c())
 
 if __name__ == "__main__":
     unittest.main()
