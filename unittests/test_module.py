@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import unittest
-from KoocGrammar import Module
 from KoocGrammar import KoocG
+from KoocGrammar import Module
 from cnorm.passes import to_c
 
 class UnittestModule(unittest.TestCase):
@@ -60,7 +60,7 @@ class UnittestModule(unittest.TestCase):
         self.assertEqual(res,
                         "")
 
-    ## TODO : A mettre dans implementation
+    ## TODO : A mettre dans test_implementation
     ## def test_simple_koocCall_in_function(self):
     ##     res = str(self.cparse.parse(
     ##         """
