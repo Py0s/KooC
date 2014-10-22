@@ -1,7 +1,4 @@
-from pyrser import meta
-import Knodes
+__all__ = ['mangle', 'simple_mangling', 'sm']
+import mangler.mangle
+import mangler.simple_mangling
 import mangler.simple_mangling as sm
-
-@meta.add_method(Knodes.Class)
-def mangle(self):
-    self._identifier = 'K' + sm.identifier(self._identifier)
