@@ -1,5 +1,7 @@
-from cnorm.nodes import Signs
+from cnorm.nodes import Signs, Qualifiers
 S = Signs.map
+Q = Qualifiers.map
+#Sp = Specifiers.map
 
 VARS = {
    'char':'c',
@@ -24,6 +26,9 @@ def type_m(typ: str, sign = S['SIGNED']):
   return res
 
 def qual_m(qual: str):
-  if qual == '':
-    raise IndexError('Qual size should not be empty')
-  return qual[0].upper() + '_'
+    if len(qual) == 0:
+        return ''
+    if qual.upper() not in Q:
+        print('Warning: should not be unknown')
+        return ''
+    return qual[0].upper() + '_'
