@@ -9,7 +9,7 @@ import Knodes
 class   Class(Grammar, KC_Statement):
     entry = 'class'
     grammar = """
-    class = [ "@class" Class.Name:classe_name #echo("tuturu~")
+    class = [ "@class" Class.Name:classe_name
                classe_kc_statement:body
                #add_classe(current_block, classe_name, body)    ]
 
@@ -30,7 +30,7 @@ class   Class(Grammar, KC_Statement):
 
     member = [
               "@member"
-              KC_Statement.kc_statement:body
+              KC_Statement.kc_statement:>_
              ]
 
     Name = [ [['a'..'z']|['A'..'Z']]+ ]
@@ -39,12 +39,16 @@ class   Class(Grammar, KC_Statement):
 
 @meta.hook(Class)
 def add_classe(self, ast, classe_name, body):
-    print(body)
     if hasattr(body, "body") and body.body:
-        classe = Knodes.Class()
         for item in body.body:
-            if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
-                item._ctype._storage = nodes.Storages.STATIC
-                classe.declarations.append(item)
-        ast.ref.body.append(classe)
+            print("item : ", item)
+            ast.ref.body.append(item)
+            struct = nodes.ComposedType("")
+            if hasattr(struct, "_specifier"):
+                struct._specifier = nodes.Specifiers.STRUCT
+                struct.fields = []
+                struct.fields.append(item)
+                print("struct : ", struct)
+    ## classe = Knodes.Class(classe_name)
+    ## ast.ref.body.append(classe)
     return True
