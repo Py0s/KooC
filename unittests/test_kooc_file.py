@@ -17,8 +17,8 @@ class UnittestKoocFile(unittest.TestCase):
 
     def test_register_file(self):
         KoocFile.register_file("muf.kc")
-        self.assertTrue(KoocFile.is_file_imported, "muf.kc")
-        self.assertTrue(KoocFile.is_file_imported, "muf.kh")
+        self.assertTrue(KoocFile.is_file_imported("muf.kc"))
+        self.assertFalse(KoocFile.is_file_imported("muf.kh"))
         self.assertFalse(KoocFile.is_file_imported("test.kc"))
 
 if __name__ == "__main__":
