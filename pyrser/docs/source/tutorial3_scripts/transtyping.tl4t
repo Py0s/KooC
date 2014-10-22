@@ -1,3 +1,0 @@
-var s : string;
-s = "toto" + 42;
-print(s);
