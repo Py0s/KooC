@@ -1,0 +1,12 @@
+
+typedef struct John
+{
+	int	year;
+}	Titor;
+
+int main()
+{
+	Titor t;
+	t.year = 2036;
+	printf("%d\n", t.year);
+}
