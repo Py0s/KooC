@@ -7,6 +7,7 @@ tests = [
     'unittests.test_simple_mangling',
     'unittests.test_kooc_file',
     'unittests.test_import',
+    'unittests.test_module',
     'unittests.test_classe',
 ]
 
