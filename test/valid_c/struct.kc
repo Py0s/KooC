@@ -1,8 +1,4 @@
-
-typedef struct John
-{
-	int	year;
-}	Titor;
+@import "struct.kh"
 
 int main()
 {

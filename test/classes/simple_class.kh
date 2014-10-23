@@ -1,5 +1,6 @@
 
 @class Kyouma
 {
-	int mad;
+  int mad;
+  void sonavubitch(char *itssocooooool);
 }

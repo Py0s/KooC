@@ -1,5 +1,5 @@
 
-@import "simple_class.kh"
+@import "empty_class.kh"
 
 @implementation Kyouma
 {

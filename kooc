@@ -2,8 +2,12 @@
 
 import sys
 import os
-import KoocFile
-from Knodes import k_to_c
+try:
+    import KoocFile
+    from Knodes import k_to_c
+except KeyboardInterrupt:
+    print("")
+    sys.exit(0)
 
 # get entry filename
 
@@ -31,9 +35,11 @@ ast = KoocFile.kooc_a_file(koocFileName)
 
 # to_c call
 
-result = str(k_to_c.k_to_c(ast))
+try:
+    result = str(k_to_c.k_to_c(ast))
+    # writing result
+    fout.write(result)
+except AttributeError:
+    print("Error on parsing")
 
-# writing result
-
-fout.write(result)
 fout.close()

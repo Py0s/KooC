@@ -9,9 +9,9 @@ import Knodes
 class   Class(Grammar, KC_Statement):
     entry = 'class'
     grammar = """
-    class = [ "@class" Class.Name:classe_name
+    class = [ "@class" Class.Name:class_name
                classe_kc_statement:body
-               #add_classe(current_block, classe_name, body)    ]
+               #add_class(current_block, class_name, body)    ]
 
     classe_kc_statement = [ Statement.single_statement:>_ | classe_k_statement:>_ ]
     classe_k_statement = [ classe_kc_expression:>_ ]
@@ -43,17 +43,15 @@ class   Class(Grammar, KC_Statement):
 
 
 @meta.hook(Class)
-def add_classe(self, ast, classe_name, body):
+def add_class(self, ast, class_name, body):
     if hasattr(body, "body") and body.body:
+        struct = nodes.ComposedType("Hououin") ## TODO : Nom de la classe manglé
+        struct._specifier = nodes.Specifiers.STRUCT
+        struct._storage = nodes.Storages.TYPEDEF
+        struct.fields = []
         for item in body.body:
-            print("item : ", item)
-            ast.ref.body.append(item)
-            struct = nodes.ComposedType("")
-            if hasattr(struct, "_specifier"):
-                struct._specifier = nodes.Specifiers.STRUCT
-                struct.fields = []
-                struct.fields.append(item)
-                print("struct : ", struct)
-    ## classe = Knodes.Class(classe_name)
-    ## ast.ref.body.append(classe)
+            struct.fields.append(item)
+        Declstruct = nodes.Decl(self.value(class_name))
+        Declstruct._ctype = struct
+        ast.ref.body.append(Declstruct)
     return True

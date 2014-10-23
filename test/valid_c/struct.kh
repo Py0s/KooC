@@ -1,0 +1,4 @@
+typedef struct	John
+{
+  int		year;
+}		Titor;
