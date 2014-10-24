@@ -7,5 +7,5 @@ from pyrser import meta
 class KC_Statement(Grammar, Statement, K_Statement):
     entry = "expression_statement"
     grammar = """
-            kc_statement = [ Statement.single_statement:>_ | K_Statement.k_statement:>_ ]
+    kc_statement = [ Statement.single_statement:>_ ]
     """

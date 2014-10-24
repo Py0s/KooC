@@ -1,15 +1,11 @@
-
-@class Kyouma
-{
-}
-
-
 @class Titor
 {
-	@member int	year;
-	@member {
-		char * dmail;
-		void * get_dmail(void);
-	}
-	void send_dmail(Titor *this, char * mail);
+  char * John;
+  @member
+  {
+      char *dmail;
+      void *get_dmail(void);
+  }
+  void send_dmail(void *this, char * mail);
+  @member  int	year;
 }

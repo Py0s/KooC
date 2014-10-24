@@ -9,33 +9,27 @@ import Knodes
 class   Class(Grammar, KC_Statement):
     entry = 'class'
     grammar = """
-    class = [ "@class" Class.Name:class_name
-               classe_kc_statement:body
-               #add_class(current_block, class_name, body)    ]
+    class = [  "@class" Class.Name:class_name
+               KC_Statement.kc_statement:body
+               #add_class(current_block, class_name, body)
+               #echo("Hououin Kyouma!")
+            ]
 
-    classe_kc_statement = [ Statement.single_statement:>_ | classe_k_statement:>_ ]
-    classe_k_statement = [ classe_kc_expression:>_ ]
-    classe_kc_expression = [ classe_expression:>_ ]
-    classe_expression = [
-                as_member_expression:>_
-                [
-                ',':op #new_raw(op, op)
-                as_member_expression:param
-                #new_binary(_, op, param)
-                ]*
-              ]
+    member = [ "@member"
+               [
+                 ['{'
+                  __scope__:current_block
+                  #new_member(_, current_block)
+                  declaration*
+                 '}']
+                 |
+                 [__scope__:current_block
+                  #new_member(_, current_block)
+                  declaration*]
+               ]
 
-    as_member_expression = [ member | assignement_expression ]
-
-
-    member = [
-              [ "@member"
-                KC_Statement.kc_statement:body
-                ]
-              |
-              [ "@member" "{"
-                [ classe_kc_statement:>_ ]*
-                "}" ]
+               #print_member_body(current_block)
+               #echo("Mad Scientist!")
              ]
 
     Name = [ [['a'..'z']|['A'..'Z']]+ ]
@@ -43,7 +37,23 @@ class   Class(Grammar, KC_Statement):
 
 
 @meta.hook(Class)
+def new_member(self, ast, current_block):
+    ast.set(nodes.BlockStmt([]))
+    current_block.ref = ast
+    parent = self.rule_nodes.parents
+    if 'current_block' in parent:
+        current_block.ref.types = parent['current_block'].ref.types.new_child()
+    return True
+
+@meta.hook(Class)
+def print_member_body(self, block):
+    ## print("MEMBER BLOCK ---> ", block)
+    ## print(self._stream.peek_char)
+    return True
+
+@meta.hook(Class)
 def add_class(self, ast, class_name, body):
+    ## print("CLASS BODY --> ", body)
     if hasattr(body, "body") and body.body:
         struct = nodes.ComposedType("Hououin") ## TODO : Nom de la classe manglé
         struct._specifier = nodes.Specifiers.STRUCT

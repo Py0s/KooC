@@ -1,6 +1,7 @@
 
 from pyrser.grammar import Grammar
 from KoocGrammar.KC_Expression import KC_Expression
+from pyrser import meta
 
 class K_Statement(Grammar, KC_Expression):
     entry = "k_statement"
