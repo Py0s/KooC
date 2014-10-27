@@ -1,136 +1,87 @@
+from pyrser import fmt, parsing
 from cnorm import nodes
+import KoocFile
+import os
 
-# class K_(nodes.??):
-#     def __init__(self, call_expr, params):
-#         super().__init__(call_expr, params)
+class Import(nodes.BlockStmt):
+    """Import"""
+    def __init__(self, name):
+        self.name = name
+        self.cut_header_name()
+        body = nodes.Raw("")
+        self.already_imported = KoocFile.is_file_imported(self.fileNameMacro)
+        if not self.already_imported:
+            self.ifndef = nodes.Raw("#ifndef " + self.fileNameMacro)
+            self.define = nodes.Raw("# define " + self.fileNameMacro)
+            self.endif = nodes.Raw("#endif /* " + self.fileNameMacro + " */")
+            KoocFile.register_file(self.fileNameMacro)
+            body = KoocFile.kooc_a_file(self.fileName + ".kh")
+        super().__init__(body)
 
-#     def to_c(self):
-#         return syper().to_c()
+    def cut_header_name(self):
+        self.name = KoocFile.includePath + "/" + self.name[1:]
+        self.fileName, fileExtension = os.path.splitext(self.name)
+        self.fileNameMacro = (self.fileName.upper() + "_H_").replace("\\", "_").replace(".", "_").replace("/", "_")
 
-#     def mangle(self):
-#         return
+class Module(parsing.Node):
+    def __init__(self):
+        self.declarations = []
 
-class   k_decl_type(nodes.DeclType):
+class Class(nodes.ComposedType):
+    def __init__(self, identifier: str):
+        super().__init__(identifier);
+
+class KDeclType(nodes.DeclType):
     """For type in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_pointer_type(nodes.PointerType):
+class KPointerType(nodes.PointerType):
     """For pointer in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_array_type(nodes.ArrayType):
+class KArrayType(nodes.ArrayType):
     """For array in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_paren_type(nodes.ParenType):
+class KParenType(nodes.ParenType):
     """For parenthesis in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_qual_type(nodes.QualType):
+class KQualType(nodes.QualType):
     """For qualifier in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_attr_type(nodes.AttrType):
+class KAttrType(nodes.AttrType):
     """For attribute specifier in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_ctype(nodes.CType):
+class KType(nodes.CType):
     """Base for primary/func"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_primary_type(nodes.PrimaryType):
+class KPrimaryType(nodes.PrimaryType):
     """For primary type in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_composed_type(nodes.ComposedType):
+class KComposedType(nodes.ComposedType):
     """For composed type in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_func_type(nodes.FuncType):
+class KFuncType(nodes.FuncType):
     """For function in declaration"""
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
 
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
-
-
-class   k_decl(nodes.Decl):
+class KDecl(nodes.Decl):
     """For basic declaration
     A declaration contains the following attributes:
     * _name: name of the declaration
@@ -140,9 +91,3 @@ class   k_decl(nodes.Decl):
     * body: when it's function definition """
     def __init__(self, call_expr, params):
         super().__init__(call_expr, params)
-
-    def to_c(self):
-        return syper().to_c()
-
-    def mangle(self):
-        return
