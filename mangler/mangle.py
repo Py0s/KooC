@@ -1,6 +1,6 @@
 from pyrser import meta
-import Knodes
+import knodes
 
-@meta.add_method(Knodes.Class)
+@meta.add_method(knodes.Class)
 def mangle(self):
     self._identifier = 'K' + simple_mangling.identifier(self._identifier)

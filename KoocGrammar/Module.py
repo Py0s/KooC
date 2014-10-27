@@ -4,7 +4,7 @@ from pyrser.grammar import Grammar
 from pyrser import meta
 from cnorm import nodes
 from KoocGrammar.KC_Statement import KC_Statement
-import Knodes
+import knodes
 
 class   Module(Grammar, KC_Statement):
     entry = 'module'
@@ -20,7 +20,7 @@ class   Module(Grammar, KC_Statement):
 @meta.hook(Module)
 def add_module(self, ast, module_name, body):
     if hasattr(body, "body") and body.body:
-        module = Knodes.Module()
+        module = knodes.Module()
         for item in body.body:
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
                 item._ctype._storage = nodes.Storages.STATIC

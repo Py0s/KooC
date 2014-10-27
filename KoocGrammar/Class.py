@@ -4,7 +4,7 @@ from pyrser.grammar import Grammar
 from pyrser import meta
 from cnorm import nodes
 from KoocGrammar.KC_Statement import KC_Statement
-import Knodes
+import knodes
 
 class   Class(Grammar, KC_Statement):
     entry = 'class'

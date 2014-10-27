@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
-import Knodes
+import knodes
 from KoocGrammar import KoocG
 from cnorm.passes import to_c
 
@@ -15,7 +15,7 @@ class Unittest_Class(unittest.TestCase):
 
     def test_ClassIdentifierMangling(self):
         identifier = "MyClass"
-        test = Knodes.Class(identifier)
+        test = knodes.Class(identifier)
         test.mangle()
         self.assertEqual(test.identifier, "K" + str(len(identifier)) + identifier)
 

@@ -4,7 +4,7 @@ import sys
 import os
 try:
     import KoocFile
-    from Knodes import k_to_c
+    from knodes import to_c
 except KeyboardInterrupt:
     print("")
     sys.exit(0)
@@ -36,7 +36,7 @@ ast = KoocFile.kooc_a_file(koocFileName)
 # to_c call
 
 try:
-    result = str(k_to_c.k_to_c(ast))
+    result = str(to_c.k_to_c(ast))
     # writing result
     fout.write(result)
 except AttributeError:

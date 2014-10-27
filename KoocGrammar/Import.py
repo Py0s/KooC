@@ -2,7 +2,7 @@
 
 from pyrser.grammar import Grammar
 from pyrser import meta
-import Knodes
+import knodes
 
 class   Import(Grammar):
     entry = 'translation_unit'
@@ -15,5 +15,5 @@ class   Import(Grammar):
 
 @meta.hook(Import)
 def Imp(self, ast, name):
-    ast.ref.body.append(Knodes.ImportNode(self.value(name)))
+    ast.ref.body.append(knodes.Import(self.value(name)))
     return True
