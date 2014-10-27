@@ -1,6 +1,7 @@
 
 from pyrser import meta, fmt
 from cnorm.passes import to_c
+import knodes
 
 def k_to_c(ast):
     return ast.to_c()
