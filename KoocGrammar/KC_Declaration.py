@@ -244,7 +244,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
         kc_enumerator = [
-            identifier:i
+            kc_identifier:i
             __scope__:c
             ['=' kc_constant_expression:>c]?
             #new_enumerator(_, i, c)
@@ -292,7 +292,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
         kc_declarator_recurs = [
-            kc_pointer absolute_declarator:>_
+            kc_pointer kc_absolute_declarator:>_
         ]
 
         kc_pointer = [
@@ -302,7 +302,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
             ]*
         ]
 
-        kc_f_or_v_id = [ identifier ]
+        kc_f_or_v_id = [ kc_identifier ]
         kc_absolute_declarator = [
                 [
                     '('
@@ -337,7 +337,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
                 '('
                 #open_params(local_specifier)
                 [
-                    //kr_parameter_type_list
+                    //kc_kr_parameter_type_list
                     //|
                     kc_parameter_type_list
                 ]?
@@ -413,7 +413,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         kc_type_name = [
             __scope__:local_specifier
             #create_ctype(local_specifier)
-            kc_declaration_specifier+ declarator:>_
+            kc_declaration_specifier+ kc_declarator:>_
         ]
 
         ///////// OVERLOAD OF STATEMENT
@@ -461,10 +461,10 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
             __scope__:n
             [
                 '(' kc_type_name:>n ')'
-                | kc_Expression.unary_expression:>n
+                | KC_Expression.unary_expression:>n
             ]
             #new_sizeof(_, i, n)
-            | kc_Expression.unary_expression:>_
+            | KC_Expression.unary_expression:>_
         ]
 
         // ({}) and __builtin_offsetof
