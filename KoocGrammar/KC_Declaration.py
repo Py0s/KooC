@@ -421,7 +421,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         kc_line_of_code = [
                     kc_declaration
                 |
-                    kc_single_statement:line
+                    kc_single_statement:line 
                     #end_loc(current_block, line)
         ]
 
@@ -464,7 +464,8 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
                 | KC_Expression.unary_expression:>n
             ]
             #new_sizeof(_, i, n)
-            | KC_Expression.unary_expression:>_
+            |
+            KC_Expression.kc_unary_expression:>_
         ]
 
         // ({}) and __builtin_offsetof
