@@ -65,7 +65,7 @@ def add_class(self, ast, class_name, body):
         decl_struct = nodes.Decl(name)
         decl_struct._ctype = class_var
         ast.ref.body.append(decl_struct)
-        ast.ref.body.append(myModule)
+        ##ast.ref.body.append(myModule)
     return True
 
 @meta.hook(Class)

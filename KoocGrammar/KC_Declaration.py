@@ -121,6 +121,8 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
             kc_preproc_decl
             |
             kc_asm_decl
+            |
+            K_Declaration.k_declaration
         ]
 
         kc_preproc_decl = [

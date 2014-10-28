@@ -9,9 +9,26 @@ import knodes
 class   Module(Grammar, KC_Statement):
     entry = 'module'
     grammar = """
-                module = [ "@module" Module.Name:module_name
-                           KC_Statement.kc_statement:body
-                           #add_module(current_block, module_name, body) ]
+                module = [  "@module"
+                            Module.Name:module_name
+                            module_single_statement:body
+                            //KC_Statement.kc_single_statement:body
+                            #add_module(current_block, module_name, body) ]
+
+                module_single_statement = [ module_compound_statement:>_ ]
+
+                module_compound_statement = [
+                    [
+                     '{'
+                        __scope__:current_block
+                        #new_blockstmt(_, current_block)
+                        [
+                            kc_line_of_code
+                            //kc_declaration
+                        ]*
+                     '}'
+                    ]
+                ]
 
                 Name = [ [['a'..'z']|['A'..'Z']]+ ]
               """
