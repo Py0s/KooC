@@ -489,3 +489,404 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
     """
+
+# @meta.hook(Declaration)
+# def check_asm(self, ident):
+#     ident_value = self.value(ident)
+#     if ident_value in Idset and Idset[ident_value] == "asm":
+#         return True
+#     return False
+
+
+# @meta.hook(Declaration)
+# def check_quali(self, ident):
+#     ident_value = self.value(ident)
+#     if ident_value in Idset and Idset[ident_value] == "qualifier":
+#         return True
+#     return False
+
+
+# @meta.hook(Declaration)
+# def check_asmattr(self, ident):
+#     ident_value = self.value(ident)
+#     if ((ident_value in Idset and (Idset[ident_value] == "asm"
+#          or Idset[ident_value] == "attribute"))):
+#         return True
+#     return False
+
+
+@meta.hook(Declaration)
+def new_root(self, ast, current_block):
+    type(ast)
+    ast.set(knodes.KRootBlockStmt([]))
+    current_block.ref = ast
+    return True
+
+
+# @meta.rule(Declaration, "preproc_directive")
+# def preproc_directive(self) -> bool:
+#     """Consume a preproc directive."""
+#     self._stream.save_context()
+#     if self.read_until("\n", '\\'):
+#         return self._stream.validate_context()
+#     return self._stream.restore_context()
+
+
+# @meta.hook(Declaration)
+# def raw_decl(self, decl):
+#     decl.set(nodes.Raw(self.value(decl)))
+#     return True
+
+
+# @meta.hook(Declaration)
+# def create_ctype(self, lspec):
+#     lspec.ctype = None
+#     return True
+
+
+# @meta.hook(Declaration)
+# def copy_ctype(self, lspec, previous):
+#     lspec.ctype = previous.ctype.copy()
+#     return True
+
+
+@meta.hook(Declaration)
+def new_decl_spec(self, lspec, i, current_block):
+    idsetval = ""
+    i_value = self.value(i)
+    if i_value in Idset:
+        idsetval = Idset[i_value]
+    # don't fuck with reserved keywords
+    if idsetval == "reserved":
+        return False
+    # not for asm or attribute
+    if idsetval != "" and idsetval[0] != 'a':
+        lspec.ctype = nodes.makeCType(i_value, lspec.ctype)
+        return True
+    if ((hasattr(current_block.ref, 'types')
+         and i_value in current_block.ref.types)):
+        if lspec.ctype is None:
+            lspec.ctype = nodes.PrimaryType(i_value)
+        else:
+            lspec.ctype._identifier = i_value
+        lspec.ctype._identifier = i_value
+        return True
+    return False
+
+
+# @meta.hook(Declaration)
+# def add_body(self, ast, body):
+#     ast.body = body
+#     return True
+
+
+@meta.hook(Declaration)
+def end_decl(self, current_block, ast):
+    current_block.ref.body.append(ast)
+    if ((hasattr(ast, 'ctype') and ast._name != ""
+         and ast.ctype._storage == nodes.Storages.TYPEDEF)):
+        current_block.ref.types[ast._name] = ref(ast)
+    return True
+
+
+@meta.hook(Declaration)
+def not_empty(self, current_block, dsp, decl):
+    # empty declspec only in global scope
+    if type(current_block.ref) is nodes.KBlockStmt and self.value(dsp) == "":
+        return False
+    return True
+
+
+# @meta.hook(Declaration)
+# def colon_expr(self, ast, expr):
+#     ast.colon_expr(expr)
+#     return True
+
+
+# @meta.hook(Declaration)
+# def assign_expr(self, ast, expr):
+#     ast.assign_expr(expr)
+#     return True
+
+
+# @meta.hook(Declaration)
+# def is_composed(self, lspec):
+#     if ((lspec.ctype._specifier == nodes.Specifiers.STRUCT
+#          or lspec.ctype._specifier == nodes.Specifiers.UNION)):
+#             return True
+#     return False
+
+
+# @meta.hook(Declaration)
+# def is_enum(self, lspec):
+#     if lspec.ctype._specifier == nodes.Specifiers.ENUM:
+#         return True
+#     return False
+
+
+# @meta.hook(Declaration)
+# def is_typeof(self, i):
+#     i_value = self.value(i)
+#     if i_value in Idset and Idset[i_value] == "typeof":
+#         return True
+#     return False
+
+
+@meta.hook(Declaration)
+def add_typeof(self, lspec, tof):
+    lspec.ctype = knodes.KPrimaryType("typeof" + self.value(tof))
+    return True
+
+
+@meta.hook(Declaration)
+def add_qual(self, lspec, qualspec):
+    dspec = self.value(qualspec)
+    if dspec in Idset and Idset[dspec] == "qualifier":
+        cleantxt = dspec.strip("_")
+        lspec.ctype.push(
+            knodes.KQualType(knodes.KQualifiers.map[cleantxt.upper()])
+        )
+        return True
+    return False
+
+
+# @meta.hook(Declaration)
+# def add_attr_specifier(self, lspec, attrspec):
+#     if lspec.ctype is None:
+#         lspec.ctype = nodes.makeCType('int', lspec.ctype)
+#     lspec.ctype.push(nodes.AttrType(self.value(attrspec)))
+#     return True
+
+
+# @meta.hook(Declaration)
+# def add_attr_composed(self, lspec, attrspec):
+#     if not hasattr(lspec.ctype, '_attr_composed'):
+#         lspec.ctype._attr_composed = []
+#     lspec.ctype._attr_composed.append(self.value(attrspec))
+#     return True
+
+
+# @meta.hook(Declaration)
+# def add_attr_decl(self, lspec, attrspec):
+#     if not hasattr(lspec, '_attr_decl'):
+#         lspec._attr_decl = []
+#     lspec._attr_decl.append(self.value(attrspec))
+#     return True
+
+
+@meta.hook(Declaration)
+def add_composed(self, lspec, n, block):
+    ctype = knodes.KComposedType(self.value(n))
+    if lspec.ctype is not None:
+        ctype._storage = lspec.ctype._storage
+        ctype._specifier = lspec.ctype._specifier
+        if hasattr(lspec.ctype, '_attr_composed'):
+            ctype._attr_composed = lspec.ctype._attr_composed
+    lspec.ctype = ctype
+    if hasattr(block, 'body'):
+        lspec.ctype.fields = block.body
+    return True
+
+
+@meta.hook(Declaration)
+def add_enum(self, lspec, n, block):
+    ctype = knodes.KComposedType(self.value(n))
+    if lspec.ctype is not None:
+        ctype._storage = lspec.ctype._storage
+        ctype._specifier = lspec.ctype._specifier
+    lspec.ctype = ctype
+    if hasattr(block, 'list'):
+        lspec.ctype.enums = block.list
+    return True
+
+
+# @meta.hook(Declaration)
+# def add_enumerator(self, ast, enum):
+#     if not hasattr(ast, 'list'):
+#         ast.list = []
+#     ast.list.append(enum)
+#     return True
+
+
+@meta.hook(Declaration)
+def new_enumerator(self, ast, ident, constexpr):
+    ast.set(knodes.KEnumerator(self.value(ident), constexpr))
+    return True
+
+
+@meta.hook(Declaration)
+def new_composed(self, ast, current_block):
+    ast.set(knodes.KBlockStmt([]))
+    current_block.ref = ast
+    parent = self.rule_nodes.parents
+    if 'current_block' in parent:
+        current_block.ref.types = parent['current_block'].ref.types.new_child()
+    return True
+
+
+@meta.hook(Declaration)
+def first_pointer(self, lspec):
+    if not hasattr(lspec, 'ctype') or lspec.ctype is None:
+        lspec.ctype = nodes.makeCType('int', lspec.ctype)
+    lspec.ctype.push(knodes.KPointerType())
+    return True
+
+
+@meta.hook(Declaration)
+def commit_declarator(self, ast, lspec):
+    if hasattr(lspec.ctype, '_params'):
+        lspec.ctype.__class__ = knodes.KFuncType
+    name = ""
+    if hasattr(lspec, '_name'):
+        name = lspec._name
+    ast.set(knodes.KDecl(name, lspec.ctype))
+    return True
+
+
+@meta.hook(Declaration)
+def add_pointer(self, lspec):
+    if not hasattr(lspec, 'ctype'):
+        lspec.ctype = nodes.makeCType('int', lspec.ctype)
+    if not hasattr(lspec.ctype, 'push'):
+        return False
+    lspec.ctype.push(knodes.KPointerType())
+    return True
+
+
+@meta.hook(Declaration)
+def add_paren(self, lspec):
+    if not hasattr(lspec, 'ctype') or lspec.ctype is None:
+        lspec.ctype = nodes.makeCType('int')
+    paren = knodes.KParenType()
+    if not hasattr(lspec, 'cur_paren'):
+        lspec.cur_paren = []
+        lspec.cur_paren.append(ref(lspec.ctype))
+    last = lspec.cur_paren.pop()
+    lspec.cur_paren.append(ref(paren))
+    lspec.cur_paren.append(last)
+    lspec.ctype.push(paren)
+    return True
+
+
+@meta.hook(Declaration)
+def add_ary(self, lspec, expr):
+    if not hasattr(lspec, 'ctype') or lspec.ctype is None:
+        lspec.ctype = nodes.makeCType('int')
+    if not hasattr(lspec, 'cur_paren'):
+        lspec.cur_paren = []
+        lspec.cur_paren.append(ref(lspec.ctype))
+    lspec.cur_paren[-1]().push(knodes.KArrayType(expr))
+    return True
+
+
+# @meta.hook(Declaration)
+# def name_absdecl(self, ast, ident):
+#     ident_value = self.value(ident)
+#     if ident_value != "":
+#         ast._name = ident_value
+#         ast._could_be_fpointer = True
+#     return True
+
+
+# @meta.hook(Declaration)
+# def close_paren(self, lspec):
+#     lspec.cur_paren.pop()
+#     return True
+
+
+# @meta.hook(Declaration)
+# def open_params(self, lspec):
+#     if lspec.ctype is None:
+#         lspec.ctype = nodes.makeCType('int')
+#     if not hasattr(lspec, 'cur_paren'):
+#         lspec.cur_paren = []
+#         lspec.cur_paren.append(ref(lspec.ctype))
+#     if not hasattr(lspec.cur_paren[-1](), '_params'):
+#         lspec.cur_paren[-1]()._params = []
+#     return True
+
+
+# @meta.hook(Declaration)
+# def add_param(self, lspec, param):
+#     lspec.cur_paren[-1]()._params.append(param)
+#     return True
+
+
+# @meta.hook(Declaration)
+# def add_ellipsis(self, lspec):
+#     lspec.cur_paren[-1]()._ellipsis = True
+#     return True
+
+
+@meta.hook(Declaration)
+def new_blockinit(self, init_list):
+    init_list.set(knodes.KBlockInit([]))
+    return True
+
+
+@meta.hook(Declaration)
+def new_blockexpr(self, ast, current_block):
+    ast.set(knodes.KBlockExpr([]))
+    current_block.ref = ast
+    parent = self.rule_nodes.parents
+    if 'current_block' in parent:
+        current_block.ref.types = parent['current_block'].ref.types.new_child()
+    return True
+
+
+# @meta.hook(Declaration)
+# def add_init(self, ast, expr, designation):
+#     ast.body.append(expr)
+#     dvalue = self.value(designation)
+#     if dvalue != "":
+#         ast.body[-1].designation = dvalue
+#     return True
+
+
+# @meta.hook(Declaration)
+# def for_decl_begin(self, current_block):
+#     current_block.ref = Node()
+#     current_block.ref.body = []
+#     # new to link this fake body to other block
+#     parent = self.rule_nodes.parents
+#     if 'current_block' in parent:
+#         current_block.ref.types = parent['current_block'].ref.types.new_child()
+#     return True
+
+
+# @meta.hook(Declaration)
+# def for_decl_end(self, init, current_block):
+#     if len(current_block.ref.body) > 0:
+#         init.set(current_block.ref.body[0])
+#     return True
+
+
+@meta.hook(Declaration)
+def to_cast(self, ast, typename):
+    expr = Node()
+    expr.set(ast)
+    ast.set(knodes.KCast(knodes.KRaw('()'), [typename.ctype, expr]))
+    return True
+
+
+# @meta.hook(Declaration)
+# def sizeof(self, ident):
+#     ident_value = self.value(ident)
+#     if ident_value in Idset and Idset[ident_value] == "sizeof":
+#         return True
+#     return False
+
+
+# @meta.hook(Declaration)
+# def new_sizeof(self, ast, i, n):
+#     thing = n
+#     if isinstance(thing, knodes.KDecl):
+#         thing = n.ctype
+#     ast.set(knodes.KSizeof(knodes.KRaw(self.value(i)), [thing]))
+#     return True
+
+
+# @meta.hook(Declaration)
+# def new_builtoffset(self, ast, bof):
+#     ast.set(knodes.KRaw("__builtin_offsetof(" + self.value(bof) + ")"))
+#     return True

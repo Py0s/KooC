@@ -135,3 +135,105 @@ class KC_Statement(Grammar, Statement, K_Statement):
         ]
 
     """
+
+@meta.hook(KC_Statement)
+def new_expr(self, ast, expr):
+    ast.set(knodes.KExprStmt(expr))
+    return True
+
+
+# @meta.hook(KC_Statement)
+# def new_if(self, ast, cond_expr, then_expr, else_expr):
+#     ast.set(nodes.If(cond_expr, then_expr, else_expr))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_for(self, ast, init, cond, inc, body):
+#     ast.set(nodes.For(init, cond, inc, body))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_while(self, ast, cond, body):
+#     ast.set(nodes.While(cond, body))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_switch(self, ast, cond, body):
+#     ast.set(nodes.Switch(cond, body))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_do(self, ast, cond, body):
+#     ast.set(nodes.Do(cond, body))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_return(self, ast, expr):
+#     ast.set(nodes.Return(expr))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_goto(self, ast, expr):
+#     ast.set(nodes.Goto(expr))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_range(self, ast, expr):
+#     begin = Node()
+#     begin.set(ast)
+#     ast.set(nodes.Range(nodes.Raw('...'), [begin, expr]))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_case(self, ast, expr):
+#     ast.set(nodes.Case(expr))
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_break(self, ast):
+#     ast.set(nodes.Break())
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_continue(self, ast):
+#     ast.set(nodes.Continue())
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def new_label(self, ast, ident):
+#     ast.set(nodes.Label(self.value(ident)))
+#     return True
+
+
+@meta.hook(KC_Statement)
+def new_blockstmt(self, ast, current_block):
+    ast.set(knodes.KBlockStmt([]))
+    current_block.ref = ast
+    parent = self.rule_nodes.parents
+    if (('current_block' in parent
+         and hasattr(parent['current_block'].ref, 'types'))):
+        current_block.ref.types = parent['current_block'].ref.types.new_child()
+    return True
+
+
+# @meta.hook(KC_Statement)
+# def end_loc(self, current_block, line):
+#     current_block.ref.body.append(line)
+#     return True
+
+
+# @meta.hook(KC_Statement)
+# def check_stmt(self, ident: Node, val: str) -> bool:
+#     stmt = self.value(ident)
+#     return stmt == val
