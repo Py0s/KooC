@@ -127,12 +127,12 @@ class KC_Expression(Grammar, Expression, K_Expression):
             ]*
         ]
 
-        xor_op = [ @ignore('null') ["^" !"="]:op #new_raw(_, op) ]
+        kc_xor_op = [ @ignore('null') ["^" !"="]:op #new_raw(_, op) ]
         kc_xor_expression = [
-            and_expression:>_
+            kc_and_expression:>_
             [
-                xor_op:op
-                and_expression:param
+                kc_xor_op:op
+                kc_and_expression:param
                 #new_binary(_, op, param)
             ]*
         ]
@@ -251,7 +251,7 @@ class KC_Expression(Grammar, Expression, K_Expression):
                 __scope__:pres
                 [
                 '[' kc_expression:expr ']' #new_array_call(pres, _, expr)
-                | '(' func_arg_list?:args ')' #new_func_call(pres, _, args)
+                | '(' kc_func_arg_list?:args ')' #new_func_call(pres, _, args)
                 | '.' kc_identifier:i #new_dot(pres, _, i)
                 | "->" kc_identifier:i #new_arrow(pres, _, i)
                 | ["++"|"--"]:op #new_raw(op, op) #new_post(pres, op, _)
@@ -260,7 +260,7 @@ class KC_Expression(Grammar, Expression, K_Expression):
             ]*
         ]
 
-        func_arg_list = [
+        kc_func_arg_list = [
             kc_assignement_expression:a #new_arg(_, a)
             [   ','
                 kc_assignement_expression:a #new_arg(_, a)
