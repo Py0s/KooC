@@ -39,7 +39,8 @@ try:
     result = str(to_c.k_to_c(ast))
     # writing result
     fout.write(result)
-except AttributeError:
-    print("Error on parsing")
+except AttributeError as e:
+    print("Error on parsing: ", e)
+    print(ast.diagnostic.get_content())
 
 fout.close()
