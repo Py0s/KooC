@@ -1,5 +1,6 @@
 from pyrser import meta
 import knodes
+import mangler.simple_mangling as sm
 
 @meta.add_method(knodes.Module)
 def mangle(self):
@@ -7,7 +8,8 @@ def mangle(self):
 
 @meta.add_method(knodes.Class)
 def mangle(self):
-    self._identifier = 'K' + simple_mangling.identifier(self._identifier)
+    self._identifier = 'K' + sm.id_m(self._identifier)
+    pass
 
 @meta.add_method(knodes.KDeclType)
 def mangle(self):

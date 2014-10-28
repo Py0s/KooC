@@ -1,5 +1,6 @@
 from pyrser import fmt, parsing
 from cnorm import nodes
+#import mangler.simple_mangling
 import KoocFile
 import os
 
@@ -28,8 +29,21 @@ class Module(parsing.Node):
         self.declarations = []
 
 class Class(nodes.ComposedType):
+    """
+        Everything here is a waste of my time.
+        This class is coded here because cnorm doesn't use to_c() of ComposedType.
+        Fuck quoi.
+    """
     def __init__(self, identifier: str):
-        super().__init__(identifier);
+        super().__init__(identifier)
+
+    # Séparer membre et non membre
+
+class Member(parsing.Node):
+    def __init__(self, content):
+        if not isinstance(content, nodes.Decl):
+            raise AttributeError("Content of Member should of declaration type")
+        self._content = content
 
 class KDeclType(nodes.DeclType):
     """For type in declaration"""

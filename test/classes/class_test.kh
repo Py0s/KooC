@@ -6,6 +6,18 @@
       char *dmail;
       void *get_dmail(void);
   }
-  void send_dmail(void *this, char * mail);
+  void send_dmail(Titor *this, char * mail);
+  @member  int	year;
+}
+
+@class Tuturu
+{
+  char * John;
+  @member
+  {
+      char *dmail;
+      void *get_dmail(void);
+  }
+  void send_dmail(Titor *this, char * mail);
   @member  int	year;
 }
