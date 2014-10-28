@@ -124,7 +124,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
         kc_preproc_decl = [
-            ['#' kc_preproc_directive ]:decl
+            ['#' preproc_directive ]:decl
             #raw_decl(decl)
             #end_decl(current_block, decl)
         ]
