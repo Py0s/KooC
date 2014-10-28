@@ -7,7 +7,7 @@ from KoocGrammar.KC_Statement import KC_Statement
 class   Implementation(Grammar, KC_Statement):
     entry = 'Implementation'
     grammar = """
-                implementation = [ "@implementation" Implementation.Name:name KC_Statement.kc_statement:body #Impl(current_block, name, body) ]
+                implementation = [ "@implementation" Implementation.Name:name KC_Statement.kc_single_statement:body #Impl(current_block, name, body) ]
 
                 Name = [ [['a'..'z']|['A'..'Z']]+ ]
               """
