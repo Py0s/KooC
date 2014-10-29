@@ -1,4 +1,5 @@
 from cnorm.parsing.expression import Idset
+from weakref import ref
 from pyrser.grammar import Grammar
 from cnorm.parsing.declaration import Declaration
 from KoocGrammar.K_Declaration import K_Declaration
@@ -564,12 +565,12 @@ def new_decl_spec(self, lspec, i, current_block):
         return False
     # not for asm or attribute
     if idsetval != "" and idsetval[0] != 'a':
-        lspec.ctype = nodes.makeCType(i_value, lspec.ctype)
+        lspec.ctype = knodes.makeKCType(i_value, lspec.ctype)
         return True
     if ((hasattr(current_block.ref, 'types')
          and i_value in current_block.ref.types)):
         if lspec.ctype is None:
-            lspec.ctype = nodes.PrimaryType(i_value)
+            lspec.ctype = knodes.KPrimaryType(i_value)
         else:
             lspec.ctype._identifier = i_value
         lspec.ctype._identifier = i_value
@@ -595,7 +596,7 @@ def end_decl(self, current_block, ast):
 @meta.hook(KC_Declaration)
 def not_empty(self, current_block, dsp, decl):
     # empty declspec only in global scope
-    if type(current_block.ref) is nodes.KBlockStmt and self.value(dsp) == "":
+    if type(current_block.ref) is knodes.KBlockStmt and self.value(dsp) == "":
         return False
     return True
 
@@ -656,8 +657,8 @@ def add_qual(self, lspec, qualspec):
 @meta.hook(KC_Declaration)
 def add_attr_specifier(self, lspec, attrspec):
     if lspec.ctype is None:
-        lspec.ctype = nodes.makeCType('int', lspec.ctype)
-    lspec.ctype.push(nodes.AttrType(self.value(attrspec)))
+        lspec.ctype = knodes.makeKCType('int', lspec.ctype)
+    lspec.ctype.push(knodes.KAttrType(self.value(attrspec)))
     return True
 
 
@@ -730,7 +731,7 @@ def new_composed(self, ast, current_block):
 @meta.hook(KC_Declaration)
 def first_pointer(self, lspec):
     if not hasattr(lspec, 'ctype') or lspec.ctype is None:
-        lspec.ctype = nodes.makeCType('int', lspec.ctype)
+        lspec.ctype = knodes.makeKCType('int', lspec.ctype)
     lspec.ctype.push(knodes.KPointerType())
     return True
 
@@ -749,7 +750,7 @@ def commit_declarator(self, ast, lspec):
 @meta.hook(KC_Declaration)
 def add_pointer(self, lspec):
     if not hasattr(lspec, 'ctype'):
-        lspec.ctype = nodes.makeCType('int', lspec.ctype)
+        lspec.ctype = knodes.makeKCType('int', lspec.ctype)
     if not hasattr(lspec.ctype, 'push'):
         return False
     lspec.ctype.push(knodes.KPointerType())
@@ -759,7 +760,7 @@ def add_pointer(self, lspec):
 @meta.hook(KC_Declaration)
 def add_paren(self, lspec):
     if not hasattr(lspec, 'ctype') or lspec.ctype is None:
-        lspec.ctype = nodes.makeCType('int')
+        lspec.ctype = knodes.makeKCType('int')
     paren = knodes.KParenType()
     if not hasattr(lspec, 'cur_paren'):
         lspec.cur_paren = []
@@ -774,7 +775,7 @@ def add_paren(self, lspec):
 @meta.hook(KC_Declaration)
 def add_ary(self, lspec, expr):
     if not hasattr(lspec, 'ctype') or lspec.ctype is None:
-        lspec.ctype = nodes.makeCType('int')
+        lspec.ctype = knodes.makeKCType('int')
     if not hasattr(lspec, 'cur_paren'):
         lspec.cur_paren = []
         lspec.cur_paren.append(ref(lspec.ctype))
@@ -800,7 +801,7 @@ def close_paren(self, lspec):
 @meta.hook(KC_Declaration)
 def open_params(self, lspec):
     if lspec.ctype is None:
-        lspec.ctype = nodes.makeCType('int')
+        lspec.ctype = knodes.makeKCType('int')
     if not hasattr(lspec, 'cur_paren'):
         lspec.cur_paren = []
         lspec.cur_paren.append(ref(lspec.ctype))
