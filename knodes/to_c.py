@@ -63,7 +63,7 @@ def to_c(self):
 def to_c(self):
     return super().to_c()
 
-@meta.add_method(knodes.KType)
+@meta.add_method(knodes.KCType)
 def to_c(self):
     return super().to_c()
 

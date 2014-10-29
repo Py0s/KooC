@@ -1,4 +1,4 @@
-
+from cnorm.parsing.expression import Idset
 from pyrser.grammar import Grammar
 from cnorm.parsing.declaration import Declaration
 from KoocGrammar.K_Declaration import K_Declaration

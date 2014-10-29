@@ -35,7 +35,7 @@ def mangle(self):
 def mangle(self):
     pass
 
-@meta.add_method(knodes.KType)
+@meta.add_method(knodes.KCType)
 def mangle(self):
     pass
 
