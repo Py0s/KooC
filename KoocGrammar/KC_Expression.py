@@ -2,6 +2,9 @@
 from pyrser.grammar import Grammar
 from cnorm.parsing.expression import Expression
 from KoocGrammar.K_Expression import K_Expression
+from pyrser import meta
+from pyrser.parsing.node import Node
+import knodes
 
 # class KC_Expression(Grammar, Expression, K_Expression):
 #     entry = "unary_expression"
@@ -287,3 +290,115 @@ class KC_Expression(Grammar, Expression, K_Expression):
         K_Expression.assmt_expr_overide = [ KC_Expression.kc_assignement_expression:>_ ]
 
     """
+
+@meta.hook(KC_Expression)
+def new_ternary(self, ast, then_expr, else_expr):
+    cond = Node()
+    cond.set(ast)
+    ast.set(knodes.KTernary([], [cond, then_expr, else_expr]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_binary(self, ast, op, param):
+    left = Node()
+    left.set(ast)
+    ast.set(knodes.KBinary(op, [left, param]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def is_raw(self, op, ident):
+    ident_value = self.value(ident)
+    if ident_value in Idset and Idset[ident_value] == "unary":
+        op.set(knodes.KRaw(ident_value + " "))
+        return True
+    return False
+
+
+@meta.hook(KC_Expression)
+def new_unary(self, ast, op, param):
+    opu = Node()
+    opu.set(op)
+    p = Node()
+    p.set(param)
+    ast.set(knodes.KUnary(opu, [p]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_paren(self, ast, expr):
+    ast.set(knodes.KParen("()", [expr]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_post(self, ast, op, param):
+    ast.set(knodes.KPost(op, [param]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_arg(self, ast, arg):
+    if not hasattr(ast, 'list'):
+        ast.list = []
+    ast.list.append(arg)
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_array_call(self, ast, call, index):
+    ast.set(knodes.KArray(call, [index]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_dot(self, ast, call, field):
+    ast.set(knodes.KDot(call, [field]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_arrow(self, ast, call, field):
+    ast.set(knodes.KArrow(call, [field]))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_func_call(self, ast, call, args):
+    if hasattr(args, 'list'):
+        ast.set(knodes.KFunc(call, args.list))
+    else:
+        ast.set(knodes.KFunc(call, []))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_raw(self, ast, data):
+    ast.set(knodes.KRaw(self.value(data)))
+    return True
+
+
+@meta.hook(KC_Expression)
+def new_id(self, ast, identifier):
+    ast.set(knodes.KId(self.value(identifier)))
+    return True
+
+
+@meta.hook(KC_Expression)
+def check_not_brace(self, c):
+    c_value = self.value(c)
+    return c_value != "{" and c_value != "}" \
+        and c_value != "'" and c_value != '"'
+
+
+@meta.hook(KC_Expression)
+def check_not_paren(self, c):
+    c_value = self.value(c)
+    return c_value != "(" and c_value != ")" \
+        and c_value != "'" and c_value != '"'
+
+
+@meta.hook(KC_Expression)
+def check_is_id(self, identifier):
+    return self.value(identifier) not in Idset
