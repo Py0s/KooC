@@ -70,7 +70,7 @@ class Member(parsing.Node):
 
 
 class KExpr(nodes.Expr):
-    """All expression"""
+    """All KExpression"""
 
 
 class KFunc(nodes.Func):
@@ -93,125 +93,125 @@ class KUnary(nodes.Unary):
     """For Kunary operator"""
 
 
-class KParen(nodes.Unary):
-    """For () expression"""
+class KParen(nodes.Paren):
+    """For () KExpression"""
 
 
-class KArray(nodes.Unary):
-    """For [] expression"""
+class KArray(nodes.Array):
+    """For [] KExpression"""
 
 
-class KDot(nodes.Unary):
-    """For . expression"""
+class KDot(nodes.Dot):
+    """For . KExpression"""
 
 
-class KArrow(nodes.Unary):
-    """For -> expression"""
+class KArrow(nodes.Arrow):
+    """For -> KExpression"""
 
 
-class KPost(nodes.Unary):
-    """For post{inc,dec} expression"""
+class KPost(nodes.Post):
+    """For post{inc,dec} KExpression"""
 
 
-class KSizeof(nodes.Unary):
-    """For sizeof expr/type expression"""
+class KSizeof(nodes.Sizeof):
+    """For sizeof KExpr/type KExpression"""
 
 
-class KBinary(nodes.Unary):
+class KBinary(nodes.Binary):
     """For binary operator"""
 
 
-class KCast(nodes.Binary):
+class KCast(nodes.Cast):
     """For cast operator"""
 
 
-class KRange(nodes.Binary):
-    """For range expression"""
+class KRange(nodes.Range):
+    """For range KExpression"""
 
 
-class KTernary(nodes.Func):
+class KTernary(nodes.Ternary):
     """For ternary operator"""
 
 
-class KTerminal(nodes.Expr):
-    """For KTerminal expression"""
+class KTerminal(nodes.Terminal):
+    """For KTerminal KExpression"""
     def __init__(self, value: str):
         super().__init__(self, value)
 
 
-class KId(nodes.Terminal):
+class KId(nodes.Id):
     """KTerminal Id"""
 
 
-class KLiteral(nodes.Terminal):
+class KLiteral(nodes.Literal):
     """KTerminal Literal"""
 
 
-class KRaw(nodes.Terminal):
+class KRaw(nodes.Raw):
     """KTerminal Raw"""
 
 
 # DECLARATION PART
 
-class KEnumerator(parsing.Node):
+class KEnumerator(nodes.Enumerator):
     """KEnumerator A=x in enums"""
     def __init__(self, ident: str, expr: KExpr):
         super().__init__(ident, expr)
 
 
-class KDeclType(parsing.Node):
+class KDeclType(nodes.DeclType):
     """For type in declaration"""
     def __init__(self):
         super().__init__()
 
 
-class KPointerType(nodes.DeclType):
+class KPointerType(nodes.PointerType):
     """For pointer in declaration"""
 
 
-class KArrayType(nodes.DeclType):
+class KArrayType(nodes.ArrayType):
     """For array in declaration"""
     def __init__(self, expr=None):
         super().__init__(expr)
 
 
-class KParenType(nodes.DeclType):
+class KParenType(nodes.ParenType):
     """For parenthesis in declaration"""
     def __init__(self, params=None):
         super().__init__(params)
 
 
-class KQualType(nodes.DeclType):
+class KQualType(nodes.QualType):
     """For qualifier in declaration"""
     def __init__(self, qualifier: Qualifiers=Qualifiers.AUTO):
         super().__init__(qualifier)
 
 
-class KAttrType(nodes.DeclType):
+class KAttrType(nodes.AttrType):
     """For attribute specifier in declaration"""
     def __init__(self, raw: str):
         super().__init__(raw)
 
 
-class KCType(parsing.Node):
+class KCType(nodes.CType):
     """Base for primary/func"""
     def __init__(self):
         super().__init__()
 
 
-class KPrimaryType(nodes.CType):
+class KPrimaryType(nodes.PrimaryType):
     """For primary type in declaration"""
     def __init__(self, identifier: str):
         super().__init__(identifier)
 
 
-class KComposedType(nodes.CType):
+class KComposedType(nodes.ComposedType):
     """For composed type in declaration"""
     def __init__(self, identifier: str):
         super().__init__(identifier)
 
 
-class KFuncType(nodes.PrimaryType):
+class KFuncType(nodes.FuncType):
     """For function in declaration"""
     def __init__(self, identifier: str, params=[], decltype=None):
         super().__init__(identifier, params, decltype)
@@ -257,7 +257,7 @@ def makeKCType(declspecifier: str, ctype=None):
     return ctype
 
 
-class KDecl(nodes.Expr):
+class KDecl(nodes.Decl):
     """For basic declaration
 
         A declaration contains the following attributes:
@@ -274,108 +274,108 @@ class KDecl(nodes.Expr):
 # STATEMENT PART
 
 
-class KStmt(parsing.Node):
+class KStmt(nodes.Stmt):
     """For statement"""
 
 
-class KExprStmt(nodes.Stmt):
+class KExprStmt(nodes.ExprStmt):
     """KExpression statement"""
     def __init__(self, expr: KExpr):
         super().__init__(expr)
 
 
-class KBlockStmt(nodes.Stmt):
+class KBlockStmt(nodes.BlockStmt):
     """Block statement"""
     def __init__(self, body: [KExprStmt]):
         super().__init__(body)
 
 
-class KRootBlockStmt(nodes.BlockStmt):
+class KRootBlockStmt(nodes.RootBlockStmt):
     """Root Block statement"""
     def __init__(self, body: [KExprStmt]):
         super().__init__(body)
 
 
-class KLabel(nodes.Stmt):
+class KLabel(nodes.Label):
     """KLabel statement"""
     def __init__(self, value: str):
         super().__init__(value)
 
 
-class KBranch(nodes.Label):
+class KBranch(nodes.Branch):
     """branch statement"""
     def __init__(self, value: str, expr: KExpr):
         super().__init__(value, expr)
 
 
-class KCase(nodes.Branch):
+class KCase(nodes.Case):
     """KCase statement"""
     def __init__(self, expr: KExpr):
-        super().__init__(expr):
+        super().__init__(expr)
 
 
-class KReturn(nodes.Branch):
+class KReturn(nodes.Return):
     """KReturn statement"""
     def __init__(self, expr: KExpr):
-        super().__init__(expr):
+        super().__init__(expr)
 
 
-class KGoto(nodes.Branch):
+class KGoto(nodes.Goto):
     """KGoto statement"""
     def __init__(self, expr: KExpr):
-        super().__init__(expr):
+        super().__init__(expr)
 
 
-class KLoopControl(nodes.Label):
+class KLoopControl(nodes.LoopControl):
     """Kloop control statement"""
 
 
-class KBreak(nodes.LoopControl):
+class KBreak(nodes.Break):
     """Kbreak statement"""
 
 
-class KContinue(nodes.LoopControl):
+class KContinue(nodes.Continue):
     """Kcontinue statement"""
 
 
-class KConditional(nodes.Stmt):
+class KConditional(nodes.Conditional):
     """KConditional statement"""
 
-    def __init__(self, condition: Expr):
+    def __init__(self, condition: KExpr):
         super().__init__(condition)
 
 
-class KIf(nodes.Conditional):
+class KIf(nodes.If):
     """KIf statement"""
 
-    def __init__(self, condition: Expr, thencond: Stmt, elsecond: Stmt=None):
+    def __init__(self, condition: KExpr, thencond: KStmt, elsecond: KStmt=None):
         super().__init__(condition, thencond, elsecond)
 
 
-class KWhile(nodes.Conditional):
+class KWhile(nodes.While):
     """KWhile statement"""
 
-    def __init__(self, condition: Expr, body: Stmt):
+    def __init__(self, condition: KExpr, body: KStmt):
         super().__init__(condition, body)
 
 
-class KSwitch(nodes.Conditional):
+class KSwitch(nodes.Switch):
     """KSwitch statement"""
 
-    def __init__(self, condition: Expr, body: Stmt):
+    def __init__(self, condition: KExpr, body: KStmt):
         super().__init__(condition, body)
 
-class KDo(nodes.Conditional):
+class KDo(nodes.Do):
     """KDo statement"""
 
-    def __init__(self, condition: Expr, body: Stmt):
+    def __init__(self, condition: KExpr, body: KStmt):
         super().__init__(condition, body)
 
-class KFor(nodes.Stmt):
+class KFor(nodes.For):
     """KFor statement"""
 
-    def __init__(self, init: Expr, condition: Expr,
-                 increment: Expr, body: Stmt):
+    def __init__(self, init: KExpr, condition: KExpr,
+                 increment: KExpr, body: KStmt):
         super().__init__(init, condition, increment, body)
 
 

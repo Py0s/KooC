@@ -261,9 +261,9 @@ def to_c(self):
 def to_c(self):
     return super().to_c()
 
-@meta.add_method(knodes.KRootBlockStmt)
-def to_c(self):
-    return super().to_c()
+# @meta.add_method(knodes.KRootBlockStmt)
+# def to_c(self):
+#     return ""
 
 
 @meta.add_method(knodes.KLabel)
