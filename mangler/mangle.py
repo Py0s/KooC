@@ -4,16 +4,15 @@ import mangler.simple_mangling as sm
 
 @meta.add_method(knodes.Module)
 def mangle(self):
-    pass
+    self._identifier = 'M' + sm.id_m(self._identifier)
 
 @meta.add_method(knodes.Class)
 def mangle(self):
     self._identifier = 'K' + sm.id_m(self._identifier)
-    pass
 
 @meta.add_method(knodes.KDeclType)
 def mangle(self):
-    pass
+    self._identifier = sm.type_m(self._identifier)
 
 @meta.add_method(knodes.KPointerType)
 def mangle(self):
@@ -29,7 +28,7 @@ def mangle(self):
 
 @meta.add_method(knodes.KQualType)
 def mangle(self):
-    pass
+    self._identifier = sm.qual_m(self._identifier)
 
 @meta.add_method(knodes.KAttrType)
 def mangle(self):
