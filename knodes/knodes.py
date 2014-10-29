@@ -267,8 +267,9 @@ class KDecl(nodes.Expr):
         * _assign_expr: when the declaration have a value
         * _colon_expr: When it's a bitfield
         * body: when it's function definition
-
     """
+    def __init__(self, name: str, ct=None):
+        super().__init__(name, ct)
 
 # STATEMENT PART
 
@@ -279,34 +280,50 @@ class KStmt(parsing.Node):
 
 class KExprStmt(nodes.Stmt):
     """KExpression statement"""
+    def __init__(self, expr: KExpr):
+        super().__init__(expr)
 
 
 class KBlockStmt(nodes.Stmt):
     """Block statement"""
+    def __init__(self, body: [KExprStmt]):
+        super().__init__(body)
 
 
 class KRootBlockStmt(nodes.BlockStmt):
     """Root Block statement"""
+    def __init__(self, body: [KExprStmt]):
+        super().__init__(body)
 
 
 class KLabel(nodes.Stmt):
     """KLabel statement"""
+    def __init__(self, value: str):
+        super().__init__(value)
 
 
 class KBranch(nodes.Label):
     """branch statement"""
+    def __init__(self, value: str, expr: KExpr):
+        super().__init__(value, expr)
 
 
 class KCase(nodes.Branch):
     """KCase statement"""
+    def __init__(self, expr: KExpr):
+        super().__init__(expr):
 
 
 class KReturn(nodes.Branch):
     """KReturn statement"""
+    def __init__(self, expr: KExpr):
+        super().__init__(expr):
 
 
 class KGoto(nodes.Branch):
     """KGoto statement"""
+    def __init__(self, expr: KExpr):
+        super().__init__(expr):
 
 
 class KLoopControl(nodes.Label):
