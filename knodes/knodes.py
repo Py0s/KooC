@@ -341,26 +341,42 @@ class KContinue(nodes.LoopControl):
 class KConditional(nodes.Stmt):
     """KConditional statement"""
 
+    def __init__(self, condition: Expr):
+        super().__init__(condition)
+
 
 class KIf(nodes.Conditional):
     """KIf statement"""
+
+    def __init__(self, condition: Expr, thencond: Stmt, elsecond: Stmt=None):
+        super().__init__(condition, thencond, elsecond)
 
 
 class KWhile(nodes.Conditional):
     """KWhile statement"""
 
+    def __init__(self, condition: Expr, body: Stmt):
+        super().__init__(condition, body)
+
 
 class KSwitch(nodes.Conditional):
     """KSwitch statement"""
 
+    def __init__(self, condition: Expr, body: Stmt):
+        super().__init__(condition, body)
 
 class KDo(nodes.Conditional):
     """KDo statement"""
 
+    def __init__(self, condition: Expr, body: Stmt):
+        super().__init__(condition, body)
 
 class KFor(nodes.Stmt):
     """KFor statement"""
 
+    def __init__(self, init: Expr, condition: Expr,
+                 increment: Expr, body: Stmt):
+        super().__init__(init, condition, increment, body)
 
 
 
