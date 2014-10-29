@@ -75,15 +75,19 @@ class KExpr(nodes.Expr):
 
 class KFunc(nodes.Func):
     """For almost everything"""
-
+    def __init__(self, call_expr: KExpr, params: list):
+        super().__init__(call_expr, params)
 
 class KBlockInit(nodes.BlockInit):
     """Initializer Block KExpression"""
+    def __init__(self, body: [KExpr]):
+        super().__init__(body)
 
 
 class KBlockExpr(nodes.BlockExpr):
     """Compound Block KExpression"""
-
+    def __init__(self, body: [KExpr]):
+        super().__init__(body)
 
 class KUnary(nodes.Unary):
     """For Kunary operator"""
@@ -131,6 +135,8 @@ class KTernary(nodes.Func):
 
 class KTerminal(nodes.Expr):
     """For KTerminal expression"""
+    def __init__(self, value: str):
+        super().__init__(self, value)
 
 
 class KId(nodes.Terminal):
@@ -149,10 +155,14 @@ class KRaw(nodes.Terminal):
 
 class KEnumerator(parsing.Node):
     """KEnumerator A=x in enums"""
+    def __init__(self, ident: str, expr: KExpr):
+        super().__init__(ident, expr)
 
 
 class KDeclType(parsing.Node):
     """For type in declaration"""
+    def __init__(self):
+        super().__init__()
 
 
 class KPointerType(nodes.DeclType):
@@ -161,34 +171,50 @@ class KPointerType(nodes.DeclType):
 
 class KArrayType(nodes.DeclType):
     """For array in declaration"""
+    def __init__(self, expr=None):
+        super().__init__(expr)
 
 
 class KParenType(nodes.DeclType):
     """For parenthesis in declaration"""
+    def __init__(self, params=None):
+        super().__init__(params)
 
 
 class KQualType(nodes.DeclType):
     """For qualifier in declaration"""
+    def __init__(self, qualifier: Qualifiers=Qualifiers.AUTO):
+        super().__init__(qualifier)
 
 
 class KAttrType(nodes.DeclType):
     """For attribute specifier in declaration"""
+    def __init__(self, raw: str):
+        super().__init__(raw)
 
 
 class KCType(parsing.Node):
     """Base for primary/func"""
+    def __init__(self):
+        super().__init__()
 
 
 class KPrimaryType(nodes.CType):
     """For primary type in declaration"""
+    def __init__(self, identifier: str):
+        super().__init__(identifier)
 
 
 class KComposedType(nodes.CType):
     """For composed type in declaration"""
+    def __init__(self, identifier: str):
+        super().__init__(identifier)
 
 
 class KFuncType(nodes.PrimaryType):
     """For function in declaration"""
+    def __init__(self, identifier: str, params=[], decltype=None):
+        super().__init__(identifier, params, decltype)
 
 
 # helper to create a KCType from previous one

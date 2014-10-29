@@ -109,7 +109,7 @@ def to_c(self):
 def to_c(self):
     return super().to_c()
 
-@meta.add_method(knodes.KBlockKExpr)
+@meta.add_method(knodes.KBlockExpr)
 def to_c(self):
     return super().to_c()
 
