@@ -22,7 +22,7 @@ def to_c(self):
 @meta.add_method(knodes.Module)
 def to_c(self):
     res = fmt.sep("", [])
-    for elem in self.declarations:
+    for elem in self._declarations:
         res.lsdata.append(elem.to_c())
     return res
 

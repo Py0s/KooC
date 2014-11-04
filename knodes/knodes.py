@@ -4,7 +4,6 @@ from cnorm import nodes
 import KoocFile
 import os
 
-
 Storages = meta.enum('AUTO', 'REGISTER', 'TYPEDEF',
                      'STATIC', 'EXTERN', 'INLINE',
                      'VIRTUAL', 'EXPLICIT',
@@ -15,9 +14,6 @@ Qualifiers = meta.enum('AUTO', 'CONST', 'VOLATILE', 'RESTRICT',
 Specifiers = meta.enum('AUTO', 'STRUCT', 'UNION', 'ENUM', 'LONG',
                        'LONGLONG', 'SHORT')
 Signs = meta.enum('AUTO', 'SIGNED', 'UNSIGNED')
-
-
-
 
 class Import(nodes.BlockStmt):
     """Import"""
@@ -40,18 +36,19 @@ class Import(nodes.BlockStmt):
         self.fileNameMacro = (self.fileName.upper() + "_H_").replace("\\", "_").replace(".", "_").replace("/", "_")
 
 class Module(parsing.Node):
-    def __init__(self):
-        self.declarations = []
+    def __init__(self, identifier):
+        self._identifier = identifier
+        self._declarations = []
+
+    def add_item(self, item: 'Node'):
+        if not isinstance(item, KDecl):
+            raise TypeError('Why is it not a KDecl ?')
+        item.set_scope(self.mangle())
+        self._declarations.append(item)
 
 class Class(nodes.ComposedType):
-    """
-        This class is coded here because cnorm doesn't use to_c() of ComposedType.
-        Fuck quoi.
-    """
     def __init__(self, identifier: str):
-        super().__init__(identifier)
-
-    # Séparer membre et non membre
+        super().__init__(identifier)    # TODO: Séparer membre et non membre
 
 class Member(parsing.Node):
     def __init__(self, content):
@@ -120,29 +117,28 @@ class KRange(nodes.Range):
 class KTernary(nodes.Ternary):
     """For ternary operator"""
 
-
 class KTerminal(nodes.Terminal):
     """For KTerminal KExpression"""
     def __init__(self, value: str):
         super().__init__(self, value)
 
-
 class KId(nodes.Id):
     """KTerminal Id"""
-
 
 class KLiteral(nodes.Literal):
     """KTerminal Literal"""
 
-
 class KRaw(nodes.Raw):
     """KTerminal Raw"""
-
 
 # DECLARATION PART
 class KDecl(nodes.Decl):
     def __init__(self, name: str, ct=None):
         super().__init__(name, ct)
+        self._scope = None
+
+    def set_scope(self, scope):
+        self._scope = scope
 
 class KDeclType(nodes.DeclType):
     """For type in declaration"""

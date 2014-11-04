@@ -40,7 +40,7 @@ def add_module(self, ast, module_name, body):
     if hasattr(body, "body") and body.body:
         module_name = self.value(module_name)
         KoocFile.register_module(module_name)
-        module = knodes.Module()
+        module = knodes.Module(module_name)
         for item in body.body:
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
                 assign = None
@@ -49,6 +49,6 @@ def add_module(self, ast, module_name, body):
                     delattr(item, "_assign_expr")
                 KoocFile.register_var_in_module(module_name, item._name, item._ctype.mangle(), item.mangle(), assign)
                 item._ctype._storage = nodes.Storages.EXTERN
-                module.declarations.append(item)
+                module.add_item(item)
         ast.ref.body.append(module)
     return True
