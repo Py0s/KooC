@@ -9,8 +9,11 @@ except KeyboardInterrupt:
     print("")
     sys.exit(0)
 
-# get entry filename
+if len(sys.argv) != 2:
+    print("./kooc [file.kc | file.kh]")
+    sys.exit(0)
 
+# get entry filename
 koocFileName = sys.argv[1]
 fileName, fileExtension = os.path.splitext(koocFileName)
 try:
