@@ -1,34 +1,24 @@
-@module nia
-{
-  int    a = 42;
-}
-
-@module fu
+@module Foo
 {
   int	a;
 }
 
-@module bla
+@module FooCpy
 {
-  int a = 666;
+  int    a = 42;
 }
 
-@module blu
-{
-  int a = 999;
-}
-
-@module Test
+@module VarOv
 {
   int id = 42;
-  char *id = "quarante deux";
+  char *id = "quarante deux"; //Big attention to this
   char id[];
 }
 
-@module Gun
+@module FunctionOv
 {
-  int test = 2;
-  void shoot(int tutu, float tata);
-  void (*toto)(float);
-  void (*toto)(void (*titi)(float));
+  void useless_func(int tutu, float tata);
+  void (*print)(int);
+  void (*print)(float);
+  void (*print)(char (*titi)(int));
 }
