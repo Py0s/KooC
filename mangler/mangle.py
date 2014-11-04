@@ -4,16 +4,16 @@ import mangler.simple_mangling as sm
 
 @meta.add_method(knodes.Module)
 def mangle(self):
-    pass
+    return 'M' + sm.id_m(self._identifier)
 
 @meta.add_method(knodes.Class)
 def mangle(self):
-
     return 'K' + sm.id_m(self._identifier)
+
 @meta.add_method(knodes.KDecl)
 def mangle(self):
     if hasattr(self._ctype, 'mangle'):
-        return self._ctype.mangle() + sm.id_m(self._name)
+        return ('' if self._scope is None else self._scope + '__') + self._ctype.mangle() + sm.id_m(self._name)
 
 @meta.add_method(knodes.KPrimaryType)
 def mangle(self):
