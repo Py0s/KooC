@@ -8,14 +8,12 @@ def mangle(self):
 
 @meta.add_method(knodes.Class)
 def mangle(self):
-    return 'K' + sm.id_m(self._identifier)
 
-@meta.add_method(knodes.KPointerType)
+    return 'K' + sm.id_m(self._identifier)
+@meta.add_method(knodes.KDecl)
 def mangle(self):
-    res = ''
-    if self._decltype != None and hasattr(self._decltype, 'mangle'):
-        res += self._decltype.mangle()
-    return 'P' + res
+    if hasattr(self._ctype, 'mangle'):
+        return self._ctype.mangle() + sm.id_m(self._name)
 
 @meta.add_method(knodes.KPrimaryType)
 def mangle(self):
@@ -24,7 +22,16 @@ def mangle(self):
         ptr += self._decltype.mangle()
     return ptr + sm.type_m(self._identifier)
 
-@meta.add_method(knodes.KDecl)
+@meta.add_method(knodes.KPointerType)
 def mangle(self):
-    if hasattr(self._ctype, 'mangle'):
-        return self._ctype.mangle() + sm.id_m(self._name)
+    res = ''
+    if self._decltype != None and hasattr(self._decltype, 'mangle'):
+        res += self._decltype.mangle()
+    return 'P' + res
+
+@meta.add_method(knodes.KFuncType)
+def mangle(self):
+    ptr = ''
+    if self._decltype != None and hasattr(self._decltype, 'mangle'):
+        ptr += self._decltype.mangle()
+    return ptr + sm.type_m(self._identifier)

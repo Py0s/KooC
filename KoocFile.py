@@ -26,10 +26,10 @@ def is_file_imported(fileName):
 
 
 def register_module(module_name):
-    if not module_name in modules:#TODO : générer une erreur sinon ?
+    if not module_name in modules: #TODO : générer une erreur sinon ?
         modules[module_name] = {}
 
-def register_var_in_module(module_name, symbol_name, symbol_type, mangled_name):
+def register_var_in_module(module_name, symbol_name, symbol_type, mangled_name, assign):
     if not symbol_name in modules[module_name]:
         modules[module_name][symbol_name] = []
     symbol_entry = modules[module_name][symbol_name]
