@@ -46,9 +46,9 @@ int main()
   char str[] = "je test\0";
 
   printf("%d %d %d\n", id, @!(char*)[Foo.id], @!(int)[FooCpy.id]);
-  printf("%d %s, %s", @!(int)[Foo.id], @!(char*)[Foo.id], @!(char[])[Foo.id]);
-  @!(void*)[FunctionOv.print :(int)42]; // Should throw error when ambiguous
-  @!(void*)[FunctionOv.print :(float)42.5];
-  @!(void*)[FunctionOv.print :str :strlen(str)];
+  printf("%d %s, %s", @!(int)[Foo.id], @!(char*)[Foo.id], @!(char)[Foo.id]);
+  @!(void*)[FunctionOv print :(int)42]; // Should throw error when ambiguous
+  @!(void*)[FunctionOv print :(float)42.5];
+  @!(void*)[FunctionOv print :str :strlen(str)];
   return (0);
 }

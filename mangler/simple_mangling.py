@@ -5,6 +5,8 @@ Q = Qualifiers.map
 
 VARS = {
    'char':'c',
+   'float':'f',
+   'double':'d',
    'short':'s',
    'int':'i',
    'bool':'b',
@@ -19,7 +21,8 @@ def id_m(ident: str):
 
 def type_m(typ: str, sign = S['SIGNED']):
   if typ not in VARS:
-     raise IndexError('Mangling type not recognised')
+    msg = 'Mangling type not recognised : ' + typ
+    raise IndexError(msg)
   res = ''
   if sign == S['UNSIGNED']:
      res = 'U'
