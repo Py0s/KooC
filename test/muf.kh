@@ -20,5 +20,5 @@
   void useless_func(int tutu, float tata);
   void (*print)(int);
   void (*print)(float);
-  void (*print)(char (*titi)(int));
+  void (*print)(char (*somethin), int);
 }
