@@ -29,6 +29,13 @@ def mangle(self):
         res += self._decltype.mangle()
     return 'P' + res
 
+@meta.add_method(knodes.KArrayType)
+def mangle(self):
+    res = ''
+    if self._decltype != None and hasattr(self._decltype, 'mangle'):
+        res += self._decltype.mangle()
+    return 'A' + res
+
 @meta.add_method(knodes.KFuncType)
 def mangle(self):
     ptr = ''
