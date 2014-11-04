@@ -32,11 +32,9 @@ def register_module(module_name):
 
 def register_var_in_module(module_name, symbol_name, symbol_type, mangled_name, assign_node = None):
     if not symbol_name in modules[module_name]:
-        modules[module_name][symbol_name] = []
+        modules[module_name][symbol_name] = {}
     symbol_entry = modules[module_name][symbol_name]
-    symbol_overload = (symbol_type, mangled_name, assign_node)
-    symbol_entry.append(symbol_overload)
-    print(symbol_overload)
+    symbol_entry[symbol_type] = (mangled_name, assign_node)
     print("MODULE !! ", modules)
     #checker si cette surcharge existe deja, dans ce cas -> erreur
     # '-> appeler is_var_in_module
@@ -44,15 +42,19 @@ def register_var_in_module(module_name, symbol_name, symbol_type, mangled_name, 
 def is_var_in_module(module_name, symbol_name, symbol_type):
     if module_name in modules\
         and symbol_name in modules[module_name]\
-            and symbol_type in modules[module_name][symbol_name]\
-                and mangled_name in modules[module_name][symbol_name][symbol_type]:
+            and symbol_type in modules[module_name][symbol_name]:
                     return True
-    # for module in modules:
-    #     for symbol in module:
-    #         for symbol_overload in symbol:
-    #             if symbol_overload[0]  == mangled_name:
-    #             return True
     return False
+
+def get_var_from_module(module_name, symbol_name, symbol_type):
+    if not is_var_in_module(module_name, symbol_name, symbol_type):
+        raise RuntimeError("try to get unknown node")
+    return modules[module_name][symbol_name][symbol_type]
+
+def get_mangled_name_from_module(module_name, symbol_name, symbol_type):
+    return get_var_from_module()[0]
+def get_assign_node_from_module(module_name, symbol_name, symbol_type):
+    return get_var_from_module()[1]
 
 
 
