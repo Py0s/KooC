@@ -1,45 +1,54 @@
 #include <stdio.h>
+#include <string.h>
 
 @import "muf.kh"
 @import "muf.kh"
 
-@implementation Test
+@implementation Foo
 {
+
 }
 
-@implementation Gun
-{
-  void shoot(int tutu, float tata)
-  {
-    printf("%d %f\n", tutu, [Gun.test]);
-  }
+@implementation FooCpy
+{}
 
-  void toto()
-  {
-    for(i=0;i<10;i++)
-      {
-	printf("test\n");
-      }
-  }
+@implementation VarOv
+{
+	char id[] = "toto\n";
 }
 
+@implementation FonctionOv
+{
+  void *print(int nbr)
+  {
+    printf("I'm in int %d", nbr);
+    return NULL;
+  }
+
+  void *print(float nbr)
+  {
+    printf("I'm in float %f", nbr);
+    return NULL;
+  }
+
+  void *print(char* something, int size)
+  {
+    printf("I'm char* %s of size %d", something, size);
+    return NULL;
+  }
+}
 
 int main()
 {
-  printf("%s %d\n", @!(char)[Test.id], [Test.id]);
-  @!(int*)[Test.id] = 3;
-  int tutu;
-  tutu;
-  [Test.id];
-  toto(4, 3.2);
-  tutu();
-  @!(void*)[Gun shoot :(int)4 :(float)3.2];
-  Gushoot(4, Totoro(4, 3.2));
-  [Aun shoot :(int)4 :Totoro(4, 3.2)];
-  @!(float*)[Bun shoot :(int)4 :@!(void)[Gun shoot :(int*)4 :Totoro(4, 3.2)]];
-  Gushoot(4, Tatara());
-  [Dun shoot :(int)4 :[Ea tara]];
-  [Gun toto];
-  (int)tata;
+  int id = 0;
+  int test = 25;
+  float test2 = 25.5;
+  char str[] = "je test\0";
+
+  printf("%d %d %d\n", id, @!(char*)[Foo.id], @!(int)[FooCpy.id]);
+  printf("%d %s, %s", @!(int)[Foo.id], @!(char*)[Foo.id], @!(char)[Foo.id]);
+  @!(void*)[FunctionOv print :(int)42]; // Should throw error when ambiguous
+  @!(void*)[FunctionOv print :(float)42.5];
+  @!(void*)[FunctionOv print :str :strlen(str)];
   return (0);
 }

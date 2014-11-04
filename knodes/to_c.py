@@ -22,13 +22,13 @@ def to_c(self):
 @meta.add_method(knodes.Module)
 def to_c(self):
     res = fmt.sep("", [])
-    for elem in self.declarations:
+    for elem in self._declarations:
         res.lsdata.append(elem.to_c())
     return res
 
 @meta.add_method(knodes.Class)
 def to_c(self):
-    self.mangle()
+    self._identifier = self.mangle()
     self._specifier = nodes.Specifiers.STRUCT
     self._storage = nodes.Storages.TYPEDEF
     for item in self.fields:
@@ -38,6 +38,11 @@ def to_c(self):
 @meta.add_method(knodes.Member)
 def to_c(self):
     return self._content.to_c()
+
+@meta.add_method(knodes.KDecl)
+def to_c(self):
+    self._name = self.mangle()
+    return nodes.Decl.to_c(self)
 
 # @meta.add_method(knodes.KDeclType)
 # def to_c(self):
@@ -78,11 +83,6 @@ def to_c(self):
 # @meta.add_method(knodes.KFuncType)
 # def to_c(self):
 #     return super().to_c()
-
-@meta.add_method(knodes.KDecl)
-def to_c(self):
-    self.mangle()
-    return nodes.Decl.to_c(self)
 
 # @meta.add_method(knodes.KExpr)
 # def to_c(self):
