@@ -4,6 +4,7 @@ from pyrser.grammar import Grammar
 from pyrser import meta
 from cnorm import nodes
 from KoocGrammar.KC_Statement import KC_Statement
+import KoocFile
 import knodes
 
 class   Module(Grammar, KC_Statement):
@@ -37,10 +38,17 @@ class   Module(Grammar, KC_Statement):
 @meta.hook(Module)
 def add_module(self, ast, module_name, body):
     if hasattr(body, "body") and body.body:
+        module_name = self.value(module_name)
+        KoocFile.register_module(module_name)
         module = knodes.Module()
         for item in body.body:
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
-                item._ctype._storage = nodes.Storages.STATIC
+                assign = None
+                if hasattr(item, "_assign_expr"):
+                    assign = item._assign_expr
+                    delattr(item, "_assign_expr")
+                KoocFile.register_var_in_module(module_name, item._name, item._ctype.mangle(), item.mangle(), assign)
+                item._ctype._storage = nodes.Storages.EXTERN
                 module.declarations.append(item)
         ast.ref.body.append(module)
     return True

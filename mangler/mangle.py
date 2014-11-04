@@ -52,9 +52,12 @@ def mangle(self):
 # def mangle(self):
 #     pass
 
-# @meta.add_method(knodes.KFuncType)
-# def mangle(self):
-#     pass
+@meta.add_method(knodes.KFuncType)
+def mangle(self):
+    ptr = ''
+    if self._decltype != None and hasattr(self._decltype, 'mangle'):
+        ptr += self._decltype.mangle()
+    return ptr + sm.type_m(self._identifier)
 
 @meta.add_method(knodes.KDecl)
 def mangle(self):
