@@ -44,12 +44,12 @@ def add_module(self, ast, module_name, body):
         module = knodes.Module(module_name)
         for item in body.body:
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
+                module.add_item(item)
                 varNode = None
                 if hasattr(item, "_assign_expr"):
                     varNode = copy.deepcopy(item)
                     delattr(item, "_assign_expr")
                 KoocFile.register_var_in_module(module_name, item._name, item._ctype.mangle(), item.mangle(), varNode)
                 item._ctype._storage = nodes.Storages.EXTERN
-                module.add_item(item)
         ast.ref.body.append(module)
     return True
