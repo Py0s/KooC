@@ -10,7 +10,8 @@ VARS = {
    'bool':'b',
    'long':'l',
    'long long':'x',
-   'signed char':'Sc'
+   'signed char':'Sc',
+   'void': 'v' #should not be here
 }
 
 def id_m(ident: str):

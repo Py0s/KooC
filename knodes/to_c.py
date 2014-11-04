@@ -79,270 +79,250 @@ def to_c(self):
 # def to_c(self):
 #     return super().to_c()
 
-# @meta.add_method(knodes.KDecl)
+@meta.add_method(knodes.KDecl)
+def to_c(self):
+    self.mangle()
+    return nodes.Decl.to_c(self)
+
+# @meta.add_method(knodes.KExpr)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KFunc)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KBlockInit)
+# def to_c(self):
+#     return super().to_c()
+#
+# @meta.add_method(knodes.KBlockExpr)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KUnary)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KParen)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KArray)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KDot)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KArrow)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KPost)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KSizeof)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KBinary)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KCast)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KRange)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KTernary)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KTerminal)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KId)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KLiteral)
 # def to_c(self):
 #     return super().to_c()
 
 
-
-
-
-
-
-
-
-
-
-
-
-@meta.add_method(knodes.KExpr)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KFunc)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KBlockInit)
-def to_c(self):
-    return super().to_c()
-
-@meta.add_method(knodes.KBlockExpr)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KUnary)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KParen)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KArray)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KDot)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KArrow)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KPost)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KSizeof)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KBinary)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KCast)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KRange)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KTernary)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KTerminal)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KId)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KLiteral)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KRaw)
-def to_c(self):
-    return super().to_c()
+# @meta.add_method(knodes.KRaw)
+# def to_c(self):
+#     return super().to_c(self)
 
 
 # DECLARATION PART
 
-@meta.add_method(knodes.KEnumerator)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KDeclType)
-def to_c(self):
-    return super().to_c()
-
-@meta.add_method(knodes.KPointerType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KArrayType)
-def to_c(self):
-    return super().to_c()
-
-@meta.add_method(knodes.KParenType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KQualType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KAttrType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KCType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KPrimaryType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KComposedType)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KFuncType)
-def to_c(self):
-    return super().to_c()
+# @meta.add_method(knodes.KEnumerator)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KDeclType)
+# def to_c(self):
+#     return super().to_c()
+#
+# @meta.add_method(knodes.KPointerType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KArrayType)
+# def to_c(self):
+#     return super().to_c()
+#
+# @meta.add_method(knodes.KParenType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KQualType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KAttrType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KCType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KPrimaryType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KComposedType)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KFuncType)
+# def to_c(self):
+#     return super().to_c()
 
 
 # STATEMENT PART
 
 
-@meta.add_method(knodes.KStmt)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KExprStmt)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KBlockStmt)
-def to_c(self):
-    return super().to_c()
+# @meta.add_method(knodes.KStmt)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KExprStmt)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KBlockStmt)
+# def to_c(self):
+#     return super().to_c()
 
 # @meta.add_method(knodes.KRootBlockStmt)
 # def to_c(self):
 #     return ""
 
 
-@meta.add_method(knodes.KLabel)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KBranch)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KCase)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KReturn)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KGoto)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KLoopControl)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KBreak)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KContinue)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KConditional)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KIf)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KWhile)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KSwitch)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KDo)
-def to_c(self):
-    return super().to_c()
-
-
-@meta.add_method(knodes.KFor)
-def to_c(self):
-    return super().to_c()
-
-
-
-
-
-
-
-
-
+# @meta.add_method(knodes.KLabel)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KBranch)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KCase)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KReturn)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KGoto)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KLoopControl)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KBreak)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KContinue)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KConditional)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KIf)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KWhile)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KSwitch)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KDo)
+# def to_c(self):
+#     return super().to_c()
+#
+#
+# @meta.add_method(knodes.KFor)
+# def to_c(self):
+#     return super().to_c()
 
 # class KDeclType(nodes.DeclType):
 #     """For type in declaration"""
