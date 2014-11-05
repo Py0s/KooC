@@ -13,7 +13,18 @@ def mangle(self):
 @meta.add_method(knodes.KDecl)
 def mangle(self):
     if hasattr(self._ctype, 'mangle'):
-        return ('' if self._scope is None else self._scope + '__') + self._ctype.mangle() + sm.id_m(self._name)
+        params = ''
+        print(self)
+        print("=============================")
+        if isinstance(self._ctype, knodes.KFuncType):
+            params += self._ctype.mangle_params();
+        return (('' if self._scope is None else self._scope + '__') \
+                + self.mangle_type() + sm.id_m(self._name) + params)
+
+@meta.add_method(knodes.KDecl)
+def mangle_type(self):
+    if hasattr(self._ctype, 'mangle'):
+        return self._ctype.mangle()
 
 @meta.add_method(knodes.KPrimaryType)
 def mangle(self):
@@ -42,3 +53,11 @@ def mangle(self):
     if self._decltype != None and hasattr(self._decltype, 'mangle'):
         ptr += self._decltype.mangle()
     return ptr + sm.type_m(self._identifier)
+
+def raise_params(item):
+    raise TypeError("Could not mangle type %s" %str(type(item)))
+
+@meta.add_method(knodes.KFuncType)
+def mangle_params(self):
+    gen = (item.mangle_type() if hasattr(item, 'mangle_type') else raise_params(item) for item in self._params)
+    return ''.join(gen)
