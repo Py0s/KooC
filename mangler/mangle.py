@@ -14,8 +14,6 @@ def mangle(self):
 def mangle(self):
     if hasattr(self._ctype, 'mangle'):
         params = ''
-        print(self)
-        print("=============================")
         if isinstance(self._ctype, knodes.KFuncType):
             params += self._ctype.mangle_params();
         return (('' if self._scope is None else self._scope + '__') \
