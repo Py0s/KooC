@@ -9,18 +9,20 @@ class   Implementation(Grammar, KC_Statement):
     entry = 'Implementation'
     grammar = """
                 implementation = [  "@implementation"
-                                    Implementation.Name:module_name
+                                    Implementation.Name:name
                                     KC_Statement.kc_single_statement:body
-                                    #Impl(current_block, module_name, body) ]
+                                    #Impl(current_block, name, body) ]
 
                 Name = [ [['a'..'z']|['A'..'Z']]+ ]
               """
 
 
 @meta.hook(Implementation)
-def Impl(self, ast, module_name, body):
+def Impl(self, ast, name, body):
     if hasattr(body, "body") and body.body:
-        module_name = self.value(module_name)
+        name = self.value(name)
         for item in body.body:
+            # mangledname = KoocFile.mangled_name_of_symbol(name, item._name, item._ctype.mangle())
+            # print(mangledname)
             ast.ref.body.append(item)
     return True
