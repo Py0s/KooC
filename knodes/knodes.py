@@ -48,12 +48,12 @@ class Module(parsing.Node):
 
 class Class(nodes.ComposedType):
     def __init__(self, identifier: str):
-        super().__init__(identifier)    # TODO: Séparer membre et non membre
+        super().__init__(identifier)
 
 class Member(parsing.Node):
     def __init__(self, content):
         if not isinstance(content, nodes.Decl):
-            raise AttributeError("Content of Member should of declaration type")
+            raise AttributeError("Content of Member should be of declaration type")
         self._content = content
 
 class KExpr(nodes.Expr):

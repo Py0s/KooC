@@ -30,8 +30,8 @@ class   Class(Grammar, KC_Statement):
             __scope__:current_block
             #new_blockstmt(_, current_block)
             [
-                line_of_code #is_member(class_name, current_block)
-                | member:body #add_member(current_block, body)
+                line_of_code #is_member(class_name, current_block) // For implicit member function
+                | member:body #add_member(current_block, body)     // For explicit member function
             ]*
         '}'
         ]
@@ -145,8 +145,8 @@ def is_member(self, class_name, current_block):
   and decl._ctype._params != []                           \
   and type(decl._ctype._params[0]._ctype) == nodes.PrimaryType   \
   and decl._ctype._params[0]._ctype._identifier == name:
+    print(decl._ctype._params[0]._ctype)
     current_block.ref.body[-1] = knodes.Member(current_block.ref.body[-1])
   # if "name" == init
   # creer fonction new
   return True
-
