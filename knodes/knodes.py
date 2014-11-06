@@ -312,7 +312,7 @@ def makeKCType(declspecifier: str, ctype=None):
         ctype._storage = Storages.map[cleantxt.upper()]
     if Idset[declspecifier] == "qualifier":
         cleantxt = declspecifier.strip("_")
-        ctype.link(QualType(Qualifiers.map[cleantxt.upper()]))
+        ctype.link(KQualType(Qualifiers.map[cleantxt.upper()]))
     if Idset[declspecifier] == "funspecifier":
         cleantxt = declspecifier.strip("_")
         ctype._storage = Storages.map[cleantxt.upper()]
