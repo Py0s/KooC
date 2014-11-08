@@ -26,7 +26,7 @@ class KFImpl():
         if module_name in self.modules\
             and symbol_name in self.modules[module_name]:
                 for overload in self.modules[module_name][symbol_name]:
-                    if overload[0] == symbol_type and self.params_types_equals(overload[1], params_types):
+                    if overload[0] == symbol_type and overload[1] == params_types:#self.params_types_equals(overload[1], params_types):
                         return True
         return False
     

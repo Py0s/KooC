@@ -4,6 +4,7 @@ from pyrser.grammar import Grammar
 from pyrser import meta
 from cnorm import nodes
 from KoocGrammar.KC_Statement import KC_Statement
+from Exceptions.KoocException import KoocException
 import KoocFile
 import knodes
 import copy
@@ -46,14 +47,20 @@ def add_module(self, ast, module_name, body):
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
                 module.add_item(item)
                 varNode = None
+                params = ""
                 if hasattr(item, "_assign_expr"):
                     varNode = copy.deepcopy(item)
                     delattr(item, "_assign_expr")
-                if isinstance(item._ctype, nodes.FuncType):
-                    #  sauvegarder les types de params pour register_module_symbol
-                    pass
+                if isinstance(item._ctype, knodes.KFuncType):
+                    params = item._ctype.mangle_params()
                 # TODO : Gerer les ParenType je sais pas comment
-                KoocFile.register_module_symbol(module_name, item._name, item._ctype.mangle(), item.mangle(), varNode)
-                item._ctype._storage = nodes.Storages.EXTERN
+                mangled_name = item.mangle()
+                if item._ctype._storage == knodes.Storages.STATIC:
+                    mangled_name = item._name
+                KoocFile.register_module_symbol(module_name, item._name, item._ctype.mangle(), mangled_name, params, varNode)
+                if item._ctype._storage == knodes.Storages.INLINE:
+                    raise KoocException("[Error]: inline key-word in Module " + module_name)# A décommenter? + ", " + str(item.to_c()))
+                if item._ctype._storage == knodes.Storages.AUTO:
+                    item._ctype._storage = knodes.Storages.EXTERN
         ast.ref.body.append(module)
     return True
