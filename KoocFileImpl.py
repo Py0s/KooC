@@ -5,24 +5,24 @@ class KFImpl():
         self.modules = modules
         self.classes = classes
 
-    def params_types_equals(self, first, second):
-        for f, s in zip(first, second):
-            if f != s:
-                return False
-        return True
+    # def params_types_equals(self, first, second):
+    #     for f, s in zip(first, second):
+    #         if f != s:
+    #             return False
+    #     return True
 
     def symbol_entry_in_module(self, module_name, symbol_name):
         return self.modules[module_name][symbol_name]
     def symbol_entry_in_classe(self, classe_name, symbol_name):
         return self.classes[classe_name][symbol_name]
 
-    def symbol_overload(self, symbol_entry, symbol_type, params_types=[]):
+    def symbol_overload(self, symbol_entry, symbol_type, params_types=""):
         for overload in symbol_entry:
-            if overload[0] == symbol_type and self.params_types_equals(overload[1], params_types):
+            if overload[0] == symbol_type and overload[1] == params_types:#self.params_types_equals(overload[1], params_types):
                 return overload
         return None
 
-    def is_var_in_module(self, module_name, symbol_name, symbol_type, params_types=[]):
+    def is_var_in_module(self, module_name, symbol_name, symbol_type, params_types=""):
         if module_name in self.modules\
             and symbol_name in self.modules[module_name]:
                 for overload in self.modules[module_name][symbol_name]:
@@ -30,16 +30,16 @@ class KFImpl():
                         return True
         return False
     
-    def is_var_in_class(self, module_name, symbol_name, symbol_type, params_types=[]):
+    def is_var_in_class(self, module_name, symbol_name, symbol_type, params_types=""):
         return False
 
-    def get_var_from_module(self, module_name, symbol_name, symbol_type, params_types=[]):
+    def get_var_from_module(self, module_name, symbol_name, symbol_type, params_types=""):
         if not self.is_var_in_module(module_name, symbol_name, symbol_type, params_types):
             raise RuntimeError("try to get unknown node")
         symbol_entry = self.modules[module_name][symbol_name]
         return self.symbol_overload(symbol_entry, symbol_type, params_types)
 
-    def get_var_for_symbol(self, module_name, symbol_name, symbol_type, params_types=[]):
+    def get_var_for_symbol(self, module_name, symbol_name, symbol_type, params_types=""):
         var = None
         if self.is_var_in_module(module_name, symbol_name, symbol_type, params_types):
             if self.is_var_in_class(module_name, symbol_name, symbol_type, params_types):

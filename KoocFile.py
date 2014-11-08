@@ -36,7 +36,7 @@ def register_class(class_name):
     else:
         raise RuntimeError("Redefinition of class \"" + class_name + "\"")
 
-def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, params_types=[], assign_node = None):
+def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, params_types="", assign_node = None):
     # verifier l'existence du module ?
     if not symbol_name in modules[module_name]:
         modules[module_name][symbol_name] = []
@@ -46,7 +46,7 @@ def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, 
             raise RuntimeError("Redefinition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
     symbol_entry.append((symbol_type, params_types, mangled_name, assign_node))
     
-def register_class_symbol(module_name, symbol_name, symbol_type, mangled_name, params_types=[], assign_node = None):
+def register_class_symbol(module_name, symbol_name, symbol_type, mangled_name, params_types="", assign_node = None):
     # TODO !
     pass
 
@@ -55,9 +55,9 @@ def register_class_symbol(module_name, symbol_name, symbol_type, mangled_name, p
 
 
 # ! ici module_name signifie aussi bien nom du module que de la classe
-def mangled_name_of_symbol(module_name, symbol_name, symbol_type, params_types=[]):
+def mangled_name_of_symbol(module_name, symbol_name, symbol_type, params_types=""):
     return kfimpl.get_var_for_symbol(module_name, symbol_name, symbol_type, params_types)[2]
-def assign_node_of_symbol(module_name, symbol_name, symbol_type, params_types=[]):
+def assign_node_of_symbol(module_name, symbol_name, symbol_type, params_types=""):
     return kfimpl.get_var_for_symbol(module_name, symbol_name, symbol_type, params_types)[3]
 
 
