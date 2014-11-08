@@ -26,14 +26,14 @@ class UnittestNewtest(unittest.TestCase):
 
     def test_module_simple_overload_invalid(self):
         with self.assertRaises(RuntimeError) as cm:
-            self.cparse.parse(
+            print(self.cparse.parse(
             """
             @module Mayuri
             {
                 int tuturu;
                 int tuturu;
             }
-            """)
+            """).to_c())
 
 if __name__ == "__main__":
     unittest.main()
