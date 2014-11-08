@@ -42,7 +42,7 @@ def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, 
         modules[module_name][symbol_name] = []
     symbol_entry = modules[module_name][symbol_name]
     for symbol_overload in symbol_entry:
-        if symbol_overload[1] == mangled_name:
+        if symbol_overload[2] == mangled_name:
             raise RuntimeError("Redefinition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
     symbol_entry.append((symbol_type, params_types, mangled_name, assign_node))
     
