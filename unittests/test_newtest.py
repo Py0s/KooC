@@ -34,6 +34,26 @@ class UnittestNewtest(unittest.TestCase):
                 int tuturu;
             }
             """).to_c())
+    def test_module_const_overload_invalid(self):
+        with self.assertRaises(RuntimeError) as cm:
+            print(self.cparse.parse(
+            """
+            @module Mayuri
+            {
+                int tuturu;
+                const int tuturu;
+            }
+            """).to_c())
+    def test_module_static_overload_invalid(self):
+        with self.assertRaises(RuntimeError) as cm:
+            print(self.cparse.parse(
+            """
+            @module Mayuri
+            {
+                int tuturu;
+                static int tuturu;
+            }
+            """).to_c())
 
 if __name__ == "__main__":
     unittest.main()

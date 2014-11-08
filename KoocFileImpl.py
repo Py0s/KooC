@@ -1,53 +1,50 @@
 
 class KFImpl():
-    def __init__(self, imported_file_names, modules, classes):
+    def __init__(self, imported_file_names, modules):
         self.imported_file_names = imported_file_names
         self.modules = modules
-        self.classes = classes
 
-    # def params_types_equals(self, first, second):
-    #     for f, s in zip(first, second):
-    #         if f != s:
-    #             return False
-    #     return True
+    # def get_module_content(self, module_name):
+    #     return self.modules[module_name]
 
-    def symbol_entry_in_module(self, module_name, symbol_name):
-        return self.modules[module_name][symbol_name]
-    def symbol_entry_in_classe(self, classe_name, symbol_name):
-        return self.classes[classe_name][symbol_name]
+    # def get_symbol_content(self, module_name, symbol_name):
+    #     return self.modules[module_name][symbol_name]
 
-    def symbol_overload(self, symbol_entry, symbol_type, params_types=""):
-        for overload in symbol_entry:
-            if overload[0] == symbol_type and overload[1] == params_types:#self.params_types_equals(overload[1], params_types):
-                return overload
-        return None
+    # # vartype_name = "var" ou "fun"
+    # def get_vartype_content(self, module_name, symbol_name, vartype_name):
+    #     return self.modules[module_name][symbol_name][vartype_name]
 
-    def is_var_in_module(self, module_name, symbol_name, symbol_type, params_types=""):
-        if module_name in self.modules\
-            and symbol_name in self.modules[module_name]:
-                for overload in self.modules[module_name][symbol_name]:
-                    if overload[0] == symbol_type and overload[1] == params_types:#self.params_types_equals(overload[1], params_types):
-                        return True
-        return False
-    
-    def is_var_in_class(self, module_name, symbol_name, symbol_type, params_types=""):
-        return False
+    # def get_params_content(self, module_name, symbol_name, vartype_name, params_types):
+    #     return self.modules[module_name][symbol_name][vartype_name][params_types]
 
-    def get_var_from_module(self, module_name, symbol_name, symbol_type, params_types=""):
-        if not self.is_var_in_module(module_name, symbol_name, symbol_type, params_types):
-            raise RuntimeError("try to get unknown node")
-        symbol_entry = self.modules[module_name][symbol_name]
-        return self.symbol_overload(symbol_entry, symbol_type, params_types)
+    # def get_overload_content(self, module_name, symbol_name, vartype_name, params_types, symbol_type):
+    #     return self.modules[module_name][symbol_name][vartype_name][params_types][symbol_type]
 
-    def get_var_for_symbol(self, module_name, symbol_name, symbol_type, params_types=""):
-        var = None
-        if self.is_var_in_module(module_name, symbol_name, symbol_type, params_types):
-            if self.is_var_in_class(module_name, symbol_name, symbol_type, params_types):
-                raise RuntimeError("Unbiguous call")#TODO : jolie msg
-            else:
-                var = self.get_var_from_module(module_name, symbol_name, symbol_type, params_types)
-        elif self.is_var_in_class(module_name, symbol_name, symbol_type, params_types):
-            var = self.get_var_from_module(module_name, symbol_name, symbol_type, params_types)
-        else:
-            raise RuntimeError("No symbol")#TODO : jolie msg
-        return var
+
+    # def set_module_content(self, module_name, content):
+    #     self.modules[module_name] = content
+
+    # def set_symbol_content(self, module_name, symbol_name, content):
+    #     self.modules[module_name][symbol_name] = content
+
+    # # vartype_name = "var" ou "fun"
+    # def set_vartype_content(self, module_name, symbol_name, vartype_name, content):
+    #     self.modules[module_name][symbol_name][vartype_name] = content
+
+    # def set_params_content(self, module_name, symbol_name, vartype_name, params_types, content):
+    #     self.modules[module_name][symbol_name][vartype_name][params_types] = content
+
+    def set_overload_content(self, module_name, symbol_name, vartype_name, params_types, symbol_type, content):
+        #self.modules["tuturu"]["a"]["saisonne"] = "poulet"
+        # self.modules["mayuri"]["tuturu"]["var"] = "poulet"
+        #self.modules["mayuri"]["tuturu"]["var"]["abc"]["bcd"] = "poulet"#("M6Mayuri__i6tuturu", None)
+        #self.modules["mayuri"]["tuturu"]["var"]["abc"]["efg"] = "poulet"#("M6Mayuri__i6tuturu", None)
+        # print(self.modules["moncul"]["a"]["saisonne"])
+
+        # print(module_name)
+        # print(symbol_name)
+        # print(vartype_name)
+        # print(params_types)
+        # print(symbol_type)
+        # print(content)
+        self.modules[module_name][symbol_name][vartype_name][params_types][symbol_type] = content
