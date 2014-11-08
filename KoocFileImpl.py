@@ -35,16 +35,11 @@ class KFImpl():
     #     self.modules[module_name][symbol_name][vartype_name][params_types] = content
 
     def set_overload_content(self, module_name, symbol_name, vartype_name, params_types, symbol_type, content):
-        #self.modules["tuturu"]["a"]["saisonne"] = "poulet"
-        # self.modules["mayuri"]["tuturu"]["var"] = "poulet"
-        #self.modules["mayuri"]["tuturu"]["var"]["abc"]["bcd"] = "poulet"#("M6Mayuri__i6tuturu", None)
-        #self.modules["mayuri"]["tuturu"]["var"]["abc"]["efg"] = "poulet"#("M6Mayuri__i6tuturu", None)
-        # print(self.modules["moncul"]["a"]["saisonne"])
-
-        # print(module_name)
-        # print(symbol_name)
-        # print(vartype_name)
-        # print(params_types)
-        # print(symbol_type)
-        # print(content)
+        if self.modules[module_name][symbol_name][vartype_name][params_types][symbol_type]:
+            # print("EEEEEEEEEEERRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRR POURQUOIIII ?")
+            # print("params_types = ", params_types)
+            # print("symbol_type = ", symbol_type)
+            # print("vartype_name = ", vartype_name)
+            # print("content = ", content)
+            raise RuntimeError("Redefinition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
         self.modules[module_name][symbol_name][vartype_name][params_types][symbol_type] = content
