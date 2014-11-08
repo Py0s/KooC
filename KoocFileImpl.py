@@ -18,7 +18,7 @@ class KFImpl():
 
     def symbol_overload(self, symbol_entry, symbol_type, params_types=[]):
         for overload in symbol_entry:
-            if overload[0] == symbol_type and params_types_equals(overload[1], params_types):
+            if overload[0] == symbol_type and self.params_types_equals(overload[1], params_types):
                 return overload
         return None
 
@@ -26,25 +26,28 @@ class KFImpl():
         if module_name in self.modules\
             and symbol_name in self.modules[module_name]:
                 for overload in self.modules[module_name][symbol_name]:
-                    if overload[0] == symbol_type and params_types_equals(overload[1], params_types):
+                    if overload[0] == symbol_type and self.params_types_equals(overload[1], params_types):
                         return True
         return False
     
+    def is_var_in_class(self, module_name, symbol_name, symbol_type, params_types=[]):
+        return False
+
     def get_var_from_module(self, module_name, symbol_name, symbol_type, params_types=[]):
-        if not is_var_in_module(module_name, symbol_name, symbol_type, params_types):
+        if not self.is_var_in_module(module_name, symbol_name, symbol_type, params_types):
             raise RuntimeError("try to get unknown node")
         symbol_entry = self.modules[module_name][symbol_name]
-        return symbol_overload(symbol_entry, symbol_type, params_types)
+        return self.symbol_overload(symbol_entry, symbol_type, params_types)
 
     def get_var_for_symbol(self, module_name, symbol_name, symbol_type, params_types=[]):
         var = None
-        if is_var_in_module(module_name, symbol_name, symbol_type, params_types):
-            if is_var_in_class(module_name, symbol_name, symbol_type, params_types):
+        if self.is_var_in_module(module_name, symbol_name, symbol_type, params_types):
+            if self.is_var_in_class(module_name, symbol_name, symbol_type, params_types):
                 raise RuntimeError("Unbiguous call")#TODO : jolie msg
             else:
-                var = get_var_from_module(module_name, symbol_name, symbol_type, params_types)
-        elif is_var_in_class(module_name, symbol_name, symbol_type, params_types):
-            var = get_var_from_module(module_name, symbol_name, symbol_type, params_types)
+                var = self.get_var_from_module(module_name, symbol_name, symbol_type, params_types)
+        elif self.is_var_in_class(module_name, symbol_name, symbol_type, params_types):
+            var = self.get_var_from_module(module_name, symbol_name, symbol_type, params_types)
         else:
             raise RuntimeError("No symbol")#TODO : jolie msg
         return var
