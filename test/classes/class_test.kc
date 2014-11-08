@@ -1,19 +1,26 @@
 
 @import "class_test.kh"
 
-@implementation Kyouma
-{
-}
-
 @implementation Titor
 {
+  char *get_dmail(void)
+  {
+    return ([self.dmail]);
+  }
+
+  void send_dmail(Titor *this, char *mail)
+  {
+    [self.dmail] = mail;
+    printf("Send: %s\n", mail);
+  }
 }
 
 int main()
 {
-	Titor t;
-	t.year = 2036;
-	printf("%d\n", t.year);
-	t.send_dmail("Watashi ha mad scientist !");
-	char * mail = t.get_dmail();
+  Titor t;
+  t.year = 2036;
+  printf("%d\n", t.year);
+  t.send_dmail("Watashi wa mad scientist !");
+  char * mail = t.get_dmail();
+  printf("%s\n", mail);
 }

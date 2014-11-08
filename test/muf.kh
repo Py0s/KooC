@@ -12,6 +12,7 @@
 {
   int id = 42;
   char *id = "quarante deux"; //Big attention to this
+  char **id;
   char id[];
 }
 
