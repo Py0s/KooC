@@ -4,11 +4,16 @@ import unittest
 from KoocGrammar import KoocG
 from KoocGrammar import Module
 from cnorm.passes import to_c
+import KoocFile
 
 class UnittestModule(unittest.TestCase):
 
     def setUp(self):
         self.cparse = KoocG()
+
+    def tearDown(self):
+        self.cparse = None
+        KoocFile.debugCleanAll()
 
     ## SIMPLE TO MORE COMPLEX TEST OF VALIDS MODULES
     def test_empty_module(self):

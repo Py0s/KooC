@@ -28,16 +28,26 @@ def register_module(module_name):
     #     modules[module_name] = {}
 
 def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, params_types="", assign_node = None):
-    vartype = "fun"
-    if params_types == "":
-        vartype = "var"
-        params_types = "__666__"
+    vartype = kfimpl.get_vartype(params_types)
     content = (mangled_name, assign_node)
     # modules["Moncul"]["tuturu"]["__saisonne__6"] = "poulet"
     # print(modules["Moncul"]["tuturu"]["__saisonne__6"])
     kfimpl.set_overload_content(module_name, symbol_name, vartype, params_types, symbol_type, content)
 
 
+def inferred_mangled_name_of_symbol(module_name, symbol_name, symbol_type, params_types=""):
+    vartype = kfimpl.get_vartype(params_types)
+    params_content = kfimpl.get_params_content(module_name, symbol_name, vartype_name, params_types)
+    if len(params_content) > 1:
+        raise RuntimeError("Ambiguous call of symbol \"" + symbol_name + "\" from the module \"" + module_name + "\"")
+    return next(iter(params_content.values()))[0]
+
+def mangled_name_of_symbol(module_name, symbol_name, symbol_type, params_types=""):
+    vartype = kfimpl.get_vartype(params_types)
+    return kfimpl.get_overload_content(module_name, symbol_name, vartype, params_types, symbol_type)[0]
+def assign_node_of_symbol(module_name, symbol_name, symbol_type, params_types=""):
+    vartype = kfimpl.get_vartype(params_types)
+    return kfimpl.get_overload_content(module_name, symbol_name, vartype, params_types, symbol_type)[1]
 
 
 def debugCleanAll():

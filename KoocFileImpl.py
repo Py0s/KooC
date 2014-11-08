@@ -4,6 +4,12 @@ class KFImpl():
         self.imported_file_names = imported_file_names
         self.modules = modules
 
+    def get_vartype(self, params_types):
+        vartype = "fun"
+        if params_types == "":
+            vartype = "var"
+            params_types = "__666__"
+        return vartype
     # def get_module_content(self, module_name):
     #     return self.modules[module_name]
 
@@ -11,14 +17,23 @@ class KFImpl():
     #     return self.modules[module_name][symbol_name]
 
     # # vartype_name = "var" ou "fun"
-    # def get_vartype_content(self, module_name, symbol_name, vartype_name):
-    #     return self.modules[module_name][symbol_name][vartype_name]
+    def get_vartype_content(self, module_name, symbol_name, vartype_name):
+        vartype_content = self.modules[module_name][symbol_name][vartype_name]
+        if not vartype_content:
+            raise RuntimeError("No definition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+        return vartype_content
 
-    # def get_params_content(self, module_name, symbol_name, vartype_name, params_types):
-    #     return self.modules[module_name][symbol_name][vartype_name][params_types]
+    def get_params_content(self, module_name, symbol_name, vartype_name, params_types):
+        params_content = self.modules[module_name][symbol_name][vartype_name][params_types]
+        if not params_content:
+            raise RuntimeError("No definition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+        return params_content
 
-    # def get_overload_content(self, module_name, symbol_name, vartype_name, params_types, symbol_type):
-    #     return self.modules[module_name][symbol_name][vartype_name][params_types][symbol_type]
+    def get_overload_content(self, module_name, symbol_name, vartype_name, params_types, symbol_type):
+        overload_content = self.modules[module_name][symbol_name][vartype_name][params_types][symbol_type]
+        if not overload_content:
+            raise RuntimeError("No definition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+        return overload_content
 
 
     # def set_module_content(self, module_name, content):

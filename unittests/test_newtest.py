@@ -18,7 +18,7 @@ class UnittestNewtest(unittest.TestCase):
         KoocFile.debugCleanAll()
 
     def test_module_simple_overload(self):
-        print("THE FIRST TEST")
+        # print("THE FIRST TEST")
         res = str(self.cparse.parse(
             """
             @module Mayuri
@@ -31,7 +31,7 @@ class UnittestNewtest(unittest.TestCase):
                          "extern int M6Mayuri__i6tuturu;\nextern float M6Mayuri__f6tuturu;\n")
 
     def test_module_simple_overload_invalid(self):
-        print("THE SECOND TEST")
+        # print("THE SECOND TEST")
         with self.assertRaises(RuntimeError) as cm:
             print(self.cparse.parse(
             """
@@ -42,7 +42,7 @@ class UnittestNewtest(unittest.TestCase):
             }
             """).to_c())
     def test_module_const_overload_invalid(self):
-        print("THE THIRD TEST")
+        # print("THE THIRD TEST")
         with self.assertRaises(RuntimeError) as cm:
             print(self.cparse.parse(
             """

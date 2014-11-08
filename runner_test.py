@@ -13,6 +13,7 @@ tests = [
 ]
 
 def main():
+    sys.tracebacklimit = 0
     suite = unittest.TestSuite()
     if len(sys.argv) > 1:
         for test in sys.argv[1:]:
