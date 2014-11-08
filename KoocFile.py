@@ -37,3 +37,10 @@ def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, 
     # print(modules["Moncul"]["tuturu"]["__saisonne__6"])
     kfimpl.set_overload_content(module_name, symbol_name, vartype, params_types, symbol_type, content)
 
+
+
+
+def debugCleanAll():
+    imported_file_names.clear()
+    modules.clear()
+    kfimpl = KFImpl(imported_file_names, modules)
