@@ -82,10 +82,14 @@ def create_func_symbol(self, ast, module, typo, func, params):
 
 @meta.hook(Kooc_call)
 def create_var_symbol(self, ast, module, typo, var):
+    module = self.value(module)
+    typo = self.value(typo)
+    var = self.value(var)
     # print("Type variable :", self.value(typo))
     # print("")
-    mangled_name = KoocFile.mangled_name_of_symbol(module, func, item._ctype.mangle(), params)
-    mangled_name = KoocFile.inferred_mangled_name_of_symbol(name, item._name, params)
 
-    ast.set(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(var)))
+    # mangled_name = KoocFile.mangled_name_of_symbol(module, var, item._ctype.mangle(), params)
+    # mangled_name = KoocFile.inferred_mangled_name_of_symbol(name, item._name, params)
+
+    ast.set(nodes.Id(module + "_" + typo + "_" + var))
     return True

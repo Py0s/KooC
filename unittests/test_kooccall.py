@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
+from cnorm.parsing.declaration import Declaration
 from KoocGrammar import KoocG
 from KoocGrammar import Module
 from cnorm.passes import to_c
@@ -9,35 +10,37 @@ import KoocFile
 class UnittestKooccall(unittest.TestCase):
 
     def setUp(self):
-        self.cparse = KoocG()
+        self.cparse = Declaration()
+        self.kparse = KoocG()
 
     def tearDown(self):
         self.cparse = None
+        self.kparse = None
         KoocFile.debugCleanAll()
 
 
-    def test_simple_function_call(self):
-        res = str(self.cparse.parse(
-            """
-            @module Test
-            {
-             int test(void);
-            }
-            int main()
-            {
-              [Test test];
-            }
-            """).to_c())
-        waited = """
-extern int M4Test__i4testv(void);
-int main()
-{
-    M4Test__i4testv();
-}
-            """
-        self.assertEqual(res, waited)
+#     def test_simple_function_call(self):
+#         res = str(self.kparse.parse(
+#             """
+#             @module Test
+#             {
+#              int test(void);
+#             }
+#             int main()
+#             {
+#               [Test test];
+#             }
+#             """).to_c())
+#         waited = str(self.cparse.parse("""
+# extern int M4Test__i4testv(void);
+# int main()
+# {
+#     M4Test__i4testv();
+# }
+#             """).to_c())
+#         self.assertEqual(res, waited)
     def test_simple_variable_call(self):
-        res = str(self.cparse.parse(
+        res = str(self.kparse.parse(
             """
             @module Test
             {
@@ -48,34 +51,66 @@ int main()
               [Test.test];
             }
             """).to_c())
-        waited = """
-extern int M4Test__i4testv;
+        waited = str(self.cparse.parse("""
+extern int M4Test__i4test;
 int main()
 {
-    M4Test__i4testv;
+    M4Test__i4test;
 }
-            """
+            """).to_c())
+        print("RESULT = ", res, "\n")
+        print("WAITED = ", waited, "\n")
         self.assertEqual(res, waited)
-    def test_simple_function_arg_call(self):
-        res = str(self.cparse.parse(
+    def test_simple_variable_assign_call(self):
+        res = str(self.kparse.parse(
             """
             @module Test
             {
-             int test(int toto);
+             int test;
             }
             int main()
             {
-              [Test test :(int)42];
+              int a = [Test.test];
             }
             """).to_c())
-        waited = """
-extern int M4Test__i4testi(int toto);
+        waited = str(self.cparse.parse("""
+extern int M4Test__i4test;
 int main()
 {
-    M4Test__i4testi(42);
+    int a = M4Test__i4test;
 }
-            """
+            """).to_c())
         self.assertEqual(res, waited)
+#     def test_simple_function_arg_call(self):
+#         res = str(self.kparse.parse(
+#             """
+#             @module Test
+#             {
+#              int test(int toto);
+#             }
+#             int main()
+#             {
+#               [Test test :(int)42];
+#             }
+#             """).to_c())
+#         waited = str(self.cparse.parse("""
+# extern int M4Test__i4testi(int toto);
+# int main()
+# {
+#     M4Test__i4testi(42);
+# }
+#             """).to_c())
+#         self.assertEqual(res, waited)
+
+
+
+
+
+
+
+
+
+
     # def test_koocCall_in_function(self):
     #     res = str(self.cparse.parse(
     #         """

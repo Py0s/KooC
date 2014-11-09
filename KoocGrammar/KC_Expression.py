@@ -248,8 +248,10 @@ class KC_Expression(Grammar, Expression, K_Expression):
         ]
 
         kc_postfix_expression = [
+            #echo("heho")
             kc_primary_expression:>_
             [
+            #echo("je suis un connard")
                 __scope__:pres
                 [
                 '[' kc_expression:expr ']' #new_array_call(pres, _, expr)
@@ -270,9 +272,9 @@ class KC_Expression(Grammar, Expression, K_Expression):
         ]
 
         kc_primary_expression = [
-            '(' kc_expression:expr ')' #new_paren(_, expr)
+            [ K_Expression.k_primary_expression | Literal.literal | kc_identifier ]:>_
             |
-            [ Literal.literal | kc_identifier | K_Expression.k_primary_expression ]:>_
+            '(' kc_expression:expr ')' #new_paren(_, expr)
         ]
 
         kc_identifier = [

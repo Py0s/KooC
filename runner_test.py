@@ -8,10 +8,10 @@ tests = [
     'unittests.test_kooc_file',
     'unittests.test_import',
     'unittests.test_class',
-    'unittests.test_module',
-    'unittests.test_newtest',
     'unittests.test_kooccall',
 ]
+    # 'unittests.test_module',
+    # 'unittests.test_newtest',
 
 def main():
     sys.tracebacklimit = 0
