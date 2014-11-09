@@ -2,6 +2,7 @@
 
 import unittest
 from KoocGrammar import KoocG
+from Exceptions import KoocException
 from cnorm.parsing.declaration import Declaration
 from KoocGrammar import Module
 from cnorm.passes import to_c
@@ -128,6 +129,206 @@ extern float M6Mayuri__f6tuturuf(float tutu);\n")
 extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
 
 
+    ## TODO : TESTS WITH SOME FUNCTION POINTER
+
+    ## TEST OF OVERLOADS WITH DIFFERENTS STORAGES, QUALIFIERS OR SPECIFIER
+
+
+    def test_auto_variable(self):
+        waited = self.cparse.parse("""
+extern auto int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             auto int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_register_variable(self):
+        waited = self.cparse.parse("""
+extern register int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             register int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_typedef_variable(self):
+        waited = self.cparse.parse("""
+extern typedef int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             typedef int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+
+    def test_static_variable(self):
+        waited = self.cparse.parse("""
+extern static int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             static int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+
+    def test_extern_variable(self):
+        waited = self.cparse.parse("""
+extern extern int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             extern int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_inline_variable(self):
+        with self.assertRaises(KoocException) as cm:
+            print(self.kparse.parse(
+            """
+            @module Test
+            {
+             inline int test;
+            }
+            """))
+
+#     def test_virtual_variable(self):
+#         waited = self.cparse.parse("""
+# extern virtual int M4Test__i4test;
+#             """)
+#         self.res = self.kparse.parse(
+#             """
+#             @module Test
+#             {
+#              virtual int test;
+#             }
+#             """)
+#         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+#     def test_explicit_variable(self):
+#         waited = self.cparse.parse("""
+# extern explicit int M4Test__i4test;
+#             """)
+#         self.res = self.kparse.parse(
+#             """
+#             @module Test
+#             {
+#              explicit int test;
+#             }
+#             """)
+#         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+#     def test_forceinline_variable(self):
+#         waited = self.cparse.parse("""
+# extern forceinline int M4Test__i4test;
+#             """)
+#         self.res = self.kparse.parse(
+#             """
+#             @module Test
+#             {
+#              forceinline int test;
+#             }
+#             """)
+#         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+#     def test_thread_variable(self):
+#         waited = self.cparse.parse("""
+# extern thread int M4Test__i4test;
+#             """)
+#         self.res = self.kparse.parse(
+#             """
+#             @module Test
+#             {
+#              thread int test;
+#             }
+#             """)
+#         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_volatile_variable(self):
+        waited = self.cparse.parse("""
+extern volatile int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             volatile int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_restrict_variable(self):
+        waited = self.cparse.parse("""
+extern restrict int M4Test__i4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             restrict int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+
+    def test_long_variable(self):
+        waited = self.cparse.parse("""
+extern long int M4Test__li4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             long int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_long_long_variable(self):
+        waited = self.cparse.parse("""
+extern long long int M4Test__lli4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             long long int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_short_variable(self):
+        waited = self.cparse.parse("""
+extern short int M4Test__si4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             short int test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
     def test_const_ptr_variable(self):
         waited = self.cparse.parse("""
 extern const int *M4Test__Pi4test;
@@ -155,35 +356,6 @@ extern auto unsigned int const* const* M4Test__PPui4test;
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
 
 
-# JAI FAIT DE LA MERDE
-#     def test_module_pointer(self):
-#         self.res = self.kparse.parse(
-#             """
-#             @module Titor
-#             {
-#              void send_dmail(Titor *this, char *mail);
-#             }
-#             """)
-#         waited = self.cparse.parse("""
-# extern void MTitor__v4send_dmailS5TitorPc(Titor *this, char *mail);
-#             """)
-#         if not hasattr(self.res, "to_c"):
-#             self.assertFalse("!!! A WILD ERROR APPEARS : ", self.res.diagnostic.get_content())
-#         self.assertEqual(str(self.res.to_c())).to_c()), waited.to_c()))
-
-    ## TODO : TESTS WITH SOME FUNCTION POINTER
-
-    ## TEST OF OVERLOADS WITH DIFFERENTS STORAGES, QUALIFIERS OR SPECIFIER
-    # Little reminder :
-    # Storages = meta.enum('AUTO', 'REGISTER', 'TYPEDEF',
-    #                  'STATIC', 'EXTERN', 'INLINE',
-    #                  'VIRTUAL', 'EXPLICIT',
-    #                  'FORCEINLINE', 'THREAD')
-    # Qualifiers = meta.enum('AUTO', 'CONST', 'VOLATILE', 'RESTRICT',
-    #                    'W64', 'STDCALL', 'CDECL',
-    #                    'PTR32', 'PTR64', 'FASTCALL')
-    # Specifiers = meta.enum('AUTO', 'STRUCT', 'UNION', 'ENUM', 'LONG',
-    #                    'LONGLONG', 'SHORT')
 
     # TODO!!
 
