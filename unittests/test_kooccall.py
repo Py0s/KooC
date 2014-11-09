@@ -40,45 +40,45 @@ class UnittestKooccall(unittest.TestCase):
 #             """).to_c())
 #         self.assertEqual(res, waited)
 
-#     def test_simple_variable_call(self):
-#         res = str(self.kparse.parse(
-#             """
-#             @module Test
-#             {
-#              int test;
-#             }
-#             int main()
-#             {
-#               [Test.test];
-#             }
-#             """).to_c())
-#         waited = str(self.cparse.parse("""
-# extern int M4Test__i4test;
-# int main()
-# {
-#     M4Test__i4test;
-# }
-#             """).to_c())
-#         print("RESULT = ", res, "\n")
-#         print("WAITED = ", waited, "\n")
-#         self.assertEqual(res, waited)
-
-
     def test_simple_variable_call(self):
-        res = self.kparse.parse(
+        res = str(self.kparse.parse(
             """
+            @module Test
+            {
+             int test;
+            }
             int main()
             {
               [Test.test];
             }
-            """)
-        print(res.diagnostic.get_content())
+            """).to_c())
         waited = str(self.cparse.parse("""
+extern int M4Test__i4test;
+int main()
+{
     M4Test__i4test;
+}
             """).to_c())
         print("RESULT = ", res, "\n")
         print("WAITED = ", waited, "\n")
         self.assertEqual(res, waited)
+
+
+    # def test_simple_variable_call(self):
+    #     res = self.kparse.parse(
+    #         """
+    #         int main()
+    #         {
+    #           [Test.test];
+    #         }
+    #         """)
+    #     print(res.diagnostic.get_content())
+    #     waited = str(self.cparse.parse("""
+    # M4Test__i4test;
+    #         """).to_c())
+    #     print("RESULT = ", res, "\n")
+    #     print("WAITED = ", waited, "\n")
+    #     self.assertEqual(res, waited)
 
 
 #     def test_simple_variable_assign_call(self):
