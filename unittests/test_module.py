@@ -2,7 +2,7 @@
 
 import unittest
 from KoocGrammar import KoocG
-from Exceptions import KoocException
+from Exceptions.KoocException import KoocException
 from cnorm.parsing.declaration import Declaration
 from KoocGrammar import Module
 from cnorm.passes import to_c

@@ -40,7 +40,7 @@ else:
 
 try:
     ast = KoocFile.kooc_a_file(koocFileName)
-    # print(ast)
+
     # to_c call
     
     try:
