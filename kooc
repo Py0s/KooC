@@ -2,6 +2,7 @@
 
 import sys
 import os
+from Exceptions.KoocException import KoocException
 
 # TODO : a retirer dans la version finale !
 sys.tracebacklimit = 0
@@ -38,16 +39,22 @@ else:
 
 # kooc !
 
-ast = KoocFile.kooc_a_file(koocFileName)
-
-# to_c call
-
 try:
-    result = str(to_c.k_to_c(ast))
-    # writing result
-    fout.write(result)
-except AttributeError as e:
-    print("Error on parsing: ", e)
-    print(ast.diagnostic.get_content())
+    ast = KoocFile.kooc_a_file(koocFileName)
+    # print(ast)
+    # to_c call
+    
+    try:
+        result = str(to_c.k_to_c(ast))
+        # writing result
+        fout.write(result)
+    except AttributeError as e:
+        print("Error on parsing: ", e)
+        print(ast.diagnostic.get_content())
+    
+    fout.close()
 
-fout.close()
+except RuntimeError as e:#TODO : catcher KoocException quand elle sera bien envoyée
+    print(e)
+except KoocException as e:#TODO : catcher KoocException quand elle sera bien envoyée
+    print(e)

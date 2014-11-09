@@ -11,6 +11,11 @@ def kooc_a_file(kooc_file_name):
     ast = cparse.parse_file(kooc_file_name)
     return ast
 
+def kooc_a_string(content):
+    cparse = KoocG()
+    ast = cparse.parse(content)
+    return ast
+
 def is_file_imported(fileName):
     return fileName in imported_file_names
 def register_file(file_name):
