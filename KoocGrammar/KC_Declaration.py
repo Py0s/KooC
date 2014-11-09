@@ -649,7 +649,7 @@ def add_qual(self, lspec, qualspec):
     if dspec in Idset and Idset[dspec] == "qualifier":
         cleantxt = dspec.strip("_")
         lspec.ctype.push(
-            knodes.KQualType(knodes.KQualifiers.map[cleantxt.upper()])
+            knodes.KQualType(nodes.Qualifiers.map[cleantxt.upper()])
         )
         return True
     return False

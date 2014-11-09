@@ -128,6 +128,19 @@ extern float M6Mayuri__f6tuturuf(float tutu);\n")
 extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
 
 
+    def test_const_ptr_variable(self):
+        waited = self.cparse.parse("""
+extern const int *M4Test__Pi4test;
+            """)
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             int const* test;
+            }
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
     def test_complex_variable(self):
         self.res = self.kparse.parse(
             """
@@ -136,9 +149,8 @@ extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
              auto unsigned int const* const* test;
             }
             """)
-        #TODO : c'est quoi le mangling de cette merde ?
         waited = self.cparse.parse("""
-extern int M4Test__i4test;
+extern auto unsigned int const* const* M4Test__PPui4test;
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
 
