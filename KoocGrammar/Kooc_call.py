@@ -43,12 +43,10 @@ def create_params(self, ast):
 @meta.hook(Kooc_call)
 def save_param(self, ast, typo, param):
     if type(param) is nodes.Func:
-        # print("Param: ", param)
         ast.params.append(param)
         ast.types.append(self.value(typo))
     else:
-        # print("value(param): ", self.value(param))
-        ast.params.append(nodes.Literal(self.value(param)))
+        ast.params.append(nodes.Literal(param.value))
         ast.types.append(self.value(typo))
     return True
 
