@@ -41,7 +41,7 @@ def to_c(self):
 
 @meta.add_method(knodes.KDecl)
 def to_c(self):
-    self._name = self.mangle()
+    # self._name = self.mangle()
     return nodes.Decl.to_c(self)
 
 # @meta.add_method(knodes.KDeclType)

@@ -62,5 +62,6 @@ def add_module(self, ast, module_name, body):
                     raise KoocException("[Error]: inline key-word in Module " + module_name)# A décommenter? + ", " + str(item.to_c()))
                 if item._ctype._storage == knodes.Storages.AUTO:
                     item._ctype._storage = knodes.Storages.EXTERN
+                item._name = item.mangle()
         ast.ref.body.append(module)
     return True

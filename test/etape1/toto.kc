@@ -16,5 +16,5 @@
 int main()
 {
   [Test tutu :(int)@!(int)[Test tata] :(float)4.2];
-  [Test.toto];
+//  [Test.toto];
 }

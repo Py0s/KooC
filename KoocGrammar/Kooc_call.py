@@ -63,8 +63,6 @@ def create_func_symbol(self, ast, module, typo, func, params):
     # print("Types params : ", params.types)
     # print("Params : ", params.params)
     # print("")
-    symbol_type = sm.type_m(self.value(typo))
-    # print("symbol_type :", symbol_type)
     params_types = ""
     if params.types == []:
         params_types = "v"
@@ -72,9 +70,11 @@ def create_func_symbol(self, ast, module, typo, func, params):
         for item in params.types:
             params_types += sm.type_m(item)
     # print("params_types :", params_types)
-    if symbol_type == "":
+    if self.value(typo) == "":
         mangled_name = KoocFile.inferred_mangled_name_of_symbol(self.value(module), self.value(func), params_types)
     else:
+        symbol_type = sm.type_m(self.value(typo))
+        # print("symbol_type :", symbol_type)
         mangled_name = KoocFile.mangled_name_of_symbol(self.value(module), self.value(func), symbol_type, params_types)
     ast.set(nodes.Func(nodes.Id(mangled_name), params.params))
     # ast.set(nodes.Func(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(func)), params.params))
