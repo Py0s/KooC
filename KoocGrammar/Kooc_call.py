@@ -11,12 +11,12 @@ class   Kooc_call(Grammar):
     grammar = """
     kooc_call              = [
                                 __scope__:type
-                                ["@!(" kooc_type:type ")"]? #heho(_) '[' #echo("ET OUAIS!")
+                                ["@!(" kooc_type:type ")"]? '['
                                     module_id:module
                                     [
                                      [function_id:func list_parameter:params #create_func_symbol(_, module, type, func, params)]
                                      |
-                                     ['.' #heho(_) variable_id:var #create_var_symbol(_, module, type, var)]
+                                     ['.' variable_id:var #create_var_symbol(_, module, type, var)]
                                     ]
                                 ']'
                              ]

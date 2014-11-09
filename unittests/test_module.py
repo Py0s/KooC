@@ -2,6 +2,7 @@
 
 import unittest
 from KoocGrammar import KoocG
+from cnorm.parsing.declaration import Declaration
 from KoocGrammar import Module
 from cnorm.passes import to_c
 import KoocFile
@@ -9,118 +10,154 @@ import KoocFile
 class UnittestModule(unittest.TestCase):
 
     def setUp(self):
-        self.cparse = KoocG()
+        self.cparse = Declaration()
+        self.kparse = KoocG()
 
     def tearDown(self):
         self.cparse = None
+        self.kparse = None
         KoocFile.debugCleanAll()
+        if hasattr(self, "res") and not hasattr(self.res, "to_c"):
+            self.assertFalse(self.res.diagnostic.get_content())
 
     ## SIMPLE TO MORE COMPLEX TEST OF VALIDS MODULES
     def test_empty_module(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Test
             {
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "")
     def test_declaration_variable(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Test
             {
              void test;
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern void M4Test__v4test;\n")
     def test_declaration_assignement_variable(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Test
             {
              int test = 42;
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern int M4Test__i4test;\n")
     def test_declaration_function_implicit_void(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Test
             {
              void test();
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern void M4Test__v4testv();\n")
     def test_declaration_function_explicit_void(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Test
             {
              void test(void);
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern void M4Test__v4testv(void);\n")
     def test_declaration_function(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Test
             {
              char *test(int **toto, float tata[]);
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                         "extern char *M4Test__Pc4testPPiAf(int **toto, float tata[]);\n")
     def test_variable_overload(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Mayuri
             {
                 int tuturu;
                 float tuturu;
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern int M6Mayuri__i6tuturu;\nextern float M6Mayuri__f6tuturu;\n")
     def test_variable_and_function_with_no_param(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Mayuri
             {
                 int tuturu;
                 int tuturu();
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern int M6Mayuri__i6tuturu;\nextern int M6Mayuri__i6tuturuv();\n")
     def test_function_return_value_overload(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Mayuri
             {
                 int tuturu(float toto);
                 float tuturu(float tutu);
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern int M6Mayuri__i6tuturuf(float toto);\n\
 extern float M6Mayuri__f6tuturuf(float tutu);\n")
     def test_function_params_value_overload(self):
-        res = str(self.cparse.parse(
+        self.res = self.kparse.parse(
             """
             @module Mayuri
             {
                 double **tuturu(char toto[], void* ptr[]);
                 double** tuturu(int tutu);
             }
-            """).to_c())
-        self.assertEqual(res,
+            """)
+        self.assertEqual(str(self.res.to_c()),
                          "extern double **M6Mayuri__PPd6tuturuAcAPv(char toto[], void *ptr[]);\n\
 extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
+
+
+    def test_complex_variable(self):
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             auto unsigned int const* const* test;
+            }
+            """)
+        #TODO : c'est quoi le mangling de cette merde ?
+        waited = self.cparse.parse("""
+extern int M4Test__i4test;
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+
+# JAI FAIT DE LA MERDE
+#     def test_module_pointer(self):
+#         self.res = self.kparse.parse(
+#             """
+#             @module Titor
+#             {
+#              void send_dmail(Titor *this, char *mail);
+#             }
+#             """)
+#         waited = self.cparse.parse("""
+# extern void MTitor__v4send_dmailS5TitorPc(Titor *this, char *mail);
+#             """)
+#         if not hasattr(self.res, "to_c"):
+#             self.assertFalse("!!! A WILD ERROR APPEARS : ", self.res.diagnostic.get_content())
+#         self.assertEqual(str(self.res.to_c())).to_c()), waited.to_c()))
 
     ## TODO : TESTS WITH SOME FUNCTION POINTER
 
@@ -144,7 +181,7 @@ extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
 
     ## TODO : A mettre dans test_implementation
     ## def test_simple_koocCall_in_function(self):
-    ##     res = str(self.cparse.parse(
+    ##     self.res = self.cparse.parse(
     ##         """
     ##         @module Test1
     ##         {
@@ -155,10 +192,10 @@ extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
     ##           void test2([Test1 test1]);
     ##         }
     ##         """).to_c())
-    ##     self.assertEqual(res,
+    ##     self.assertEqual(str(self.res.to_c()),
     ##                     "")
     ## def test_koocCall_in_function(self):
-    ##     res = str(self.cparse.parse(
+    ##     self.res = self.cparse.parse(
     ##         """
     ##         @module Test1
     ##         {
@@ -173,10 +210,10 @@ extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
     ##           void test2([Test2 test2 :[Test1.toto]]);
     ##         }
     ##         """).to_c())
-    ##     self.assertEqual(res,
+    ##     self.assertEqual(str(self.res.to_c()),
     ##                     "")
     ## def test_typage_ret_koocCall_in_function(self):
-    ##     res = str(self.cparse.parse(
+    ##     self.res = self.cparse.parse(
     ##         """
     ##         @module Test1
     ##         {
@@ -187,10 +224,10 @@ extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
     ##           void test2(@!(int)[Test1 test1]);
     ##         }
     ##         """).to_c())
-    ##     self.assertEqual(res,
+    ##     self.assertEqual(str(self.res.to_c()),
     ##                     "")
     ## def test_typage_var_koocCall_in_function(self):
-    ##     res = str(self.cparse.parse(
+    ##     self.res = self.cparse.parse(
     ##         """
     ##         @module Test1
     ##         {
@@ -205,7 +242,7 @@ extern double **M6Mayuri__PPd6tuturui(int tutu);\n")
     ##           void test2(@!(int)[Test2 test2 :(float)[Test1.toto]]);
     ##         }
     ##         """).to_c())
-    ##     self.assertEqual(res,
+    ##     self.assertEqual(str(self.res.to_c()),
     ##                     "")
 
 if __name__ == "__main__":
