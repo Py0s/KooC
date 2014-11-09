@@ -57,5 +57,7 @@ def raise_params(item):
 
 @meta.add_method(knodes.KFuncType)
 def mangle_params(self):
+    if len(self._params) == 0:
+        return sm.type_m("void")
     gen = (item.mangle_type() if hasattr(item, 'mangle_type') else raise_params(item) for item in self._params)
     return ''.join(gen)
