@@ -3,6 +3,8 @@ from cnorm.parsing.expression import Expression
 from pyrser.grammar import Grammar
 from pyrser import meta
 from cnorm import nodes
+from mangler import simple_mangling as sm
+import KoocFile
 
 class   Kooc_call(Grammar):
     entry = 'kooc_call'
@@ -61,12 +63,29 @@ def create_func_symbol(self, ast, module, typo, func, params):
     # print("Types params : ", params.types)
     # print("Params : ", params.params)
     # print("")
-    ast.set(nodes.Func(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(func)), params.params))
+    symbol_type = sm.type_m(self.value(typo))
+    # print("symbol_type :", symbol_type)
+    params_types = ""
+    if params.types == []:
+        params_types = "v"
+    else:
+        for item in params.types:
+            params_types += sm.type_m(item)
+    # print("params_types :", params_types)
+    if symbol_type == "":
+        mangled_name = KoocFile.inferred_mangled_name_of_symbol(self.value(module), self.value(func), params_types)
+    else:
+        mangled_name = KoocFile.mangled_name_of_symbol(self.value(module), self.value(func), symbol_type, params_types)
+    ast.set(nodes.Func(nodes.Id(mangled_name), params.params))
+    # ast.set(nodes.Func(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(func)), params.params))
     return True
 
 @meta.hook(Kooc_call)
 def create_var_symbol(self, ast, module, typo, var):
     # print("Type variable :", self.value(typo))
     # print("")
+    mangled_name = KoocFile.mangled_name_of_symbol(module, func, item._ctype.mangle(), params)
+    mangled_name = KoocFile.inferred_mangled_name_of_symbol(name, item._name, params)
+
     ast.set(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(var)))
     return True
