@@ -6,21 +6,6 @@ from pyrser import meta
 from pyrser.parsing.node import Node
 import knodes
 
-# class KC_Expression(Grammar, Expression, K_Expression):
-#     entry = "unary_expression"
-#     grammar = """
-#    §     kc_expression = [ Expression.expression:>_ ]
-#    §     kc_assignement_expression = [ Expression.assignement_expression:>_ ]
-#    §     unary_expression = [ Expression.unary_expression:>_ ]
-#   §      primary_expression = [
-#   §          '(' expression:expr ')' #new_paren(_, expr)
-#   §          | [ Literal.literal | identifier | kc_primary_expression]:>_
-#    §     ]
-#    §     kc_primary_expression = [ K_Expression.k_primary_expression:>_ ]
-
-#     """
-
-
 class KC_Expression(Grammar, Expression, K_Expression):
     """
         interaction with other CNORM PART:
@@ -271,9 +256,8 @@ class KC_Expression(Grammar, Expression, K_Expression):
         ]
 
         kc_primary_expression = [
-            [ K_Expression.k_primary_expression | Literal.literal | kc_identifier ]:>_
-            |
             '(' kc_expression:expr ')' #new_paren(_, expr)
+            | [ Literal.literal | kc_identifier | K_Expression.k_primary_expression]:>_
         ]
 
         kc_identifier = [

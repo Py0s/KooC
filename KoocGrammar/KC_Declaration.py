@@ -119,7 +119,6 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
 
         kc_declaration = [
             ';' // garbage single comma
-            KoocCall.kooc_call :>_
             |
             kc_c_decl
             |
@@ -412,7 +411,6 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
 
         kc_designation_list = [
             '['
-                #echo("TODO : si je passe ici c quil y a un problem wesh")
                 kc_range_expression
             ']'
             | dot kc_identifier
@@ -469,11 +467,10 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
             __scope__:n
             [
                 '(' kc_type_name:>n ')'
-                | KC_Expression.unary_expression:>n
+                | KC_Expression.kc_unary_expression:>n
             ]
             #new_sizeof(_, i, n)
-            |
-            KC_Expression.kc_unary_expression:>_
+            | KC_Expression.kc_unary_expression:>_
         ]
 
         // ({}) and __builtin_offsetof
