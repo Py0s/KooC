@@ -1,0 +1,9 @@
+@module Test
+{
+  /* static int stack_int[MAX_SIZE]; */
+  /* static double stack_double[MAX_SIZE]; */
+  /* int toto; */
+  /* static int toto; */
+  int tata(void);
+  void tutu(int, float);
+}

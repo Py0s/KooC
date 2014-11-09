@@ -1,0 +1,10 @@
+@module myModule
+{
+  static int myVar;
+  int myVar = 42;
+  const int myVar;
+  float myDouble;
+  void myFunc(int toto);
+  void myFunc(void);
+  float myFunc(void, char, int, float, double);
+}

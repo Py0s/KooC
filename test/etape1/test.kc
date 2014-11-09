@@ -1,0 +1,31 @@
+#include <stdio.h>
+@import "test.kh"
+@import "test.kh"
+
+@implementation myModule
+{
+  void myFunc(int var)
+  {
+    printf("myFunction from myModule with parameter %d\n", var);
+  }
+  void myFunc(void)
+  {
+    return [myModule.myVar];
+  }
+  float myFunc(void, char, int, float, double) { return (4.2);}
+}
+
+int main()
+{
+  int a;
+  int b;
+
+  @!(void)[myModule myFunc :(int)42];
+  a = @!(int)[myModule.myVar];
+  b = @!(int)[myModule myFunc];
+  printf("a = %d\n", a);
+  printf("b = %d\n", b);
+  a == b;
+  @!(int)[myModule.myVar] = 0;
+  printf("%d\n", [myModule.myVar]);
+}

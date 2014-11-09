@@ -1,0 +1,5 @@
+@module Toto
+{
+  int tutu;
+  int tutu(void);
+}

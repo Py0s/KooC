@@ -1,0 +1,20 @@
+@import "toto.kh"
+
+@implementation Test
+{
+  int tata(void)
+  {
+    return (42);
+  }
+
+  void tutu(int var1, float var2)
+  {
+    printf("%d, %f\n", var1, var2);
+  }
+}
+
+int main()
+{
+  [Test tutu :(int)@!(int)[Test tata] :(float)4.2];
+  [Test.toto];
+}

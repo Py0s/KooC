@@ -1,0 +1,6 @@
+@import "tutu.kh"
+
+int main()
+{
+  [Toto.tutu];
+}
