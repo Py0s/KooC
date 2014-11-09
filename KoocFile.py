@@ -37,7 +37,7 @@ def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, 
 
 def inferred_mangled_name_of_symbol(module_name, symbol_name, params_types=""):
     vartype = kfimpl.get_vartype(params_types)
-    params_content = kfimpl.get_params_content(module_name, symbol_name, vartype_name, params_types)
+    params_content = kfimpl.get_params_content(module_name, symbol_name, vartype, params_types)
     if len(params_content) > 1:
         raise RuntimeError("Ambiguous call of symbol \"" + symbol_name + "\" from the module \"" + module_name + "\"")
     return next(iter(params_content.values()))[0]

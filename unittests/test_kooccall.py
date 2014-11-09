@@ -56,6 +56,26 @@ int main()
 }
             """
         self.assertEqual(res, waited)
+    def test_simple_function_arg_call(self):
+        res = str(self.cparse.parse(
+            """
+            @module Test
+            {
+             int test(int toto);
+            }
+            int main()
+            {
+              [Test test :(int)42];
+            }
+            """).to_c())
+        waited = """
+extern int M4Test__i4testi(int toto);
+int main()
+{
+    M4Test__i4testi(42);
+}
+            """
+        self.assertEqual(res, waited)
     # def test_koocCall_in_function(self):
     #     res = str(self.cparse.parse(
     #         """

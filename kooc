@@ -2,6 +2,10 @@
 
 import sys
 import os
+
+# TODO : a retirer dans la version finale !
+sys.tracebacklimit = 0
+
 try:
     import KoocFile
     from knodes import to_c
