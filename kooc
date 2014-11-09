@@ -28,7 +28,6 @@ except Exception:
 	pass
 
 # out file creation
-
 if fileExtension == ".kc":
     fout = open(fileName + ".c", "w")
 elif fileExtension == ".kh":
