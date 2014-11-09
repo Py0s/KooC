@@ -46,17 +46,17 @@ def add_module(self, ast, module_name, body):
         for item in body.body:
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
                 module.add_item(item)
-                varNode = None
                 params = ""
-                if hasattr(item, "_assign_expr"):
-                    varNode = copy.deepcopy(item)
-                    delattr(item, "_assign_expr")
                 if isinstance(item._ctype, knodes.KFuncType):
                     params = item._ctype.mangle_params()
                 # TODO : Gerer les ParenType je sais pas comment
                 mangled_name = item.mangle()
                 if item._ctype._storage == knodes.Storages.STATIC:
                     mangled_name = item._name
+                varNode = copy.deepcopy(item)
+                varNode._name = varNode.mangle()
+                if hasattr(item, "_assign_expr"):
+                    delattr(item, "_assign_expr")
                 KoocFile.register_module_symbol(module_name, item._name, item._ctype.mangle(), mangled_name, params, varNode)
                 if item._ctype._storage == knodes.Storages.INLINE:
                     raise KoocException("[Error]: inline key-word in Module " + module_name)# A décommenter? + ", " + str(item.to_c()))

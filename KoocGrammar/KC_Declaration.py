@@ -489,7 +489,6 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
                 '(' [kc_type_name ',' kc_postfix_expression]:bof ')'
                 #new_builtoffset(_, bof)
             |
-            
             KC_Expression.kc_primary_expression:>_
         ]
 
