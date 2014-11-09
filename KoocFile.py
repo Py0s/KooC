@@ -56,7 +56,10 @@ def assign_node_of_symbol(module_name, symbol_name, symbol_type, params_types=""
 
 def module_variables_nodes(module_name):
     variables_nodes = []
-    vartype_content = kfimpl.get_vartype_content(module_name, "variable")
+    try:
+        vartype_content = kfimpl.get_vartype_content(module_name, "variable")
+    except RuntimeError:
+        return variables_nodes
     for symbol_content in iter(vartype_content.values()):
         for params_content in iter(symbol_content.values()):
             for overload_content in iter(params_content.values()):
