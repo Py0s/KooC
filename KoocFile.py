@@ -40,11 +40,27 @@ def register_module_symbol(module_name, symbol_name, symbol_type, mangled_name, 
     kfimpl.set_overload_content(module_name, vartype, symbol_name, params_types, symbol_type, content)
 
 
+def super_inferred_mangled_name_of_symbol(module_name, symbol_name, params_types="", symbol_type=None):
+    vartype = kfimpl.get_vartype(params_types)
+
+    symbol_content = kfimpl.get_symbol_content(module_name, vartype, symbol_name)
+    kfimpl.check_ambiguous(symbol_content, module_name, symbol_name, vartype)
+
+    good_params_content = next(iter(symbol_content.values()))[0]
+    kfimpl.check_ambiguous(good_params_content, module_name, symbol_name, vartype)
+
+    if symbol_type != None:
+        #TODO : checker existence
+        return good_params_content[symbol_type][0]
+
+    return next(iter(good_params_content.values()))[0]
+
 def inferred_mangled_name_of_symbol(module_name, symbol_name, params_types=""):
     vartype = kfimpl.get_vartype(params_types)
     params_content = kfimpl.get_params_content(module_name, vartype, symbol_name, params_types)
-    if len(params_content) > 1:
-        raise RuntimeError("Ambiguous call of symbol \"" + symbol_name + "\" from the module \"" + module_name + "\"")
+    kfimpl.check_ambiguous(params_content, module_name, symbol_name, vartype)
+    # if len(params_content) > 1:
+    #     raise RuntimeError("Ambiguous call of " + vartype + " \"" + symbol_name + "\" from the module \"" + module_name + "\"")
     return next(iter(params_content.values()))[0]
 
 def mangled_name_of_symbol(module_name, symbol_name, symbol_type, params_types=""):

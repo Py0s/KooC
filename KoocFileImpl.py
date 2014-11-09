@@ -4,6 +4,16 @@ class KFImpl():
         self.imported_file_names = imported_file_names
         self.modules = modules
 
+    def check_no_definition(self, content, module_name, symbol_name, vartype):
+        if not content:
+            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+        return content
+
+    def check_ambiguous(self, content, module_name, symbol_name, vartype):
+        if len(content) > 1:
+            raise RuntimeError("Ambiguous call of " + vartype + " \"" + symbol_name + "\" from the module \"" + module_name + "\"")
+
+
     def get_vartype(self, params_types):
         vartype = "function"
         if params_types == "":
@@ -13,7 +23,6 @@ class KFImpl():
     # def get_module_content(self, module_name):
     #     return self.modules[module_name]
 
-    # vartype = "var" ou "fun"
     def get_vartype_content(self, module_name, vartype):
         vartype_content = self.modules[module_name][vartype]
         if not vartype_content:
@@ -22,42 +31,18 @@ class KFImpl():
 
     def get_symbol_content(self, module_name, vartype, symbol_name):
         symbol_content = self.modules[module_name][vartype][symbol_name]
-        if not symbol_content:
-            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
-        return symbol_content
+        return self.check_no_definition(symbol_content, module_name, symbol_name, vartype)
 
     def get_params_content(self, module_name, vartype, symbol_name, params_types):
         params_content = self.modules[module_name][vartype][symbol_name][params_types]
-        if not params_content:
-            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
-        return params_content
+        return self.check_no_definition(params_content, module_name, symbol_name, vartype)
 
     def get_overload_content(self, module_name, vartype, symbol_name, params_types, symbol_type):
         overload_content = self.modules[module_name][vartype][symbol_name][params_types][symbol_type]
-        if not overload_content:
-            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
-        return overload_content
+        return self.check_no_definition(overload_content, module_name, symbol_name, vartype)
 
-
-    # def set_module_content(self, module_name, content):
-    #     self.modules[module_name] = content
-
-    # # vartype = "var" ou "fun"
-    # def set_vartype_content(self, module_name, vartype, content):
-    #     self.modules[module_name][vartype] = content
-
-    # def set_symbol_content(self, module_name, vartype, symbol_name, content):
-    #     self.modules[module_name][vartype][symbol_name] = content
-
-    # def set_params_content(self, module_name, vartype, symbol_name, params_types, content):
-    #     self.modules[module_name][vartype][symbol_name][params_types] = content
 
     def set_overload_content(self, module_name, vartype, symbol_name, params_types, symbol_type, content):
         if self.modules[module_name][vartype][symbol_name][params_types][symbol_type]:
-            # print("EEEEEEEEEEERRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRR POURQUOIIII ?")
-            # print("params_types = ", params_types)
-            # print("symbol_type = ", symbol_type)
-            # print("vartype = ", vartype)
-            # print("content = ", content)
             raise RuntimeError("Redefinition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
         self.modules[module_name][vartype][symbol_name][params_types][symbol_type] = content
