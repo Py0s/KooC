@@ -284,7 +284,7 @@ class KC_Expression(Grammar, Expression, K_Expression):
         kc_rootidentifier = [ Base.id ]
 
         /////// OVERLOADS ///////
-        //K_Expression.assmt_expr_overide = [ KC_Expression.kc_assignement_expression:>_ ]
+        K_Expression.assmt_expr_overide = [ KC_Expression.kc_assignement_expression:>_ ]
 
     """
 

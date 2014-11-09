@@ -57,6 +57,7 @@ def add_module(self, ast, module_name, body):
                 varNode._name = varNode.mangle()
                 if hasattr(item, "_assign_expr"):
                     delattr(item, "_assign_expr")
+                # print("REGISTER: ", module_name, item._name, item._ctype.mangle(), mangled_name, params, varNode)
                 KoocFile.register_module_symbol(module_name, item._name, item._ctype.mangle(), mangled_name, params, varNode)
                 if item._ctype._storage == knodes.Storages.INLINE:
                     raise KoocException("[Error]: inline key-word in Module " + module_name)# A décommenter? + ", " + str(item.to_c()))

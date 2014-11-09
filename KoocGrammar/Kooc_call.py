@@ -5,6 +5,7 @@ from pyrser import meta
 from cnorm import nodes
 from mangler import simple_mangling as sm
 import KoocFile
+import sys
 
 class   Kooc_call(Grammar):
     entry = 'kooc_call'
@@ -70,11 +71,22 @@ def create_func_symbol(self, ast, module_name, typo, func_name, params, block):
             params_types += sm.type_m(item)
     # print("params_types :", params_types)
     if self.value(typo) == "":
-        mangled_name = KoocFile.inferred_mangled_name_of_symbol(self.value(module_name), self.value(func_name), params_types)
+        # print("NON TYPE")
+        # print("TRY TO GET: ", self.value(module_name), self.value(func_name), params_types)
+        try:
+            mangled_name = KoocFile.inferred_mangled_name_of_symbol(self.value(module_name), self.value(func_name), params_types)
+        except RuntimeError as e:
+            print("[ERROR]: ", e)
+            sys.exit(0)
     else:
         symbol_type = sm.type_m(self.value(typo))
-        # print("symbol_type :", symbol_type)
-        mangled_name = KoocFile.mangled_name_of_symbol(self.value(module_name), self.value(func_name), symbol_type, params_types)
+        # print("TYPE")
+        # print("TRY TO GET: ", self.value(module_name), self.value(func_name), symbol_type, params_types)
+        try:
+            mangled_name = KoocFile.mangled_name_of_symbol(self.value(module_name), self.value(func_name), symbol_type, params_types)
+        except RuntimeError as e:
+            print("[ERROR]: ", e)
+            sys.exit(0)
     ast.set(nodes.Func(nodes.Id(mangled_name), params.params))
     # ast.set(nodes.Func(nodes.Id(self.value(module_name) + "_" + self.value(typo) + "_" + self.value(func_name)), params.params))
     return True
