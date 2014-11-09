@@ -11,12 +11,12 @@ class   Kooc_call(Grammar):
     grammar = """
     kooc_call              = [
                                 __scope__:type
-                                ["@!(" kooc_type:type ")"]? '[' #echo("ET OUAIS!")
+                                ["@!(" kooc_type:type ")"]? #heho(_) '[' #echo("ET OUAIS!")
                                     module_id:module
                                     [
                                      [function_id:func list_parameter:params #create_func_symbol(_, module, type, func, params)]
                                      |
-                                     ['.' variable_id:var #create_var_symbol(_, module, type, var)]
+                                     ['.' #heho(_) variable_id:var #create_var_symbol(_, module, type, var)]
                                     ]
                                 ']'
                              ]
@@ -33,11 +33,10 @@ class   Kooc_call(Grammar):
     assmt_expr_overide     = [ "regle overide dans KC_Expression" ]
     """
 
-# @meta.hook(Kooc_call)
-# def test_ouais(self, ast):
-#     print(self._stream.peek_char)
-#     print("OUAIS?")
-#     return True
+@meta.hook(Kooc_call)
+def heho(self, ast):
+    print("NEXT = ", self._stream.peek_char)
+    return True
 
 @meta.hook(Kooc_call)
 def create_params(self, ast):

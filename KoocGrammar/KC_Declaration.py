@@ -325,21 +325,21 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
         kc_direct_absolute_declarator = [
-            [
-                '['
-                    // TODO: handle c99 qual for trees
-                    "static"?
-                    ["const"|"volatile"]?
-                    "static"?
-                    __scope__:expr
-                    [
-                        kc_assignement_expression:>expr
-                        | '*':star #new_raw(expr, star)
-                    ]?
-                    #add_ary(local_specifier, expr)
-                ']'
-            ]+
-            |
+//            [
+//                '['
+//                    // TODO: handle c99 qual for trees
+//                    "static"?
+//                    ["const"|"volatile"]?
+//                    "static"?
+//                    __scope__:expr
+//                    [
+//                        kc_assignement_expression:>expr
+//                        | '*':star #new_raw(expr, star)
+//                    ]?
+//                    #add_ary(local_specifier, expr)
+//                ']'
+//            ]+
+//            |
                 '('
                 #open_params(local_specifier)
                 [
@@ -411,6 +411,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
 
         kc_designation_list = [
             '['
+                #echo("TODO : si je passe ici c quil y a un problem wesh")
                 kc_range_expression
             ']'
             | dot kc_identifier
