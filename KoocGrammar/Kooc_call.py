@@ -55,10 +55,10 @@ def save_param(self, ast, typo, param):
     return True
 
 @meta.hook(Kooc_call)
-def create_func_symbol(self, ast, module, typo, func, params):
-    # print("Module : ", self.value(module))
+def create_func_symbol(self, ast, module_name, typo, func_name, params):
+    # print("Module : ", self.value(module_name))
     # print("Type retour : ", self.value(typo))
-    # print("Nom fonction :", self.value(func))
+    # print("Nom fonction :", self.value(func_name))
     # print("Types params : ", params.types)
     # print("Params : ", params.params)
     # print("")
@@ -70,25 +70,24 @@ def create_func_symbol(self, ast, module, typo, func, params):
             params_types += sm.type_m(item)
     # print("params_types :", params_types)
     if self.value(typo) == "":
-        mangled_name = KoocFile.inferred_mangled_name_of_symbol(self.value(module), self.value(func), params_types)
+        mangled_name = KoocFile.inferred_mangled_name_of_symbol(self.value(module_name), self.value(func_name), params_types)
     else:
         symbol_type = sm.type_m(self.value(typo))
         # print("symbol_type :", symbol_type)
-        mangled_name = KoocFile.mangled_name_of_symbol(self.value(module), self.value(func), symbol_type, params_types)
+        mangled_name = KoocFile.mangled_name_of_symbol(self.value(module_name), self.value(func_name), symbol_type, params_types)
     ast.set(nodes.Func(nodes.Id(mangled_name), params.params))
-    # ast.set(nodes.Func(nodes.Id(self.value(module) + "_" + self.value(typo) + "_" + self.value(func)), params.params))
+    # ast.set(nodes.Func(nodes.Id(self.value(module_name) + "_" + self.value(typo) + "_" + self.value(func_name)), params.params))
     return True
 
 @meta.hook(Kooc_call)
-def create_var_symbol(self, ast, module, typo, var):
-    module = self.value(module)
+def create_var_symbol(self, ast, module_name, typo, var_name):
+    module_name = self.value(module_name)
     typo = self.value(typo)
-    var = self.value(var)
-    # print("Type variable :", self.value(typo))
-    # print("")
-
-    # mangled_name = KoocFile.mangled_name_of_symbol(module, var, item._ctype.mangle(), params)
-    # mangled_name = KoocFile.inferred_mangled_name_of_symbol(name, item._name, params)
-
-    ast.set(nodes.Id(module + "_" + typo + "_" + var))
+    var_name = self.value(var_name)
+    if typo == "":
+        mangled_name = KoocFile.inferred_mangled_name_of_symbol(module_name, var_name)
+    else:
+        symbol_type = sm.type_m(typo)
+        mangled_name = KoocFile.mangled_name_of_symbol(module_name, var_name, symbol_type)
+    ast.set(nodes.Id(mangled_name))
     return True
