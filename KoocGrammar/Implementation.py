@@ -20,11 +20,11 @@ class   Implementation(Grammar, KC_Statement):
 
 @meta.hook(Implementation)
 def Impl(self, ast, name, body):
+    name = self.value(name)
+    variables = KoocFile.module_variables_nodes(name)
+    for variable in variables:
+        ast.ref.body.append(variable)
     if hasattr(body, "body") and body.body:
-        name = self.value(name)
-        variables = KoocFile.module_variables_nodes(name)
-        for variable in variables:
-            ast.ref.body.append(variable)
         for item in body.body:
             if hasattr(item, "_ctype"):
                 params = ""
