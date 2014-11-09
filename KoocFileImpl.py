@@ -23,19 +23,19 @@ class KFImpl():
     def get_symbol_content(self, module_name, vartype, symbol_name):
         symbol_content = self.modules[module_name][vartype][symbol_name]
         if not symbol_content:
-            raise RuntimeError("No definition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
         return symbol_content
 
     def get_params_content(self, module_name, vartype, symbol_name, params_types):
         params_content = self.modules[module_name][vartype][symbol_name][params_types]
         if not params_content:
-            raise RuntimeError("No definition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
         return params_content
 
     def get_overload_content(self, module_name, vartype, symbol_name, params_types, symbol_type):
         overload_content = self.modules[module_name][vartype][symbol_name][params_types][symbol_type]
         if not overload_content:
-            raise RuntimeError("No definition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+            raise RuntimeError("No definition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
         return overload_content
 
 
@@ -59,5 +59,5 @@ class KFImpl():
             # print("symbol_type = ", symbol_type)
             # print("vartype = ", vartype)
             # print("content = ", content)
-            raise RuntimeError("Redefinition of symbol \"" + symbol_name + "\" in the module \"" + module_name + "\"")
+            raise RuntimeError("Redefinition of " + vartype + " \"" + symbol_name + "\" in the module \"" + module_name + "\"")
         self.modules[module_name][vartype][symbol_name][params_types][symbol_type] = content

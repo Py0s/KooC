@@ -9,9 +9,9 @@ tests = [
     'unittests.test_import',
     'unittests.test_class',
     'unittests.test_module',
+    'unittests.test_kooccall',
 ]
     # 'unittests.test_newtest',
-    # 'unittests.test_kooccall',
 
 def main():
     sys.tracebacklimit = 0
@@ -28,3 +28,14 @@ def main():
 
 if __name__ == '__main__':
     main()
+   ## TEST OF OVERLOADS WITH DIFFERENTS STORAGES, QUALIFIERS OR SPECIFIER
+    # Little reminder :
+    # Storages = meta.enum('AUTO', 'REGISTER', 'TYPEDEF',
+    #                  'STATIC', 'EXTERN', 'INLINE',
+    #                  'VIRTUAL', 'EXPLICIT',
+    #                  'FORCEINLINE', 'THREAD')
+    # Qualifiers = meta.enum('AUTO', 'CONST', 'VOLATILE', 'RESTRICT',
+    #                    'W64', 'STDCALL', 'CDECL',
+    #                    'PTR32', 'PTR64', 'FASTCALL')
+    # Specifiers = meta.enum('AUTO', 'STRUCT', 'UNION', 'ENUM', 'LONG',
+    #                    'LONGLONG', 'SHORT')
