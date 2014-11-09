@@ -9,8 +9,8 @@ tests = [
     'unittests.test_import',
     'unittests.test_class',
     'unittests.test_module',
+    'unittests.test_kooccall',
 ]
-    # 'unittests.test_kooccall',
     # 'unittests.test_newtest',
 
 def main():
