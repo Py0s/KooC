@@ -1,0 +1,17 @@
+@module Titor
+{
+  void send_dmail(void *this, char *mail);
+  char *get_dmail(void);
+}
+@implementation Titor
+{
+  void send_dmail(void *this, char *mail) {}
+  char *get_dmail(void) {return "Mon zboubinet!";}
+}
+int main()
+{
+  char *mail = "Watashi wa mad scientist !";
+  [Titor send_dmail :(void*)0 :(char*)mail];
+  [Titor send_dmail :0 :mail];
+  printf("%s\n", [Titor get_dmail]);
+}
