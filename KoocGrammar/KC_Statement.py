@@ -33,7 +33,7 @@ class KC_Statement(Grammar, Statement, K_Statement):
             ]:>_
         ]
 
-        kc_compound_statement = [
+        kc_compound_statement = [ 
             [
             '{'
                 __scope__:current_block
@@ -45,7 +45,7 @@ class KC_Statement(Grammar, Statement, K_Statement):
             ]
         ]
 
-        kc_line_of_code = [
+        kc_line_of_code = [ 
             kc_single_statement:line
             #end_loc(current_block, line)
         ]
@@ -131,7 +131,7 @@ class KC_Statement(Grammar, Statement, K_Statement):
             ':'
         ]
 
-        kc_expression_statement = [
+        kc_expression_statement = [ 
             [kc_expression:e #new_expr(_, e)]?
             ';'
         ]

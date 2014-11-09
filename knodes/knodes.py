@@ -132,6 +132,11 @@ class KRaw(nodes.Raw):
     """KTerminal Raw"""
 
 # DECLARATION PART
+class KCType(nodes.CType):
+    """Base for primary/func"""
+    def __init__(self):
+        super().__init__()
+
 class KDecl(nodes.Decl):
     def __init__(self, name: str, ct=None):
         super().__init__(name, ct)
@@ -175,11 +180,6 @@ class KAttrType(nodes.AttrType):
     """For attribute specifier in declaration"""
     def __init__(self, raw: str):
         super().__init__(raw)
-
-class KCType(nodes.CType):
-    """Base for primary/func"""
-    def __init__(self):
-        super().__init__()
 
 class KPrimaryType(nodes.PrimaryType):
     """For primary type in declaration"""

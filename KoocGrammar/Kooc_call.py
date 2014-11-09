@@ -11,14 +11,14 @@ class   Kooc_call(Grammar):
     grammar = """
     kooc_call              = [
                                 __scope__:type
-                                ["@!(" kooc_type:type ")"]? '[' #echo("OUAIS?")
+                                ["@!(" kooc_type:type ")"]? '['
                                     module_id:module
                                     [
-                                     [function_id:func list_parameter:params #create_func_symbol(_, module, type, func, params)]
+                                     [function_id:func list_parameter:params #create_func_symbol(_, module, type, func, params, current_block)]
                                      |
-                                     ['.' variable_id:var #create_var_symbol(_, module, type, var)]
+                                     ['.' variable_id:var #create_var_symbol(_, module, type, var, current_block)]
                                     ]
-                                ']' #echo("ET OUAIS!")
+                                ']'
                              ]
     kooc_type              = [ ['a'..'z'|'A'..'Z'|'*']* ]
     module_id              = [ Base.id ]
@@ -55,7 +55,7 @@ def save_param(self, ast, typo, param):
     return True
 
 @meta.hook(Kooc_call)
-def create_func_symbol(self, ast, module_name, typo, func_name, params):
+def create_func_symbol(self, ast, module_name, typo, func_name, params, block):
     # print("Module : ", self.value(module_name))
     # print("Type retour : ", self.value(typo))
     # print("Nom fonction :", self.value(func_name))
@@ -80,7 +80,7 @@ def create_func_symbol(self, ast, module_name, typo, func_name, params):
     return True
 
 @meta.hook(Kooc_call)
-def create_var_symbol(self, ast, module_name, typo, var_name):
+def create_var_symbol(self, ast, module_name, typo, var_name, block):
     module_name = self.value(module_name)
     typo = self.value(typo)
     var_name = self.value(var_name)

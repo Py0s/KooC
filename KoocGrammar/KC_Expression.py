@@ -6,6 +6,18 @@ from pyrser import meta
 from pyrser.parsing.node import Node
 import knodes
 
+# entry = "unary_expression"
+# kc_expression = [ Expression.expression:>_ ]                                                                                                                                                         
+#         kc_assignement_expression = [ Expression.assignement_expression:>_ ]                                                                                                                                 
+#         unary_expression = [ Expression.unary_expression:>_ ]                                                                                                                                                
+#         primary_expression = [                                                                                                                                                                               
+#             '(' expression:expr ')' #new_paren(_, expr)                                                                                                                                                      
+#             | [ Literal.literal | identifier | kc_primary_expression]:>_                                                                                                                                     
+#         ]                                                                                                                                                                                                    
+#         kc_primary_expression = [ K_Expression.k_primary_expression:>_ ]                                                                                                                                     
+                                                                                                                                                                                                             
+#         K_Expression.assmt_expr_overide = [ KC_Expression.kc_assignement_expression:>_ ]
+
 class KC_Expression(Grammar, Expression, K_Expression):
     """
         interaction with other CNORM PART:
@@ -272,7 +284,7 @@ class KC_Expression(Grammar, Expression, K_Expression):
         kc_rootidentifier = [ Base.id ]
 
         /////// OVERLOADS ///////
-        K_Expression.assmt_expr_overide = [ KC_Expression.kc_assignement_expression:>_ ]
+        //K_Expression.assmt_expr_overide = [ KC_Expression.kc_assignement_expression:>_ ]
 
     """
 

@@ -117,7 +117,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
             Base.eof
         ]
 
-        kc_declaration = [
+        kc_declaration = [ 
             ';' // garbage single comma
             |
             kc_c_decl
@@ -164,25 +164,28 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
             | '__extension__'
         ]
 
-        kc_c_decl = [
+        kc_c_decl = [ 
             __scope__:local_specifier
             #create_ctype(local_specifier)
-            kc_declaration_specifier*:dsp
-            kc_init_declarator:decl
-            #not_empty(current_block, dsp, decl)
-            #end_decl(current_block, decl)
+            kc_declaration_specifier*:dsp 
+            kc_init_declarator:decl 
+            #not_empty(current_block, dsp, decl) 
+            #end_decl(current_block, decl) 
+            
             [
                 ','
                 #copy_ctype(local_specifier, decl)
                 kc_init_declarator:decl
                 #end_decl(current_block, decl)
+                
             ]*
             [
                 ';'
                 |
                 KC_Statement.kc_compound_statement:b
                 #add_body(decl, b)
-            ]
+                
+            ] 
         ]
 
         kc_declaration_specifier = [
@@ -424,10 +427,10 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
 
         ///////// OVERLOAD OF STATEMENT
         // add declaration in block
-        kc_line_of_code = [
+        kc_line_of_code = [ 
                     kc_declaration
                 |
-                    kc_single_statement:line 
+                    KC_Statement.kc_single_statement:line 
                     #end_loc(current_block, line)
         ]
 
@@ -440,18 +443,18 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
                     kc_declaration
                     #for_decl_end(init, current_block)
                 |
-                    kc_expression_statement:>init
+                    KC_Statement.kc_expression_statement:>init
                 ]
-                kc_expression_statement:cond
-                kc_expression?:inc
+                KC_Statement.kc_expression_statement:cond
+                KC_Expression.kc_expression?:inc
             ')'
-            kc_single_statement:body
+            KC_Statement.kc_single_statement:body
             #new_for(_, init, cond, inc, body)
         ]
 
         ///////// OVERLOAD OF EXPRESSION
         // add cast / sizeof
-        kc_unary_expression = [
+        KC_Declaration.kc_unary_expression = [
             // CAST
             '(' kc_type_name:t ')'
             [
@@ -474,7 +477,7 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
         // ({}) and __builtin_offsetof
-        kc_primary_expression = [
+        KC_Declaration.kc_primary_expression = [
             "({"
                 __scope__:current_block
                 #new_blockexpr(_, current_block)
@@ -491,6 +494,13 @@ class KC_Declaration(Grammar, Declaration, K_Declaration):
         ]
 
     """
+@meta.hook(KC_Declaration)
+def fudging_hell(self, ast):
+    try:
+        print(self._stream.peek_char)
+    except IndexError:
+        pass
+    return True
 
 @meta.hook(KC_Declaration)
 def check_asm(self, ident):
@@ -594,7 +604,7 @@ def end_decl(self, current_block, ast):
 @meta.hook(KC_Declaration)
 def not_empty(self, current_block, dsp, decl):
     # empty declspec only in global scope
-    if type(current_block.ref) is knodes.KBlockStmt and self.value(dsp) == "":
+    if type(current_block.ref) is nodes.BlockStmt and self.value(dsp) == "":
         return False
     return True
 
