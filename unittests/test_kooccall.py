@@ -77,10 +77,10 @@ int main()
             """)
         #TODO : c'est quoi le mangling de cette merde ?
         waited = self.cparse.parse("""
-extern const unsigned int *const *M4Test__Pi4test;
+extern const unsigned int *const *M4Test__PC_PC_Ui4test;
 int main()
 {
-    M4Test__Pi4test;
+    M4Test__PC_PC_Ui4test;
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
@@ -134,6 +134,27 @@ int main()
             int main()
             {
               [Test test :(int)42];
+            }
+            """)
+        waited = self.cparse.parse("""
+extern int M4Test__i4testi(int toto);
+int main()
+{
+    M4Test__i4testi(42);
+}
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_function_one_arg_call_invalid_arg_type(self):
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             int test(int toto);
+            }
+            int main()
+            {
+              [Test test :(invalid)42];
             }
             """)
         waited = self.cparse.parse("""

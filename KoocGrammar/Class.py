@@ -7,6 +7,7 @@ from cnorm.parsing.declaration import Declaration
 from KoocGrammar.KC_Statement import KC_Statement
 from cnorm.parsing.expression import Idset
 from cnorm.nodes import *
+from mangler.simple_mangling import VARS
 import knodes
 import KoocFile
 
@@ -57,8 +58,10 @@ class   Class(Grammar, KC_Statement):
 
 @meta.hook(Class)
 def add_class_to_type(self, class_type):
-    Idset[self.value(class_type)] = "type"
-    return True
+  class_type = self.value(class_type)
+  Idset[lass_type] = "type"
+  # VARS[class_type] = class_type AJOUT DANS LE VARS DE SIMPLE_MANGLING D UN NOUVEAU TYPE
+  return True
 
 def create_delete_function(ast, class_name):
     free_node = knodes.KExprStmt(knodes.KFunc(Id("free"), params=[Id("ptr")]))
@@ -103,6 +106,7 @@ def create_new_function(ast, class_name):
 @meta.hook(Class)
 def add_class(self, ast, class_name, body):
     class_name = self.value(class_name)
+
     if hasattr(body, "body") and body.body:
         # Enregistrement de la classe dans KoocFile sous Classe/Module?
         # KoocFile.register_class(class_name)
@@ -112,6 +116,7 @@ def add_class(self, ast, class_name, body):
         class_var.fields = body.body
 
         class_var.to_c()
+
         decl_struct = nodes.Decl(class_name)
         decl_struct._ctype = class_var
         ast.ref.body.append(decl_struct)
@@ -143,8 +148,10 @@ def new_member(self, ast, current_block):
 @meta.hook(Class)
 def is_member(self, class_name, current_block):
   name = self.value(class_name)
+
   if current_block.ref.body == []:
     return False
+
   decl = current_block.ref.body[-1]
   if type(decl._ctype) == nodes.FuncType                  \
   and decl._ctype._params != []                           \

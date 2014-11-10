@@ -21,16 +21,21 @@ class   Implementation(Grammar, KC_Statement):
 @meta.hook(Implementation)
 def Impl(self, ast, name, body):
     name = self.value(name)
+
     variables = KoocFile.module_variables_nodes(name)
     for variable in variables:
         ast.ref.body.append(variable)
+
     if hasattr(body, "body") and body.body:
         for item in body.body:
             if hasattr(item, "_ctype"):
                 params = ""
+
                 if isinstance(item._ctype, knodes.KFuncType):
                      params = item._ctype.mangle_params()
+
                 mangled_name = KoocFile.mangled_name_of_symbol(name, item._name, item._ctype.mangle(), params)
                 item._name = mangled_name
+                
                 ast.ref.body.append(item)
     return True

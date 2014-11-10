@@ -41,30 +41,39 @@ class   Module(Grammar, KC_Statement):
 def add_module(self, ast, module_name, body):
     if hasattr(body, "body") and body.body:
         module_name = self.value(module_name)
+
         KoocFile.register_module(module_name)
         module = knodes.Module(module_name)
+
         for item in body.body:
             if (hasattr(item, "_ctype") and hasattr(item._ctype, "_storage")):
                 module.add_item(item)
                 params = ""
+
                 if isinstance(item._ctype, knodes.KFuncType):
                     params = item._ctype.mangle_params()
                 # TODO : Gerer les ParenType je sais pas comment
+
                 mangled_name = item.mangle()
                 if item._ctype._storage == knodes.Storages.STATIC:
                     mangled_name = item._name
+
                 varNode = copy.deepcopy(item)
                 varNode._name = varNode.mangle()
                 if hasattr(item, "_assign_expr"):
                     delattr(item, "_assign_expr")
+
                 # print("\nREGISTER: ", module_name, item._name, item._ctype.mangle(), mangled_name, params, varNode)
                 # print("\nCTYPE MANGLED: ", item._ctype.mangle())
                 # print("\nCTYPE: ", item._ctype)
                 KoocFile.register_module_symbol(module_name, item._name, item._ctype.mangle(), mangled_name, params, varNode)
+
                 if item._ctype._storage == knodes.Storages.INLINE:
                     raise KoocException("[Error]: inline key-word in Module " + module_name)# A décommenter? + ", " + str(item.to_c()))
                 if item._ctype._storage == knodes.Storages.AUTO:
                     item._ctype._storage = knodes.Storages.EXTERN
+                    
                 item._name = item.mangle()
+
         ast.ref.body.append(module)
     return True
