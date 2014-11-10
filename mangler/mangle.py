@@ -17,19 +17,19 @@ def mangle(self):
         if isinstance(self._ctype, knodes.KFuncType):
             params += self._ctype.mangle_params();
         return (('' if self._scope is None else self._scope + '__') \
-                + self.mangle_type() + sm.id_m(self._name) + params)
+                + self.mangle_ctype() + sm.id_m(self._name) + params)
 
 @meta.add_method(knodes.KDecl)
-def mangle_type(self):
+def mangle_ctype(self):
     if hasattr(self._ctype, 'mangle'):
         return self._ctype.mangle()
 
 @meta.add_method(knodes.KPrimaryType)
 def mangle(self):
-    ptr = ''
+    decltype = ''
     if self._decltype != None and hasattr(self._decltype, 'mangle'):
-        ptr += self._decltype.mangle()
-    return ptr + sm.type_m(self._identifier)
+        decltype += self._decltype.mangle()
+    return decltype + sm.type_m(self._identifier)
 
 @meta.add_method(knodes.KPointerType)
 def mangle(self):
@@ -59,5 +59,15 @@ def raise_params(item):
 def mangle_params(self):
     if len(self._params) == 0:
         return sm.type_m("void")
-    gen = (item.mangle_type() if hasattr(item, 'mangle_type') else raise_params(item) for item in self._params)
+    gen = (item.mangle_ctype() if hasattr(item, 'mangle_ctype') else raise_params(item) for item in self._params)
     return ''.join(gen)
+
+@meta.add_method(knodes.KQualType)
+def mangle(self):
+    res = ''
+    ptr = ''
+    if self._qualifier != None:
+        res += sm.qual_m(self._qualifier)
+    if self._decltype != None and hasattr(self._decltype, 'mangle'):
+        ptr += self._decltype.mangle()
+    return res + ptr
