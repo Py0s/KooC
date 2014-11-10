@@ -30,7 +30,7 @@ def Impl(self, ast, name, body):
                 params = ""
                 if isinstance(item._ctype, knodes.KFuncType):
                      params = item._ctype.mangle_params()
-                mangled_name = KoocFile.mangled_name_of_symbol(name, item._name, item._ctype.mangle(), params)
+                mangled_name = KoocFile.mangled_name_of_symbol(name, item._name, params, item._ctype.mangle())
                 item._name = mangled_name
                 ast.ref.body.append(item)
     return True

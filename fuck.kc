@@ -1,13 +1,9 @@
-@module Titor
-{
-  void send_dmail(void *this, char *mail, double fudge);
-}
-@implementation Titor
-{
-  void send_dmail(void *this, char *mail, double fudge){}
-}
-int main()
-{
-  char *mail = "Watashi wa mad scientist !";
-  @!(void)[Titor send_dmail :(void *)0 :(char *)mail :(double)4.2];
-}
+            @module Titor
+            {
+             char *get_dmail(int index);
+             void *get_dmail(int index);
+            }
+            int main()
+            {
+              printf("%s\n", @!(char *)[Titor get_dmail :42]);
+            }

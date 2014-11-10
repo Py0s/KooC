@@ -174,50 +174,86 @@ int main()
             @module Titor
             {
              void send_dmail(void *this, char *mail);
-             char *get_dmail(void);
+             void send_dmail(char *mail);
             }
             int main()
             {
                 char *mail = "Watashi wa mad scientist !";
               [Titor send_dmail :(void *)0 :(char *)mail];
-              printf("%s\n", [Titor get_dmail]);
             }
             """)
         waited = self.cparse.parse("""
-extern void MTitor__v4send_dmailS5TitorPc(void *this, char *mail);
-extern char* MTitor__Pc9get_dmailv(void);
+extern void MTitor__v10send_dmailPvPc(void *this, char *mail);
+extern void MTitor__v10send_dmailPc(char *mail);
 int main()
 {
     char *mail = "Watashi wa mad scientist !";
-    MTitor__v4send_dmailS5TitorPc(0, mail);
+    MTitor__v10send_dmailPvPc(0, mail);
+}
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_function_empty_params_types_inferred_call(self):
+        self.res = self.kparse.parse(
+            """
+            @module Titor
+            {
+             char *get_dmail(void);
+            }
+            int main()
+            {
+              printf("%s\n", @!(char *)[Titor get_dmail]);
+            }
+            """)
+        waited = self.cparse.parse("""
+extern char* MTitor__Pc9get_dmailv(void);
+int main()
+{
     printf("%s\n", MTitor__Pc9get_dmailv(void));
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
 
-    def test_function_params_types_inferred_call(self):
+    def test_function_int_params_types_inferred_call(self):
         self.res = self.kparse.parse(
             """
             @module Titor
             {
-             void send_dmail(void *this, char *mail);
-             char *get_dmail(void);
+             char *get_dmail(int index);
+             void *get_dmail(int index);
             }
             int main()
             {
-                char *mail = "Watashi wa mad scientist !";
-              [Titor send_dmail :0 :mail];
-              printf("%s\n", [Titor get_dmail]);
+              printf("%s\n", @!(char *)[Titor get_dmail :42]);
             }
             """)
         waited = self.cparse.parse("""
-extern void MTitor__v4send_dmailS5TitorPc(void *this, char *mail);
-extern char* MTitor__Pc9get_dmailv(void);
+extern char* MTitor__Pc9get_dmaili(int index);
+extern void* MTitor__Pv9get_dmaili(int index);
 int main()
 {
-    char *mail = "Watashi wa mad scientist !";
-    MTitor__v4send_dmailS5TitorPc(0, mail);
-    printf("%s\n", MTitor__Pc9get_dmailv(void));
+    printf("%s\n", MTitor__Pc9get_dmaili(42));
+}
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
+    def test_function_all_inferred_call(self):
+        self.res = self.kparse.parse(
+            """
+            @module Titor
+            {
+             char *get_dmail(int index);
+            }
+            int main()
+            {
+              printf("%s\n", [Titor get_dmail :42]);
+            }
+            """)
+        waited = self.cparse.parse("""
+extern char* MTitor__Pc9get_dmaili(int index);
+int main()
+{
+    printf("%s\n", MTitor__Pc9get_dmaili(42));
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
