@@ -61,7 +61,7 @@ def mangled_name_of_symbol(module_name, symbol_name, params_types=None, symbol_t
     else:
         overload_content = kfimpl.get_overload_content(module_name, vartype, symbol_name, params_content, symbol_type)
 
-    print("OK : ", overload_content[0])
+    # print("OK : ", overload_content[0])
     return overload_content[0]
 
 # def inferred_mangled_name_of_symbol(module_name, symbol_name, params_types=""):

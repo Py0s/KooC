@@ -1,6 +1,6 @@
 @module Foo
 {
-  int	a;
+  const int a;
 }
 
 @module FooCpy
@@ -11,8 +11,7 @@
 @module VarOv
 {
   int id = 42;
-  char *id = "quarante deux"; //Big attention to this
-  char **id;
+  char * id = "quarante deux"; //Big attention to this
   char id[];
 }
 
@@ -20,6 +19,17 @@
 {
   void useless_func(int tutu, float tata);
   void (*print)(int);
-  void (*print)(float);
-  void (*print)(char (*somethin), int);
+//  void (*print)(float); // Seems to be conflicting
+//  void (*print)(char (*somethin), int);
+}
+
+@module QualTest
+{
+    char const a;
+    const char b;
+
+    char const *  c;
+    char * const d;
+    const char * const e;
+    char const * const f;
 }

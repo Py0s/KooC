@@ -77,10 +77,10 @@ int main()
             """)
         #TODO : c'est quoi le mangling de cette merde ?
         waited = self.cparse.parse("""
-extern const unsigned int *const *M4Test__Pi4test;
+extern const unsigned int *const *M4Test__PC_PC_Ui4test;
 int main()
 {
-    M4Test__Pi4test;
+    M4Test__PC_PC_Ui4test;
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
@@ -145,6 +145,27 @@ int main()
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
 
+    def test_function_one_arg_call_invalid_arg_type(self):
+        self.res = self.kparse.parse(
+            """
+            @module Test
+            {
+             int test(int toto);
+            }
+            int main()
+            {
+              [Test test :(invalid)42];
+            }
+            """)
+        waited = self.cparse.parse("""
+extern int M4Test__i4testi(int toto);
+int main()
+{
+    M4Test__i4testi(42);
+}
+            """)
+        self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
+
     def test_function_two_arg_call(self):
         self.res = self.kparse.parse(
             """
@@ -183,12 +204,12 @@ int main()
             }
             """)
         waited = self.cparse.parse("""
-extern void MTitor__v10send_dmailPvPc(void *this, char *mail);
-extern void MTitor__v10send_dmailPc(char *mail);
+extern void M5Titor__v10send_dmailPvPc(void *this, char *mail);
+extern void M5Titor__v10send_dmailPc(char *mail);
 int main()
 {
     char *mail = "Watashi wa mad scientist !";
-    MTitor__v10send_dmailPvPc(0, mail);
+    M5Titor__v10send_dmailPvPc(0, mail);
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
@@ -206,10 +227,10 @@ int main()
             }
             """)
         waited = self.cparse.parse("""
-extern char* MTitor__Pc9get_dmailv(void);
+extern char* M5Titor__Pc9get_dmailv(void);
 int main()
 {
-    printf("%s\n", MTitor__Pc9get_dmailv(void));
+    printf("%s\n", M5Titor__Pc9get_dmailv(void));
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
@@ -228,11 +249,11 @@ int main()
             }
             """)
         waited = self.cparse.parse("""
-extern char* MTitor__Pc9get_dmaili(int index);
-extern void* MTitor__Pv9get_dmaili(int index);
+extern char* M5Titor__Pc9get_dmaili(int index);
+extern void* M5Titor__Pv9get_dmaili(int index);
 int main()
 {
-    printf("%s\n", MTitor__Pc9get_dmaili(42));
+    printf("%s\n", M5Titor__Pc9get_dmaili(42));
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
@@ -250,10 +271,10 @@ int main()
             }
             """)
         waited = self.cparse.parse("""
-extern char* MTitor__Pc9get_dmaili(int index);
+extern char* M5Titor__Pc9get_dmaili(int index);
 int main()
 {
-    printf("%s\n", MTitor__Pc9get_dmaili(42));
+    printf("%s\n", M5Titor__Pc9get_dmaili(42));
 }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))

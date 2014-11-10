@@ -1,6 +1,6 @@
 from cnorm.nodes import Signs, Qualifiers
 S = Signs.map
-Q = Qualifiers.map
+Q = Qualifiers.rmap
 #Sp = Specifiers.map
 
 VARS = {
@@ -13,7 +13,7 @@ VARS = {
    'long':'l',
    'long long':'x',
    'signed char':'Sc',
-   'void': 'v' #should not be here
+   'void': 'v'
 }
 
 def id_m(ident: str):
@@ -21,18 +21,15 @@ def id_m(ident: str):
 
 def type_m(typ: str, sign = S['SIGNED']):
   if typ not in VARS:
-    return typ
-    # raise IndexError('Mangling type not recognised : %s' %typ)
+    #return typ #Activate for class support debug
+    raise IndexError('Mangling type not recognised : %s' %typ)
   res = ''
   if sign == S['UNSIGNED']:
      res = 'U'
   res += VARS[typ]
   return res
 
-def qual_m(qual: str):
-    if len(qual) == 0:
-        return ''
-    if qual.upper() not in Q:
-        print('Warning: should not be unknown')
-        return ''
-    return qual[0].upper() + '_'
+def qual_m(qual: 'enum'):
+    if qual >= len(Q):
+        raise IndexError('Qualifier #%d Not known' %qual)
+    return Q[qual][0].upper() + '_'

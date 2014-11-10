@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from cnorm.parsing.expression import Expression
+from Exceptions.KoocException import KoocException
 from pyrser.grammar import Grammar
 from pyrser import meta
 from cnorm import nodes
@@ -24,7 +25,12 @@ class   Kooc_call(Grammar):
     kooc_type              = [ ['a'..'z'|'A'..'Z'|'*'|' ']* ]
     module_id              = [ Base.id ]
     function_id            = [ Base.id ]
-    list_parameter         = [ #create_params(_) [':' ["(" kooc_type:type ")"] assmt_expr_overide:param #save_param(_, type, param)]* ]
+    list_parameter         = [ #create_params(_)
+                               [':'
+                               __scope__:param_type
+                               ['(' kooc_type:param_type ')']?
+                               assmt_expr_overide:param #save_param(_, param_type, param)]*
+                             ]
     variable_id            = [ Base.id ]
 
 
@@ -36,18 +42,32 @@ class   Kooc_call(Grammar):
 
 @meta.hook(Kooc_call)
 def create_params(self, ast):
+    # print("\nCREATE PARAM")
     ast.params = []
     ast.types = []
     return True
 
 @meta.hook(Kooc_call)
 def save_param(self, ast, typo, param):
+    # print("SAVE_PARAM")
+    typo = self.value(typo)
+
     if type(param) is nodes.Func:
         ast.params.append(param)
-        ast.types.append(self.value(typo))
+        ast.types.append(typo)
     else:
+        if typo == "":
+            for item in ast.types:
+                if item != "UNDEFINED":
+                    raise KoocException("Fuck you, soit tu types tout, soit tu types pas du tout! Aller Salut! Des bisous!")
+            ast.types.append("UNDEFINED")
+        else:
+            for item in ast.types:
+                if item == "UNDEFINED":
+                    raise KoocException("Fuck you, soit tu types tout, soit tu types pas du tout! Aller Salut! Des bisous!")
+            ast.types.append(typo)
+        # print("TYPES : ", ast.types)
         ast.params.append(nodes.Literal(param.value))
-        ast.types.append(self.value(typo))
     return True
 
 @meta.hook(Kooc_call)
@@ -63,14 +83,27 @@ def create_func_symbol(self, ast, module_name, typo, func_name, params, block):
     typo = self.value(typo)
     func_name = self.value(func_name)
 
+    moncul = 0
+
     params_types = ""
     if params.types == []:
         params_types = "v"
 #        params_types = None
     else:
         for item in params.types:
-            param_type_node = KoocFile.kooc_a_string(item + " a;")
-            params_types += param_type_node.body[0]._ctype.mangle()
+            if item == "UNDEFINED":
+                if moncul == 0:
+                    params_types = None
+                    moncul = 1
+                elif params_types != None:
+                    print("va te faire farçir l'oignon")
+                # params_types = item
+                # print("INFERENCE DES PARAMETRES?")
+            else:
+                if params_types == None:
+                    print("va te faire cuire un oeuf")
+                param_type_node = KoocFile.kooc_a_string(item + " a;")
+                params_types += param_type_node.body[0]._ctype.mangle()
     # print("params_types :", params_types)
     if typo != "":
         symbol_type_node = KoocFile.kooc_a_string(typo + " a;")
@@ -80,7 +113,6 @@ def create_func_symbol(self, ast, module_name, typo, func_name, params, block):
     mangled_name = KoocFile.mangled_name_of_symbol(module_name, func_name, params_types, typo)
     ast.set(nodes.Func(nodes.Id(mangled_name), params.params))
     # ast.set(nodes.Func(nodes.Id(module_name + "_" + typo + "_" + func_name), params.params))
-    print(ast)
     return True
 
 @meta.hook(Kooc_call)
