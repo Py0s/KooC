@@ -221,17 +221,18 @@ int main()
             {
              char *get_dmail(void);
             }
+            //@implementation Titor { char *get_dmail(void) {return "tutu";} }
             int main()
             {
               printf("%s\n", @!(char *)[Titor get_dmail]);
             }
             """)
         waited = self.cparse.parse("""
-extern char* M5Titor__Pc9get_dmailv(void);
-int main()
-{
-    printf("%s\n", M5Titor__Pc9get_dmailv(void));
-}
+ extern char* M5Titor__Pc9get_dmailv(void);
+ int main()
+ {
+     printf("%s\n", M5Titor__Pc9get_dmailv());
+ }
             """)
         self.assertEqual(str(self.res.to_c()), str(waited.to_c()))
 
