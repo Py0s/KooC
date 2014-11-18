@@ -59,7 +59,7 @@ class   Class(Grammar, KC_Statement):
 @meta.hook(Class)
 def add_class_to_type(self, class_type):
   class_type = self.value(class_type)
-  Idset[lass_type] = "type"
+  Idset[class_type] = "type"
   # VARS[class_type] = class_type AJOUT DANS LE VARS DE SIMPLE_MANGLING D UN NOUVEAU TYPE
   return True
 
